@@ -77,18 +77,29 @@ EOT;
 $packagefile = './package.xml';
 
 $options = array(
-    'filelistgenerator' => 'cvs',
+    'filelistgenerator' => 'file',
     'changelogoldtonew' => false,
     'simpleoutput'      => true,
     'baseinstalldir'    => '/',
     'packagedirectory'  => './',
     'packagefile'       => $packagefile,
     'clearcontents'     => false,
-    'ignore'            => array('package*.php', 'package*.xml', 'sqlite*', 'mssql*', 'oci8*', 'pgsql*', 'mysqli*', 'mysql*', 'fbsql*', 'querysim*', 'ibase*', 'peardb*'),
     'dir_roles'         => array(
         'docs'      => 'doc',
          'examples' => 'doc',
          'tests'    => 'test',
+    ),
+    'ignore'            => array(
+        'package.php',
+        'composer.json',
+    ),
+    'dir_roles'         => array(
+        'docs'     => 'doc',
+        'examples' => 'doc',
+        'tests'    => 'test',
+    ),
+    'exceptions' => array(
+        'LICENSE' => 'doc',
     ),
 );
 
