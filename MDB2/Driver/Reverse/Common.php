@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | PHP versions 4 and 5                                                 |
+// | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
 // | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
@@ -56,9 +56,9 @@
  * in the future, adjust MDB2_TABLEINFO_FULL accordingly
  */
 
-define('MDB2_TABLEINFO_ORDER',      1);
-define('MDB2_TABLEINFO_ORDERTABLE', 2);
-define('MDB2_TABLEINFO_FULL',       3);
+const MDB2_TABLEINFO_ORDER      = 1;
+const MDB2_TABLEINFO_ORDERTABLE = 2;
+const MDB2_TABLEINFO_FULL       = 3;
 
 /**
  * Base class for the schema reverse engineering module that is extended by each MDB2 driver
@@ -66,9 +66,9 @@ define('MDB2_TABLEINFO_FULL',       3);
  * To load this module in the MDB2 object:
  * $mdb->loadModule('Reverse');
  *
- * @package MDB2
+ * @package  MDB2
  * @category Database
- * @author  Lukas Smith <smith@pooteeweet.org>
+ * @author   Lukas Smith <smith@pooteeweet.org>
  */
 class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
 {
@@ -80,9 +80,8 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      * @param string $table [schema and] table name
      *
      * @return array array(schema, table)
-     * @access private
      */
-    function splitTableSchema($table)
+    public function splitTableSchema($table)
     {
         $ret = array();
         if (strpos($table, '.') !== false) {
@@ -103,9 +102,8 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      *          The returned array contains an array for each field definition,
      *          with all or some of these indices, depending on the field data type:
      *          [notnull] [nativetype] [length] [fixed] [default] [type] [mdb2type]
-     * @access public
      */
-    function getTableFieldDefinition($table, $field)
+    public function getTableFieldDefinition($table, $field)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -137,9 +135,8 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      *              )
      *          );
      *          </pre>
-     * @access public
      */
-    function getTableIndexDefinition($table, $index)
+    public function getTableIndexDefinition($table, $index)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -189,9 +186,8 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      *              [match] => SIMPLE|PARTIAL|FULL
      *          );
      *          </pre>
-     * @access public
      */
-    function getTableConstraintDefinition($table, $index)
+    public function getTableConstraintDefinition($table, $index)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -216,9 +212,8 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      *              [start] => n
      *          );
      *          </pre>
-     * @access public
      */
-    function getSequenceDefinition($sequence)
+    public function getSequenceDefinition($sequence)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -250,7 +245,7 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      *
      * EXPERIMENTAL
      *
-     * WARNING: this function is experimental and may change the returned value 
+     * WARNING: this function is experimental and may change the returned value
      * at any time until labelled as non-experimental
      *
      * @param string    $trigger    name of trigger that should be used in method
@@ -269,9 +264,8 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      *          );
      *          </pre>
      *          The oci8 driver also returns a [when_clause] index.
-     * @access public
      */
-    function getTriggerDefinition($trigger)
+    public function getTriggerDefinition($trigger)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -405,7 +399,7 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      *
      * @see MDB2_Driver_Common::setOption()
      */
-    function tableInfo($result, $mode = null)
+    public function tableInfo($result, $mode = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -513,5 +507,8 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
         $db->setOption('idxname_format', $idxname_format);
         return $res;
     }
+
+    // }}}
 }
+
 ?>

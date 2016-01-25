@@ -55,30 +55,31 @@ require_once 'MDB2.php';
 /**
  * MDB2_LOB: user land stream wrapper implementation for LOB support
  *
- * @package MDB2
+ * @package  MDB2
  * @category Database
- * @author Lukas Smith <smith@pooteeweet.org>
+ * @author   Lukas Smith <smith@pooteeweet.org>
  */
 class MDB2_LOB
 {
+    // {{{ Variables
+
     /**
      * contains the key to the global MDB2 instance array of the associated
      * MDB2 instance
      *
      * @var integer
-     * @access protected
      */
-    var $db_index;
+    protected $db_index;
 
     /**
      * contains the key to the global MDB2_LOB instance array of the associated
      * MDB2_LOB instance
      *
      * @var integer
-     * @access protected
      */
-    var $lob_index;
+    protected $lob_index;
 
+    // }}}
     // {{{ stream_open()
 
     /**
@@ -90,9 +91,8 @@ class MDB2_LOB
      * @param string not used
      *
      * @return bool
-     * @access public
      */
-    function stream_open($path, $mode, $options, &$opened_path)
+    public function stream_open($path, $mode, $options, &$opened_path)
     {
         if (!preg_match('/^rb?\+?$/', $mode)) {
             return false;
@@ -112,8 +112,8 @@ class MDB2_LOB
         }
         return true;
     }
-    // }}}
 
+    // }}}
     // {{{ stream_read()
 
     /**
@@ -122,9 +122,8 @@ class MDB2_LOB
      * @param int number of bytes to read
      *
      * @return string
-     * @access public
      */
-    function stream_read($count)
+    public function stream_read($count)
     {
         if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
             $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
@@ -139,8 +138,8 @@ class MDB2_LOB
             return $data;
         }
     }
-    // }}}
 
+    // }}}
     // {{{ stream_write()
 
     /**
@@ -149,40 +148,37 @@ class MDB2_LOB
      * @param string data
      *
      * @return int
-     * @access public
      */
-    function stream_write($data)
+    public function stream_write($data)
     {
         return 0;
     }
-    // }}}
 
+    // }}}
     // {{{ stream_tell()
 
     /**
      * return the current position
      *
      * @return int current position
-     * @access public
      */
-    function stream_tell()
+    public function stream_tell()
     {
         if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
             $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
             return $db->datatype->lobs[$this->lob_index]['position'];
         }
     }
-    // }}}
 
+    // }}}
     // {{{ stream_eof()
 
     /**
      * Check if stream reaches EOF
      *
      * @return bool
-     * @access public
      */
-    function stream_eof()
+    public function stream_eof()
     {
         if (!isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
             return true;
@@ -197,8 +193,8 @@ class MDB2_LOB
         }
         return $result;
     }
-    // }}}
 
+    // }}}
     // {{{ stream_seek()
 
     /**
@@ -208,22 +204,19 @@ class MDB2_LOB
      * @param int whence
      *
      * @return bool
-     * @access public
      */
-    function stream_seek($offset, $whence)
+    public function stream_seek($offset, $whence)
     {
         return false;
     }
-    // }}}
 
+    // }}}
     // {{{ stream_stat()
 
     /**
      * return information about stream
-     *
-     * @access public
      */
-    function stream_stat()
+    public function stream_stat()
     {
         if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
             $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
@@ -233,16 +226,14 @@ class MDB2_LOB
             );
         }
     }
-    // }}}
 
+    // }}}
     // {{{ stream_close()
 
     /**
      * close stream
-     *
-     * @access public
      */
-    function stream_close()
+    public function stream_close()
     {
         if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
             $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
@@ -252,6 +243,7 @@ class MDB2_LOB
             }
         }
     }
+
     // }}}
 }
 

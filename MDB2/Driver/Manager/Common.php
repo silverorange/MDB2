@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | PHP versions 4 and 5                                                 |
+// | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
 // | Copyright (c) 1998-2008 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
@@ -59,13 +59,13 @@
  * To load this module in the MDB2 object:
  * $mdb->loadModule('Manager');
  *
- * @package MDB2
+ * @package  MDB2
  * @category Database
- * @author  Lukas Smith <smith@pooteeweet.org>
+ * @author   Lukas Smith <smith@pooteeweet.org>
  */
 class MDB2_Driver_Manager_Common extends MDB2_Module_Common
 {
-    // {{{ splitTableSchema()
+    // {{{ protected splitTableSchema()
 
     /**
      * Split the "[owner|schema].table" notation into an array
@@ -73,9 +73,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param string $table [schema and] table name
      *
      * @return array array(schema, table)
-     * @access private
      */
-    function splitTableSchema($table)
+    public function splitTableSchema($table)
     {
         $ret = array();
         if (strpos($table, '.') !== false) {
@@ -104,9 +103,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *          to not be set to null.
      *
      * @return mixed string on success, a MDB2 error on failure
-     * @access public
      */
-    function getFieldDeclarationList($fields)
+    public function getFieldDeclarationList($fields)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -136,9 +134,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param string $sqn string that containts name of a potential sequence
      * @param bool $check if only formatted sequences should be returned
      * @return string name of the sequence with possible formatting removed
-     * @access protected
      */
-    function _fixSequenceName($sqn, $check = false)
+    protected function _fixSequenceName($sqn, $check = false)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -164,9 +161,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string $idx string that containts name of anl index
      * @return string name of the index with eventual formatting removed
-     * @access protected
      */
-    function _fixIndexName($idx)
+    protected function _fixIndexName($idx)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -191,9 +187,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param array  $options array with charset, collation info
      *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function createDatabase($database, $options = array())
+    public function createDatabase($database, $options = array())
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -214,9 +209,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param array  $options array with charset, collation info
      *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function alterDatabase($database, $options = array())
+    public function alterDatabase($database, $options = array())
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -235,9 +229,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string $name name of the database that should be dropped
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function dropDatabase($database)
+    public function dropDatabase($database)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -261,7 +254,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @return mixed string (the SQL query) on success, a MDB2 error on failure
      * @see createTable()
      */
-    function _getCreateTableQuery($name, $fields, $options = array())
+    protected function _getCreateTableQuery($name, $fields, $options = array())
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -310,7 +303,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @return string The string required to be placed between "CREATE" and "TABLE"
      *                to generate a temporary table, if possible.
      */
-    function _getTemporaryTableQuery()
+    protected function _getTemporaryTableQuery()
     {
         return 'TEMPORARY';
     }
@@ -348,9 +341,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *                              'temporary' => true|false,
      *                          );
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function createTable($name, $fields, $options = array())
+    public function createTable($name, $fields, $options = array())
     {
         $query = $this->_getCreateTableQuery($name, $fields, $options);
         if (MDB2::isError($query)) {
@@ -375,9 +367,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string $name name of the table that should be dropped
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function dropTable($name)
+    public function dropTable($name)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -401,9 +392,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string $name name of the table that should be truncated
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function truncateTable($name)
+    public function truncateTable($name)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -433,9 +423,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *               - freeze [boolean] [pgsql-only]
      *
      * @return mixed MDB2_OK success, a MDB2 error on failure
-     * @access public
      */
-    function vacuum($table = null, $options = array())
+    public function vacuum($table = null, $options = array())
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -535,11 +524,10 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param boolean $check     indicates whether the function should just check if the DBMS driver
      *                             can perform the requested table alterations if the value is true or
      *                             actually perform them otherwise.
-     * @access public
      *
       * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
-    function alterTable($name, $changes, $check)
+    public function alterTable($name, $changes, $check)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -557,9 +545,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * list all databases
      *
      * @return mixed array of database names on success, a MDB2 error on failure
-     * @access public
      */
-    function listDatabases()
+    public function listDatabases()
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -577,9 +564,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * list all users
      *
      * @return mixed array of user names on success, a MDB2 error on failure
-     * @access public
      */
-    function listUsers()
+    public function listUsers()
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -600,9 +586,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *               NB: not all the drivers can get the view names from
      *               a database other than the current one
      * @return mixed array of view names on success, a MDB2 error on failure
-     * @access public
      */
-    function listViews($database = null)
+    public function listViews($database = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -621,9 +606,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string table for which all referenced views should be found
      * @return mixed array of view names on success, a MDB2 error on failure
-     * @access public
      */
-    function listTableViews($table)
+    public function listTableViews($table)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -642,9 +626,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string table for which all referenced triggers should be found
      * @return mixed array of trigger names on success, a MDB2 error on failure
-     * @access public
      */
-    function listTableTriggers($table = null)
+    public function listTableTriggers($table = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -662,9 +645,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * list all functions in the current database
      *
      * @return mixed array of function names on success, a MDB2 error on failure
-     * @access public
      */
-    function listFunctions()
+    public function listFunctions()
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -685,9 +667,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *               NB: not all the drivers can get the table names from
      *               a database other than the current one
      * @return mixed array of table names on success, a MDB2 error on failure
-     * @access public
      */
-    function listTables($database = null)
+    public function listTables($database = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -706,9 +687,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string $table name of table that should be used in method
      * @return mixed array of field names on success, a MDB2 error on failure
-     * @access public
      */
-    function listTableFields($table)
+    public function listTableFields($table)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -740,7 +720,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      *                                Not all DBMS support index sorting direction configuration. The DBMS
      *                                 drivers of those that do not support it ignore this property. Use the
-     *                                 function supports() to determine whether the DBMS driver can manage indexes.
+     *                                 public function supports() to determine whether the DBMS driver can manage indexes.
      *
      *                                 Example
      *                                    array(
@@ -752,9 +732,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *                                        )
      *                                    )
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function createIndex($table, $name, $definition)
+    public function createIndex($table, $name, $definition)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -785,9 +764,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param string    $table         name of table that should be used in method
      * @param string    $name         name of the index to be dropped
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function dropIndex($table, $name)
+    public function dropIndex($table, $name)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -810,9 +788,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string $table name of table that should be used in method
      * @return mixed array of index names on success, a MDB2 error on failure
-     * @access public
      */
-    function listTableIndexes($table)
+    public function listTableIndexes($table)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -832,9 +809,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param array $definition
      * @return string
-     * @access protected
      */
-    function _getAdvancedFKOptions($definition)
+    protected function _getAdvancedFKOptions($definition)
     {
         return '';
     }
@@ -879,9 +855,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *          );
      *          </pre>
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function createConstraint($table, $name, $definition)
+    public function createConstraint($table, $name, $definition)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -928,9 +903,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param string    $name         name of the constraint to be dropped
      * @param string    $primary      hint if the constraint is primary
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function dropConstraint($table, $name, $primary = false)
+    public function dropConstraint($table, $name, $primary = false)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -954,9 +928,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string $table name of table that should be used in method
      * @return mixed array of constraint names on success, a MDB2 error on failure
-     * @access public
      */
-    function listTableConstraints($table)
+    public function listTableConstraints($table)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -976,9 +949,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param string    $seq_name     name of the sequence to be created
      * @param string    $start         start value of the sequence; default is 1
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function createSequence($seq_name, $start = 1)
+    public function createSequence($seq_name, $start = 1)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -997,9 +969,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *
      * @param string    $seq_name     name of the sequence to be dropped
      * @return mixed MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function dropSequence($name)
+    public function dropSequence($name)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -1020,9 +991,8 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *               NB: not all the drivers can get the sequence names from
      *               a database other than the current one
      * @return mixed array of sequence names on success, a MDB2 error on failure
-     * @access public
      */
-    function listSequences($database = null)
+    public function listSequences($database = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -1035,4 +1005,5 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
 
     // }}}
 }
+
 ?>

@@ -122,7 +122,7 @@ $package->setPackageType('php');
 $package->setExtends('MDB');
 
 $package->clearDeps();
-$package->setPhpDep('5.2.0');
+$package->setPhpDep('5.3.0');
 $package->setPearInstallerDep('1.9.1');
 $package->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.3.6');
 
