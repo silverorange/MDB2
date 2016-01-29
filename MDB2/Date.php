@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | PHP versions 4 and 5                                                 |
+// | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
 // | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
@@ -68,42 +68,38 @@ class MDB2_Date
      * return the current datetime
      *
      * @return string current datetime in the MDB2 format
-     * @access public
      */
     public static function mdbNow()
     {
         return date('Y-m-d H:i:s');
     }
-    // }}}
 
+    // }}}
     // {{{ mdbToday()
 
     /**
      * return the current date
      *
      * @return string current date in the MDB2 format
-     * @access public
      */
     public static function mdbToday()
     {
         return date('Y-m-d');
     }
-    // }}}
 
+    // }}}
     // {{{ mdbTime()
 
     /**
      * return the current time
      *
      * @return string current time in the MDB2 format
-     * @access public
      */
     public static function mdbTime()
     {
         return date('H:i:s');
     }
     // }}}
-
     // {{{ date2Mdbstamp()
 
     /**
@@ -117,15 +113,14 @@ class MDB2_Date
      * @param int year of the date
      *
      * @return string a valid MDB2 timestamp
-     * @access public
      */
     public static function date2Mdbstamp($hour = null, $minute = null, $second = null,
         $month = null, $day = null, $year = null)
     {
         return MDB2_Date::unix2Mdbstamp(mktime($hour, $minute, $second, $month, $day, $year, -1));
     }
-    // }}}
 
+    // }}}
     // {{{ unix2Mdbstamp()
 
     /**
@@ -134,14 +129,13 @@ class MDB2_Date
      * @param int a valid unix timestamp
      *
      * @return string a valid MDB2 timestamp
-     * @access public
      */
     public static function unix2Mdbstamp($unix_timestamp)
     {
         return date('Y-m-d H:i:s', $unix_timestamp);
     }
-    // }}}
 
+    // }}}
     // {{{ mdbstamp2Unix()
 
     /**
@@ -149,8 +143,6 @@ class MDB2_Date
      *
      * @param int a valid MDB2 timestamp
      * @return string unix timestamp with the time stored in the MDB2 format
-     *
-     * @access public
      */
     public static function mdbstamp2Unix($mdb_timestamp)
     {
@@ -158,8 +150,8 @@ class MDB2_Date
 
         return mktime($arr['hour'], $arr['minute'], $arr['second'], $arr['month'], $arr['day'], $arr['year'], -1);
     }
-    // }}}
 
+    // }}}
     // {{{ mdbstamp2Date()
 
     /**
@@ -169,7 +161,6 @@ class MDB2_Date
      * @param int a valid MDB2 timestamp
      *
      * @return array with the time split
-     * @access public
      */
     public static function mdbstamp2Date($mdb_timestamp)
     {
@@ -177,6 +168,7 @@ class MDB2_Date
             sscanf($mdb_timestamp, "%04u-%02u-%02u %02u:%02u:%02u");
         return $arr;
     }
+
     // }}}
 }
 

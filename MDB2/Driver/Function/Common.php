@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | PHP versions 4 and 5                                                 |
+// | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
 // | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
@@ -76,9 +76,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * @param mixed $result_wrap_class string which specifies which class to wrap results in
      *
      * @return mixed a result handle or MDB2_OK on success, a MDB2 error on failure
-     * @access public
      */
-    function executeStoredProc($name, $params = null, $types = null, $result_class = true, $result_wrap_class = false)
+    public function executeStoredProc($name, $params = null, $types = null, $result_class = true, $result_wrap_class = false)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -97,9 +96,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * return string for internal table used when calling only a function
      *
      * @return string for internal table used when calling only a function
-     * @access public
      */
-    function functionTable()
+    public function functionTable()
     {
         return '';
     }
@@ -117,9 +115,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * @param string $type 'timestamp' | 'time' | 'date'
      *
      * @return string to call a variable with the current timestamp
-     * @access public
      */
-    function now($type = 'timestamp')
+    public function now($type = 'timestamp')
     {
         switch ($type) {
         case 'time':
@@ -141,9 +138,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * @param string $expression
      *
      * @return string to call a variable with the timestamp
-     * @access public
      */
-    function unixtimestamp($expression)
+    public function unixtimestamp($expression)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -162,9 +158,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * return string to call a function to get a substring inside an SQL statement
      *
      * @return string to call a function to get a substring
-     * @access public
      */
-    function substring($value, $position = 1, $length = null)
+    public function substring($value, $position = 1, $length = null)
     {
         if (null !== $length) {
             return "SUBSTRING($value FROM $position FOR $length)";
@@ -179,9 +174,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * return string to call a function to get replace inside an SQL statement.
      *
      * @return string to call a function to get a replace
-     * @access public
      */
-    function replace($str, $from_str, $to_str)
+    public function replace($str, $from_str, $to_str)
     {
         return "REPLACE($str, $from_str , $to_str)";
     }
@@ -197,9 +191,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * @param string $values...
      *
      * @return string to concatenate two strings
-     * @access public
      */
-    function concat($value1, $value2)
+    public function concat($value1, $value2)
     {
         $args = func_get_args();
         return "(".implode(' || ', $args).")";
@@ -212,9 +205,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * return string to call a function to get random value inside an SQL statement
      *
      * @return return string to generate float between 0 and 1
-     * @access public
      */
-    function random()
+    public function random()
     {
         return 'RAND()';
     }
@@ -228,9 +220,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * @param string $expression
      *
      * @return return string to lower case of an expression
-     * @access public
      */
-    function lower($expression)
+    public function lower($expression)
     {
         return "LOWER($expression)";
     }
@@ -244,9 +235,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * @param string $expression
      *
      * @return return string to upper case of an expression
-     * @access public
      */
-    function upper($expression)
+    public function upper($expression)
     {
         return "UPPER($expression)";
     }
@@ -260,9 +250,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * @param string $expression
      *
      * @return return string to get the string expression length
-     * @access public
      */
-    function length($expression)
+    public function length($expression)
     {
         return "LENGTH($expression)";
     }
@@ -274,9 +263,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * Returns global unique identifier
      *
      * @return string to get global unique identifier
-     * @access public
      */
-    function guid()
+    public function guid()
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -290,4 +278,5 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
 
     // }}}
 }
+
 ?>

@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | PHP versions 4 and 5                                                 |
+// | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
 // | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
@@ -53,17 +53,17 @@
 /**
  * Used by autoPrepare()
  */
-define('MDB2_AUTOQUERY_INSERT', 1);
-define('MDB2_AUTOQUERY_UPDATE', 2);
-define('MDB2_AUTOQUERY_DELETE', 3);
-define('MDB2_AUTOQUERY_SELECT', 4);
+const MDB2_AUTOQUERY_INSERT = 1;
+const MDB2_AUTOQUERY_UPDATE = 2;
+const MDB2_AUTOQUERY_DELETE = 3;
+const MDB2_AUTOQUERY_SELECT = 4;
 
 /**
  * MDB2_Extended: class which adds several high level methods to MDB2
  *
- * @package MDB2
+ * @package  MDB2
  * @category Database
- * @author Lukas Smith <smith@pooteeweet.org>
+ * @author   Lukas Smith <smith@pooteeweet.org>
  */
 class MDB2_Extended extends MDB2_Module_Common
 {
@@ -87,9 +87,8 @@ class MDB2_Extended extends MDB2_Module_Common
      *
      * @return resource handle for the query
      * @see buildManipSQL
-     * @access public
      */
-    function autoPrepare($table, $table_fields, $mode = MDB2_AUTOQUERY_INSERT,
+    public function autoPrepare($table, $table_fields, $mode = MDB2_AUTOQUERY_INSERT,
         $where = false, $types = null, $result_types = MDB2_PREPARE_MANIP)
     {
         $query = $this->buildManipSQL($table, $table_fields, $mode, $where);
@@ -132,9 +131,8 @@ class MDB2_Extended extends MDB2_Module_Common
      * @return bool|MDB2_Error true on success, a MDB2 error on failure
      * @see buildManipSQL
      * @see autoPrepare
-     * @access public
-    */
-    function autoExecute($table, $fields_values, $mode = MDB2_AUTOQUERY_INSERT,
+     */
+    public function autoExecute($table, $fields_values, $mode = MDB2_AUTOQUERY_INSERT,
         $where = false, $types = null, $result_class = true, $result_types = MDB2_PREPARE_MANIP)
     {
         $fields_values = (array)$fields_values;
@@ -195,9 +193,8 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param string (in case of update and delete queries, this string will be put after the sql WHERE statement)
      *
      * @return string sql query for prepare()
-     * @access public
      */
-    function buildManipSQL($table, $table_fields, $mode, $where = false)
+    public function buildManipSQL($table, $table_fields, $mode, $where = false)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -268,9 +265,8 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param mixed   string which specifies which class to wrap results in
      *
      * @return MDB2_Result|MDB2_Error result set on success, a MDB2 error on failure
-     * @access public
      */
-    function limitQuery($query, $types, $limit, $offset = 0, $result_class = true,
+    public function limitQuery($query, $types, $limit, $offset = 0, $result_class = true,
         $result_wrap_class = false)
     {
         $db = $this->getDBInstance();
@@ -297,9 +293,8 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param array that contains the types of the values defined in $params
      *
      * @return int|MDB2_Error affected rows on success, a MDB2 error on failure
-     * @access public
      */
-    function execParam($query, $params = array(), $param_types = null)
+    public function execParam($query, $params = array(), $param_types = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -340,9 +335,8 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param int|string which column to return
      *
      * @return scalar|MDB2_Error data on success, a MDB2 error on failure
-     * @access public
      */
-    function getOne($query, $type = null, $params = array(),
+    public function getOne($query, $type = null, $params = array(),
         $param_types = null, $colnum = 0)
     {
         $db = $this->getDBInstance();
@@ -387,9 +381,8 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param int the fetch mode to use
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
-     * @access public
      */
-    function getRow($query, $types = null, $params = array(),
+    public function getRow($query, $types = null, $params = array(),
         $param_types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT)
     {
         $db = $this->getDBInstance();
@@ -433,9 +426,8 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param int|string which column to return
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
-     * @access public
      */
-    function getCol($query, $type = null, $params = array(),
+    public function getCol($query, $type = null, $params = array(),
         $param_types = null, $colnum = 0)
     {
         $db = $this->getDBInstance();
@@ -488,9 +480,8 @@ class MDB2_Extended extends MDB2_Module_Common
      *       instead of overwriting the existing values.
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
-     * @access public
      */
-    function getAll($query, $types = null, $params = array(),
+    public function getAll($query, $types = null, $params = array(),
         $param_types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT,
         $rekey = false, $force_array = false, $group = false)
     {
@@ -594,9 +585,8 @@ class MDB2_Extended extends MDB2_Module_Common
      *       instead of overwriting the existing values.
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
-     * @access public
      */
-    function getAssoc($query, $types = null, $params = array(), $param_types = null,
+    public function getAssoc($query, $types = null, $params = array(), $param_types = null,
         $fetchmode = MDB2_FETCHMODE_DEFAULT, $force_array = false, $group = false)
     {
         $db = $this->getDBInstance();
@@ -640,10 +630,9 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param array numeric array containing the data to insert into the query
      *
      * @return bool|MDB2_Error true on success, a MDB2 error on failure
-     * @access public
      * @see prepare(), execute()
      */
-    function executeMultiple($stmt, $params = null)
+    public function executeMultiple($stmt, $params = null)
     {
         if (MDB2::isError($stmt)) {
             return $stmt;
@@ -670,9 +659,8 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param bool if the returned value should be quoted
      *
      * @return int|MDB2_Error id on success, a MDB2 error on failure
-     * @access public
      */
-    function getBeforeID($table, $field = null, $ondemand = true, $quote = true)
+    public function getBeforeID($table, $field = null, $ondemand = true, $quote = true)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -703,9 +691,8 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param string name of the field into which a new row was inserted
      *
      * @return int|MDB2_Error id on success, a MDB2 error on failure
-     * @access public
      */
-    function getAfterID($id, $table, $field = null)
+    public function getAfterID($id, $table, $field = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -720,4 +707,5 @@ class MDB2_Extended extends MDB2_Module_Common
 
     // }}}
 }
+
 ?>
