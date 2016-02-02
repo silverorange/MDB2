@@ -1729,12 +1729,15 @@ class MDB2_Driver_Common
     /**
      * Do all necessary conversions on result arrays to fix DBMS quirks
      *
+     * Note: This API is package-private. It is not indended to be part of
+     * the public API but is used by MDB2 driver packages.
+     *
      * @param   array   the array to be fixed (passed by reference)
      * @param   array   bit-wise addition of the required portability modes
      *
      * @return  void
      */
-    protected function _fixResultArrayValues(&$row, $mode)
+    public function _fixResultArrayValues(&$row, $mode)
     {
         switch ($mode) {
         case MDB2_PORTABILITY_EMPTY_TO_NULL:
