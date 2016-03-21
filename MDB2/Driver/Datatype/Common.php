@@ -80,10 +80,13 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     );
 
     /**
-     * contains all LOB objects created with this MDB2 instance
+     * Contains all LOB objects created with this MDB2 instance
+     *
+     * Must be public because it is used directly in MDB2_LOB stream wrapper.
+     *
      * @var array
      */
-    protected $lobs = array();
+    public $lobs = array();
 
     // }}}
     // {{{ getValidTypes()
