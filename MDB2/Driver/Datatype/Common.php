@@ -1520,7 +1520,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      * @param array $lob array
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
-    protected function _retrieveLOB(&$lob)
+    public function _retrieveLOB(&$lob)
     {
         if (null === $lob['value']) {
             $lob['value'] = $lob['resource'];
@@ -1545,7 +1545,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      *
      * @see endOfLOB()
      */
-    protected function _readLOB($lob, $length)
+    public function _readLOB($lob, $length)
     {
         return substr($lob['value'], $lob['position'], $length);
     }
@@ -1560,7 +1560,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      * @param array $lob array
      * @return mixed true or false on success, a MDB2 error on failure
      */
-    protected function _endOfLOB($lob)
+    public function _endOfLOB($lob)
     {
         return $lob['endOfLOB'];
     }
@@ -1595,7 +1595,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      *
      * @param array $lob array
      */
-    protected function _destroyLOB(&$lob)
+    public function _destroyLOB(&$lob)
     {
         return MDB2_OK;
     }
