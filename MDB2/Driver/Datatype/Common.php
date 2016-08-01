@@ -262,9 +262,9 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     public function convertResultRow($types, $row, $rtrim = true)
     {
-        //$types = $this->_sortResultFieldTypes(array_keys($row), $types);
         $keys = array_keys($row);
-        if (is_int($keys[0])) {
+        $type_keys = array_keys($types);
+        if (is_int($type_keys[0])) {
             $types = $this->_sortResultFieldTypes($keys, $types);
         }
         foreach ($row as $key => $value) {
