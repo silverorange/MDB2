@@ -77,6 +77,9 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         'date'      => '1970-01-01',
         'clob'      => '',
         'blob'      => '',
+        'uuid'      => '',
+        'json'      => '{}',
+        'jsonb'     => '{}',
     );
 
     /**
@@ -208,6 +211,11 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             $lob_index = key($this->lobs);
             $this->lobs[$lob_index]['lob_index'] = $lob_index;
             return fopen('MDB2LOB://'.$lob_index.'@'.$this->db_index, 'r+');
+        case 'uuid':
+            return $value;
+        case 'json':
+        case 'jsonb':
+            return json_decode($value);
         }
 
         $db = $this->getDBInstance();
@@ -416,6 +424,12 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             return 'TEXT';
         case 'decimal':
             return 'TEXT';
+        case 'uuid':
+            return 'UUID';
+        case 'json':
+            return 'JSON';
+        case 'jsonb':
+            return 'JSONB';
         }
         return '';
     }
@@ -1129,6 +1143,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
                     $type = 'time';
                 } elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
                     $type = 'date';
+                } elseif (preg_match('/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i', $value)) {
+                    $type = 'uuid';
                 } else {
                     $type = 'text';
                 }
@@ -1472,6 +1488,74 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             }
         }
         return $value;
+    }
+
+    // }}}
+    // {{{ _quoteUUID()
+
+    /**
+     * Convert a UUID value into a DBMS specific format that is suitable to
+     * compose query statements.
+     *
+     * @param string $value UUID string value that is intended to be converted.
+     * @param bool $quote determines if the value should be quoted and escaped
+     * @param bool $escape_wildcards if to escape escape wildcards
+     * @return string UUID string that represents the given argument value in
+     *       a DBMS specific format.
+     */
+    protected function _quoteUUID($value, $quote, $escape_wildcards)
+    {
+        return $this->_quoteText($value, $quote, $escape_wildcards);
+    }
+
+    // }}}
+    // {{{ _quoteJSON()
+
+    /**
+     * Convert a JSON value into a DBMS specific format that is suitable to
+     * compose query statements.
+     *
+     * @param stdObject|array $value JSON object or array that is intended to be converted.
+     * @param bool $quote determines if the value should be quoted and escaped
+     * @param bool $escape_wildcards if to escape escape wildcards
+     * @return string UUID string that represents the given argument value in
+     *       a DBMS specific format.
+     */
+    protected function _quoteJSON($value, $quote, $escape_wildcards)
+    {
+        if (!$quote) {
+            return $value;
+        }
+
+        $db = $this->getDBInstance();
+        if (MDB2::isError($db)) {
+            return $db;
+        }
+
+        $value = json_encode($value);
+        $value = $db->escape($value, $escape_wildcards);
+        if (MDB2::isError($value)) {
+            return $value;
+        }
+        return "'".$value."'";
+    }
+
+    // }}}
+    // {{{ _quoteJSONB()
+
+    /**
+     * Convert a JSON value into a DBMS specific format that is suitable to
+     * compose query statements.
+     *
+     * @param stdObject|array $value JSON object or array that is intended to be converted.
+     * @param bool $quote determines if the value should be quoted and escaped
+     * @param bool $escape_wildcards if to escape escape wildcards
+     * @return string UUID string that represents the given argument value in
+     *       a DBMS specific format.
+     */
+    protected function _quoteJSONB($value, $quote, $escape_wildcards)
+    {
+        return $this->_quoteJSON($value, $quote, $excape_wildcards);
     }
 
     // }}}
