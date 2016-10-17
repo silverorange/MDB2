@@ -215,7 +215,21 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             return $value;
         case 'json':
         case 'jsonb':
-            return json_decode($value);
+            $result = json_decode($value);
+            if ($result === null) {
+                $db = $this->getDBInstance();
+                if (MDB2::isError($db)) {
+                    return $db;
+                }
+                return $db->raiseError(
+                    MDB2_ERROR_INVALID,
+                    null,
+                    null,
+                    'Unable to decode invalid JSON value: ' . $value,
+                    __FUNCTION__
+                );
+            }
+            return $result;
         }
 
         $db = $this->getDBInstance();
@@ -1518,7 +1532,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      * @param stdObject|array $value JSON object or array that is intended to be converted.
      * @param bool $quote determines if the value should be quoted and escaped
      * @param bool $escape_wildcards if to escape escape wildcards
-     * @return string UUID string that represents the given argument value in
+     * @return string JSON string that represents the given argument value in
      *       a DBMS specific format.
      */
     protected function _quoteJSON($value, $quote, $escape_wildcards)
@@ -1532,12 +1546,22 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             return $db;
         }
 
-        $value = json_encode($value);
-        $value = $db->escape($value, $escape_wildcards);
-        if (MDB2::isError($value)) {
-            return $value;
+        $result = json_encode($value);
+        if ($result === false) {
+            return $db->raiseError(
+                MDB2_ERROR_INVALID,
+                null,
+                null,
+                'Unable to encode invalid JSON value: ' . print_r($value, true),
+                __FUNCTION__
+            );
         }
-        return "'".$value."'";
+
+        $result = $db->escape($result, $escape_wildcards);
+        if (MDB2::isError($result)) {
+            return $result;
+        }
+        return "'".$result."'";
     }
 
     // }}}
