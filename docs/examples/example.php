@@ -8,7 +8,6 @@
     ini_set('include_path', '../..'.PATH_SEPARATOR.ini_get('include_path'));
 
     // require the MDB2 code
-    require_once 'MDB2.php';
 
     // define and set a PEAR error handler
     // will be called whenever an unexpected PEAR_Error occurs
@@ -47,7 +46,6 @@
 
     // this loads the MDB2_Schema manager
     // this is a separate package you must install
-    require_once 'MDB2/Schema.php';
     // you can either pass a dsn string, a dsn array or an exisiting mdb2 connection
     $schema =& MDB2_Schema::factory($mdb2);
     $input_file = 'metapear_test_db.schema';

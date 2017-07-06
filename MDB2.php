@@ -52,8 +52,6 @@
  * @author   Lukas Smith <smith@pooteeweet.org>
  */
 
-require_once 'PEAR.php';
-
 // {{{ Error constants
 
 /**
@@ -319,27 +317,10 @@ class MDB2
      */
     public static function loadClass($class_name, $debug)
     {
-        if (!self::classExists($class_name)) {
-            $file_name = str_replace('_', DIRECTORY_SEPARATOR, $class_name).'.php';
-            if ($debug) {
-                $include = include_once($file_name);
-            } else {
-                $include = @include_once($file_name);
-            }
-            if (!$include) {
-                if (!self::fileExists($file_name)) {
-                    $msg = "unable to find package '$class_name' file '$file_name'";
-                } else {
-                    $msg = "unable to load class '$class_name' from file '$file_name'";
-                }
-                $err = self::raiseError(MDB2_ERROR_NOT_FOUND, null, null, $msg);
-                return $err;
-            }
-            if (!self::classExists($class_name)) {
-                $msg = "unable to load class '$class_name' from file '$file_name'";
-                $err = self::raiseError(MDB2_ERROR_NOT_FOUND, null, null, $msg);
-                return $err;
-            }
+        if (!class_exists($class_name)) {
+            $msg = "unable to load class '$class_name'";
+            $err = self::raiseError(MDB2_ERROR_NOT_FOUND, null, null, $msg);
+            return $err;
         }
         return MDB2_OK;
     }

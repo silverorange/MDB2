@@ -5,8 +5,6 @@
 /* a nice php5 only show case of MDB2 */
 /**************************************/
 
-require 'MDB2.php';
-
 // the database needs to be created manually beforehand
 $dsn = array(
     'phptype'  => 'pgsql',

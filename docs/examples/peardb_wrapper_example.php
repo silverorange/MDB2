@@ -14,9 +14,7 @@
     }
     ini_set('include_path', '../..'.PATH_SEPARATOR.ini_get('include_path'));
 
-    require_once 'MDB2.php';
     MDB2::loadFile('Wrapper/peardb');
-    require_once 'Var_Dump.php';
 
     PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'handle_pear_error');
     function handle_pear_error ($error_obj)

@@ -47,8 +47,6 @@ or a dummy string to prevent a warning from being thrown:
 
 Usage example:
 
-require_once 'MDB2.php';
-
 $dsn = 'querysim';
 
 $conn =& MDB2::factory($dsn);
