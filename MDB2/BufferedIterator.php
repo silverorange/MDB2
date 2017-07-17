@@ -41,134 +41,43 @@
 // +----------------------------------------------------------------------+
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
-//
-// $Id$
 
 /**
- * PHP5 Iterator
+ * PHP5 buffered Iterator
  *
  * @package  MDB2
  * @category Database
  * @author   Lukas Smith <smith@pooteeweet.org>
  */
-class MDB2_Iterator implements Iterator
+class MDB2_BufferedIterator extends MDB2_Iterator implements SeekableIterator
 {
-    // {{{ Variables
-
-    protected $fetchmode;
-
-    /**
-     * @var MDB2_Result_Common
-     */
-    protected $result;
-    protected $row;
-
-    // }}}
-    // {{{ constructor
-
-    /**
-     * Constructor
-     */
-    public function __construct(MDB2_Result_Common $result, $fetchmode = MDB2_FETCHMODE_DEFAULT)
-    {
-        $this->result = $result;
-        $this->fetchmode = $fetchmode;
-    }
-
-    // }}}
-    // {{{ seek()
-
-    /**
-     * Seek forward to a specific row in a result set
-     *
-     * @param int number of the row where the data can be found
-     *
-     * @return void
-     */
-    public function seek($rownum)
-    {
-        $this->row = null;
-        if ($this->result) {
-            $this->result->seek($rownum);
-        }
-    }
-
-    // }}}
-    // {{{ next()
-
-    /**
-     * Fetch next row of data
-     *
-     * @return void
-     */
-    public function next()
-    {
-        $this->row = null;
-    }
-
-    // }}}
-    // {{{ current()
-
-    /**
-     * return a row of data
-     *
-     * @return void
-     */
-    public function current()
-    {
-        if (null === $this->row) {
-            $row = $this->result->fetchRow($this->fetchmode);
-            if (MDB2::isError($row)) {
-                $row = false;
-            }
-            $this->row = $row;
-        }
-        return $this->row;
-    }
-
-    // }}}
     // {{{ valid()
 
     /**
      * Check if the end of the result set has been reached
      *
-     * @return bool true/false, false is also returned on failure
+     * @return bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
      */
     public function valid()
     {
-        return (bool)$this->current();
-    }
-
-    // }}}
-    // {{{ free()
-
-    /**
-     * Free the internal resources associated with result.
-     *
-     * @return bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
-     */
-    public function free()
-    {
         if ($this->result) {
-            return $this->result->free();
+            return $this->result->valid();
         }
-        $this->result = false;
-        $this->row = null;
         return false;
     }
 
     // }}}
-    // {{{ key()
+    // {{{ count()
 
     /**
-     * Returns the row number
+     * Returns the number of rows in a result object
      *
-     * @return int|bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
+     * @return int|MDB2_Error number of rows, false|MDB2_Error if result is invalid
      */
-    public function key()
+    public function count()
     {
         if ($this->result) {
-            return $this->result->rowCount();
+            return $this->result->numRows();
         }
         return false;
     }
@@ -180,21 +89,10 @@ class MDB2_Iterator implements Iterator
      * Seek to the first row in a result set
      *
      * @return void
-     * @access public
      */
     public function rewind()
     {
-    }
-
-    // }}}
-    // {{{ destructor
-
-    /**
-     * Destructor
-     */
-    public function __destruct()
-    {
-        $this->free();
+        $this->seek(0);
     }
 
     // }}}
