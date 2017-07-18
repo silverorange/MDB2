@@ -18,6 +18,9 @@
 	"require-dev": {
 		"squizlabs/php_codesniffer": "^3.0.0"
 	},
+  "scripts": {
+    "lint": "./vendor/bin/phpcs"
+  },
 	"autoload": {
 		"psr-0": {
 			"MDB2": ""
