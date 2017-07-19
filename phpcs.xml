@@ -8,6 +8,7 @@
   <arg value="p" /><!-- show progress -->
 
   <file>./MDB2</file>
+  <file>./MDB2.php</file>
 
   <rule ref="PEAR" />
 </ruleset>
