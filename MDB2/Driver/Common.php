@@ -910,14 +910,11 @@ class MDB2_Driver_Common
             if ($phptype_specific !== false) {
                 $version = true;
                 $class_name = 'MDB2_Driver_'.$module.'_'.$this->phptype;
-                $file_name = str_replace('_', DIRECTORY_SEPARATOR, $class_name).'.php';
             }
-            if ($phptype_specific === false
-                || (!MDB2::classExists($class_name) && !MDB2::fileExists($file_name))
-            ) {
+
+            if ($phptype_specific === false || !class_exists($class_name)) {
                 $version = false;
                 $class_name = 'MDB2_'.$module;
-                $file_name = str_replace('_', DIRECTORY_SEPARATOR, $class_name).'.php';
             }
 
             $err = MDB2::loadClass($class_name, $this->getOption('debug'));
@@ -1606,7 +1603,7 @@ class MDB2_Driver_Common
 
         if ($result_class) {
             $class_name = sprintf($result_class, $this->phptype);
-            if (!MDB2::classExists($class_name)) {
+            if (!class_exists($class_name)) {
                 $err = MDB2_Driver_Common::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                     'result class does not exist '.$class_name, __FUNCTION__);
                 return $err;
@@ -1637,7 +1634,7 @@ class MDB2_Driver_Common
                 $result_wrap_class = $this->options['result_wrap_class'];
             }
             if ($result_wrap_class) {
-                if (!MDB2::classExists($result_wrap_class)) {
+                if (!class_exists($result_wrap_class)) {
                     $err = MDB2_Driver_Common::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                         'result wrap class does not exist '.$result_wrap_class, __FUNCTION__);
                     return $err;
