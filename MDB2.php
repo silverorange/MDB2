@@ -470,30 +470,6 @@ class MDB2
     }
 
     // }}}
-    // {{{ function loadFile($file)
-
-    /**
-     * load a file (like 'Date')
-     *
-     * @param string $file name of the file in the MDB2 directory (without '.php')
-     *
-     * @return string name of the file that was included
-     */
-    public static function loadFile($file)
-    {
-        $file_name = 'MDB2'.DIRECTORY_SEPARATOR.$file.'.php';
-        if (!self::fileExists($file_name)) {
-            return self::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
-                'unable to find: '.$file_name);
-        }
-        if (!include_once($file_name)) {
-            return self::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
-                'unable to load driver class: '.$file_name);
-        }
-        return $file_name;
-    }
-
-    // }}}
     // {{{ function apiVersion()
 
     /**
@@ -864,36 +840,6 @@ class MDB2
         }
 
         return $parsed;
-    }
-
-    // }}}
-    // {{{ function fileExists($file)
-
-    /**
-     * Checks if a file exists in the include path
-     *
-     * @param   string  filename
-     *
-     * @return  bool    true success and false on error
-     */
-    public static function fileExists($file)
-    {
-        // safe_mode does notwork with is_readable()
-        if (!@ini_get('safe_mode')) {
-             $dirs = explode(PATH_SEPARATOR, ini_get('include_path'));
-             foreach ($dirs as $dir) {
-                 if (is_readable($dir . DIRECTORY_SEPARATOR . $file)) {
-                     return true;
-                 }
-            }
-        } else {
-            $fp = @fopen($file, 'r', true);
-            if (is_resource($fp)) {
-                @fclose($fp);
-                return true;
-            }
-        }
-        return false;
     }
 
     // }}}

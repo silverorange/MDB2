@@ -117,18 +117,6 @@ class Standard_InternalsTest extends Standard_Abstract {
     }
 
     /**
-     * Tests that the MDB2::loadFile() method returns the expected
-     * filename.
-     * @dataProvider provider
-     */
-    public function test_loadFile($ci) {
-        $this->manualSetUp($ci);
-
-        $filename = 'Extended';
-        $this->assertEquals('MDB2'.DIRECTORY_SEPARATOR.$filename.'.php', MDB2::loadFile($filename), 'loadFile');
-    }
-
-    /**
      * Tests that the MDB2::isConnection() method correctly reports
      * connections.
      * @dataProvider provider
@@ -216,18 +204,6 @@ class Standard_InternalsTest extends Standard_Abstract {
         $this->assertEquals(false,$result['password'],'parseDSN');
         $this->assertEquals('mydb',$result['database'],'parseDSN');
         $this->assertEquals('value1',$result['param1'],'parseDSN');
-    }
-
-    /**
-     * Tests that the MDB2::fileExists() method correctly identifies
-     * existing/non-existing files.
-     * @dataProvider provider
-     */
-    public function test_fileExists($ci) {
-        $this->manualSetUp($ci);
-
-        $this->assertTrue(MDB2::fileExists('PEAR.php'), 'fileExists');
-        $this->assertFalse(MDB2::fileExists('itIsHopedThatNoOneHasAFileWithThisName.php'), 'fileExists');
     }
 
     /**

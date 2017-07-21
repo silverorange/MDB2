@@ -14,8 +14,6 @@
     }
     ini_set('include_path', '../..'.PATH_SEPARATOR.ini_get('include_path'));
 
-    MDB2::loadFile('Wrapper/peardb');
-
     PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'handle_pear_error');
     function handle_pear_error ($error_obj)
     {
