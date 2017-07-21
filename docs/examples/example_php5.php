@@ -5,8 +5,6 @@
 /* a nice php5 only show case of MDB2 */
 /**************************************/
 
-require 'MDB2.php';
-
 // the database needs to be created manually beforehand
 $dsn = array(
     'phptype'  => 'pgsql',
@@ -60,9 +58,6 @@ if (MDB2::isError($stmt)) {
     die($stmt->getMessage());
 }
 
-// load Date helper class
-MDB2::loadFile('Date');
-
 $stmt->execute(array('name' => 'hello', 'date' => MDB2_Date::mdbToday()));
 // get the last inserted id
 echo 'last insert id: ';
@@ -71,9 +66,6 @@ $stmt->execute(array('name' => 'world', 'date' => '2005-11-11'));
 // get the last inserted id
 echo 'last insert id: ';
 var_dump($mdb2->lastInsertId($table, 'id'));
-
-// load Iterator implementations
-MDB2::loadFile('Iterator');
 
 $query = 'SELECT * FROM '.$table;
 // parameters:

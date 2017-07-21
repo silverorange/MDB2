@@ -1,8 +1,9 @@
 <?php
+// vim: set et ts=4 sw=4 fdm=marker:
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
+// | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
 // | All rights reserved.                                                 |
 // +----------------------------------------------------------------------+
@@ -41,160 +42,54 @@
 // +----------------------------------------------------------------------+
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
-//
-// $Id$
 
 /**
- * PHP5 Iterator
+ * The common modules class for MDB2 module objects
  *
- * @package  MDB2
- * @category Database
- * @author   Lukas Smith <smith@pooteeweet.org>
+ * @package     MDB2
+ * @category    Database
+ * @author      Lukas Smith <smith@pooteeweet.org>
  */
-class MDB2_Iterator implements Iterator
+class MDB2_Module_Common
 {
-    // {{{ Variables
-
-    protected $fetchmode;
+    // {{{ Variables (Properties)
 
     /**
-     * @var MDB2_Result_Common
+     * contains the key to the global MDB2 instance array of the associated
+     * MDB2 instance
+     *
+     * @var     int
      */
-    protected $result;
-    protected $row;
+    protected $db_index;
 
     // }}}
-    // {{{ constructor
+    // {{{ constructor: function __construct($db_index)
 
     /**
      * Constructor
      */
-    public function __construct(MDB2_Result_Common $result, $fetchmode = MDB2_FETCHMODE_DEFAULT)
+    public function __construct($db_index)
     {
-        $this->result = $result;
-        $this->fetchmode = $fetchmode;
+        $this->db_index = $db_index;
     }
 
     // }}}
-    // {{{ seek()
+    // {{{ function getDBInstance()
 
     /**
-     * Seek forward to a specific row in a result set
+     * Get the instance of MDB2 associated with the module instance
      *
-     * @param int number of the row where the data can be found
-     *
-     * @return void
+     * @return  object  MDB2 instance or a MDB2 error on failure
      */
-    public function seek($rownum)
+    public function getDBInstance()
     {
-        $this->row = null;
-        if ($this->result) {
-            $this->result->seek($rownum);
+        if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
+            $result = $GLOBALS['_MDB2_databases'][$this->db_index];
+        } else {
+            $result = MDB2::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
+                'could not find MDB2 instance');
         }
-    }
-
-    // }}}
-    // {{{ next()
-
-    /**
-     * Fetch next row of data
-     *
-     * @return void
-     */
-    public function next()
-    {
-        $this->row = null;
-    }
-
-    // }}}
-    // {{{ current()
-
-    /**
-     * return a row of data
-     *
-     * @return void
-     */
-    public function current()
-    {
-        if (null === $this->row) {
-            $row = $this->result->fetchRow($this->fetchmode);
-            if (MDB2::isError($row)) {
-                $row = false;
-            }
-            $this->row = $row;
-        }
-        return $this->row;
-    }
-
-    // }}}
-    // {{{ valid()
-
-    /**
-     * Check if the end of the result set has been reached
-     *
-     * @return bool true/false, false is also returned on failure
-     */
-    public function valid()
-    {
-        return (bool)$this->current();
-    }
-
-    // }}}
-    // {{{ free()
-
-    /**
-     * Free the internal resources associated with result.
-     *
-     * @return bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
-     */
-    public function free()
-    {
-        if ($this->result) {
-            return $this->result->free();
-        }
-        $this->result = false;
-        $this->row = null;
-        return false;
-    }
-
-    // }}}
-    // {{{ key()
-
-    /**
-     * Returns the row number
-     *
-     * @return int|bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
-     */
-    public function key()
-    {
-        if ($this->result) {
-            return $this->result->rowCount();
-        }
-        return false;
-    }
-
-    // }}}
-    // {{{ rewind()
-
-    /**
-     * Seek to the first row in a result set
-     *
-     * @return void
-     * @access public
-     */
-    public function rewind()
-    {
-    }
-
-    // }}}
-    // {{{ destructor
-
-    /**
-     * Destructor
-     */
-    public function __destruct()
-    {
-        $this->free();
+        return $result;
     }
 
     // }}}

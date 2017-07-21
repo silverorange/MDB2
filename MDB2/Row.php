@@ -1,8 +1,9 @@
 <?php
+// vim: set et ts=4 sw=4 fdm=marker:
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
+// | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
 // | All rights reserved.                                                 |
 // +----------------------------------------------------------------------+
@@ -41,160 +42,28 @@
 // +----------------------------------------------------------------------+
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
-//
-// $Id$
 
 /**
- * PHP5 Iterator
+ * The simple class that accepts row data as an array
  *
  * @package  MDB2
  * @category Database
  * @author   Lukas Smith <smith@pooteeweet.org>
  */
-class MDB2_Iterator implements Iterator
+class MDB2_Row
 {
-    // {{{ Variables
-
-    protected $fetchmode;
+    // {{{ constructor: function __construct(&$row)
 
     /**
-     * @var MDB2_Result_Common
-     */
-    protected $result;
-    protected $row;
-
-    // }}}
-    // {{{ constructor
-
-    /**
-     * Constructor
-     */
-    public function __construct(MDB2_Result_Common $result, $fetchmode = MDB2_FETCHMODE_DEFAULT)
-    {
-        $this->result = $result;
-        $this->fetchmode = $fetchmode;
-    }
-
-    // }}}
-    // {{{ seek()
-
-    /**
-     * Seek forward to a specific row in a result set
+     * constructor
      *
-     * @param int number of the row where the data can be found
-     *
-     * @return void
+     * @param   resource    row data as array
      */
-    public function seek($rownum)
+    public function __construct(&$row)
     {
-        $this->row = null;
-        if ($this->result) {
-            $this->result->seek($rownum);
+        foreach ($row as $key => $value) {
+            $this->$key = &$row[$key];
         }
-    }
-
-    // }}}
-    // {{{ next()
-
-    /**
-     * Fetch next row of data
-     *
-     * @return void
-     */
-    public function next()
-    {
-        $this->row = null;
-    }
-
-    // }}}
-    // {{{ current()
-
-    /**
-     * return a row of data
-     *
-     * @return void
-     */
-    public function current()
-    {
-        if (null === $this->row) {
-            $row = $this->result->fetchRow($this->fetchmode);
-            if (MDB2::isError($row)) {
-                $row = false;
-            }
-            $this->row = $row;
-        }
-        return $this->row;
-    }
-
-    // }}}
-    // {{{ valid()
-
-    /**
-     * Check if the end of the result set has been reached
-     *
-     * @return bool true/false, false is also returned on failure
-     */
-    public function valid()
-    {
-        return (bool)$this->current();
-    }
-
-    // }}}
-    // {{{ free()
-
-    /**
-     * Free the internal resources associated with result.
-     *
-     * @return bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
-     */
-    public function free()
-    {
-        if ($this->result) {
-            return $this->result->free();
-        }
-        $this->result = false;
-        $this->row = null;
-        return false;
-    }
-
-    // }}}
-    // {{{ key()
-
-    /**
-     * Returns the row number
-     *
-     * @return int|bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
-     */
-    public function key()
-    {
-        if ($this->result) {
-            return $this->result->rowCount();
-        }
-        return false;
-    }
-
-    // }}}
-    // {{{ rewind()
-
-    /**
-     * Seek to the first row in a result set
-     *
-     * @return void
-     * @access public
-     */
-    public function rewind()
-    {
-    }
-
-    // }}}
-    // {{{ destructor
-
-    /**
-     * Destructor
-     */
-    public function __destruct()
-    {
-        $this->free();
     }
 
     // }}}

@@ -44,8 +44,6 @@
 //
 // $Id$
 
-require_once 'MDB2/LOB.php';
-
 /**
  * @package  MDB2
  * @category Database

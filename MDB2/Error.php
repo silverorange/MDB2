@@ -1,8 +1,9 @@
 <?php
+// vim: set et ts=4 sw=4 fdm=marker:
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
+// | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
 // | All rights reserved.                                                 |
 // +----------------------------------------------------------------------+
@@ -41,160 +42,41 @@
 // +----------------------------------------------------------------------+
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
-//
-// $Id$
 
 /**
- * PHP5 Iterator
+ * MDB2_Error implements a class for reporting portable database error
+ * messages.
  *
  * @package  MDB2
  * @category Database
- * @author   Lukas Smith <smith@pooteeweet.org>
+ * @author   Stig Bakken <ssb@fast.no>
  */
-class MDB2_Iterator implements Iterator
+class MDB2_Error extends PEAR_Error
 {
-    // {{{ Variables
-
-    protected $fetchmode;
+    // {{{ constructor: function MDB2_Error($code = MDB2_ERROR, $mode = PEAR_ERROR_RETURN, $level = E_USER_NOTICE, $debuginfo = null)
 
     /**
-     * @var MDB2_Result_Common
-     */
-    protected $result;
-    protected $row;
-
-    // }}}
-    // {{{ constructor
-
-    /**
-     * Constructor
-     */
-    public function __construct(MDB2_Result_Common $result, $fetchmode = MDB2_FETCHMODE_DEFAULT)
-    {
-        $this->result = $result;
-        $this->fetchmode = $fetchmode;
-    }
-
-    // }}}
-    // {{{ seek()
-
-    /**
-     * Seek forward to a specific row in a result set
+     * MDB2_Error constructor.
      *
-     * @param int number of the row where the data can be found
-     *
-     * @return void
+     * @param   mixed   MDB2 error code, or string with error message.
+     * @param   int     what 'error mode' to operate in
+     * @param   int     what error level to use for $mode & PEAR_ERROR_TRIGGER
+     * @param   mixed   additional debug info, such as the last query
      */
-    public function seek($rownum)
+    public function __construct($code = MDB2_ERROR, $mode = PEAR_ERROR_RETURN,
+              $level = E_USER_NOTICE, $debuginfo = null, $dummy = null)
     {
-        $this->row = null;
-        if ($this->result) {
-            $this->result->seek($rownum);
+        if (null === $code) {
+            $code = MDB2_ERROR;
         }
-    }
 
-    // }}}
-    // {{{ next()
-
-    /**
-     * Fetch next row of data
-     *
-     * @return void
-     */
-    public function next()
-    {
-        $this->row = null;
-    }
-
-    // }}}
-    // {{{ current()
-
-    /**
-     * return a row of data
-     *
-     * @return void
-     */
-    public function current()
-    {
-        if (null === $this->row) {
-            $row = $this->result->fetchRow($this->fetchmode);
-            if (MDB2::isError($row)) {
-                $row = false;
-            }
-            $this->row = $row;
-        }
-        return $this->row;
-    }
-
-    // }}}
-    // {{{ valid()
-
-    /**
-     * Check if the end of the result set has been reached
-     *
-     * @return bool true/false, false is also returned on failure
-     */
-    public function valid()
-    {
-        return (bool)$this->current();
-    }
-
-    // }}}
-    // {{{ free()
-
-    /**
-     * Free the internal resources associated with result.
-     *
-     * @return bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
-     */
-    public function free()
-    {
-        if ($this->result) {
-            return $this->result->free();
-        }
-        $this->result = false;
-        $this->row = null;
-        return false;
-    }
-
-    // }}}
-    // {{{ key()
-
-    /**
-     * Returns the row number
-     *
-     * @return int|bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
-     */
-    public function key()
-    {
-        if ($this->result) {
-            return $this->result->rowCount();
-        }
-        return false;
-    }
-
-    // }}}
-    // {{{ rewind()
-
-    /**
-     * Seek to the first row in a result set
-     *
-     * @return void
-     * @access public
-     */
-    public function rewind()
-    {
-    }
-
-    // }}}
-    // {{{ destructor
-
-    /**
-     * Destructor
-     */
-    public function __destruct()
-    {
-        $this->free();
+        parent::__construct(
+            'MDB2 Error: '.MDB2::errorMessage($code),
+            $code,
+            $mode,
+            $level,
+            $debuginfo
+        );
     }
 
     // }}}

@@ -340,7 +340,6 @@ class Standard_BugsTest extends Standard_Abstract {
 
         $data = $this->populateUserData(3);
         $this->db->setFetchMode(MDB2_FETCHMODE_ASSOC);
-        MDB2::loadFile('Iterator');
 
         // This was test in bug.
         $res = $this->db->query('SELECT * FROM ' . $this->table_users, true, true, 'MDB2_BufferedIterator');
@@ -376,7 +375,6 @@ class Standard_BugsTest extends Standard_Abstract {
 
         $data = $this->populateUserData(1);
         $this->db->setFetchMode(MDB2_FETCHMODE_ASSOC);
-        MDB2::loadFile('Iterator');
 
         switch ($this->db->phptype) {
             case 'mysqli':
