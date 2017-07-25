@@ -1,54 +1,57 @@
 <?php
-// vim: set et ts=4 sw=4 fdm=marker:
-// +----------------------------------------------------------------------+
-// | PHP version 5                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
-// | Stig. S. Bakken, Lukas Smith                                         |
-// | All rights reserved.                                                 |
-// +----------------------------------------------------------------------+
-// | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
-// | API as well as database abstraction for PHP applications.            |
-// | This LICENSE is in the BSD license style.                            |
-// |                                                                      |
-// | Redistribution and use in source and binary forms, with or without   |
-// | modification, are permitted provided that the following conditions   |
-// | are met:                                                             |
-// |                                                                      |
-// | Redistributions of source code must retain the above copyright       |
-// | notice, this list of conditions and the following disclaimer.        |
-// |                                                                      |
-// | Redistributions in binary form must reproduce the above copyright    |
-// | notice, this list of conditions and the following disclaimer in the  |
-// | documentation and/or other materials provided with the distribution. |
-// |                                                                      |
-// | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
-// | Lukas Smith nor the names of his contributors may be used to endorse |
-// | or promote products derived from this software without specific prior|
-// | written permission.                                                  |
-// |                                                                      |
-// | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
-// | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
-// | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
-// | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
-// | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
-// | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
-// | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
-// |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
-// | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
-// | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
-// | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
-// | POSSIBILITY OF SUCH DAMAGE.                                          |
-// +----------------------------------------------------------------------+
-// | Author: Lukas Smith <smith@pooteeweet.org>                           |
-// +----------------------------------------------------------------------+
+
+/**
+ * +----------------------------------------------------------------------+
+ * | PHP version 5                                                        |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
+ * | Stig. S. Bakken, Lukas Smith                                         |
+ * | All rights reserved.                                                 |
+ * +----------------------------------------------------------------------+
+ * | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
+ * | API as well as database abstraction for PHP applications.            |
+ * | This LICENSE is in the BSD license style.                            |
+ * |                                                                      |
+ * | Redistribution and use in source and binary forms, with or without   |
+ * | modification, are permitted provided that the following conditions   |
+ * | are met:                                                             |
+ * |                                                                      |
+ * | Redistributions of source code must retain the above copyright       |
+ * | notice, this list of conditions and the following disclaimer.        |
+ * |                                                                      |
+ * | Redistributions in binary form must reproduce the above copyright    |
+ * | notice, this list of conditions and the following disclaimer in the  |
+ * | documentation and/or other materials provided with the distribution. |
+ * |                                                                      |
+ * | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
+ * | Lukas Smith nor the names of his contributors may be used to endorse |
+ * | or promote products derived from this software without specific prior|
+ * | written permission.                                                  |
+ * |                                                                      |
+ * | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
+ * | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
+ * | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
+ * | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
+ * | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
+ * | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
+ * | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
+ * |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
+ * | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
+ * | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
+ * | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
+ * | POSSIBILITY OF SUCH DAMAGE.                                          |
+ * +----------------------------------------------------------------------+
+ * | Author: Lukas Smith <smith@pooteeweet.org>                           |
+ * +----------------------------------------------------------------------+
+ */
 
 /**
  * MDB2_Driver_Common: Base class that is extended by each MDB2 driver
  *
- * @package  MDB2
  * @category Database
+ * @package  MDB2
  * @author   Lukas Smith <smith@pooteeweet.org>
+ * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Driver_Common
 {
@@ -480,12 +483,12 @@ class MDB2_Driver_Common
      * @see    PEAR_Error
      */
     public function raiseError($code = null,
-                         $mode = null,
-                         $options = null,
-                         $userinfo = null,
-                         $method = null,
-                         $dummy1 = null,
-                         $dummy2 = false
+        $mode = null,
+        $options = null,
+        $userinfo = null,
+        $method = null,
+        $dummy1 = null,
+        $dummy2 = false
     ) {
         $userinfo = "[Error message: $userinfo]\n";
         // The error is yet a MDB2 error object
@@ -522,7 +525,8 @@ class MDB2_Driver_Common
 
         $err = $this->pear->raiseError(null, $code, $mode, $options, $userinfo, 'MDB2_Error', true);
         if ($err->getMode() !== PEAR_ERROR_RETURN
-            && isset($this->nested_transaction_counter) && !$this->has_transaction_error) {
+            && isset($this->nested_transaction_counter) && !$this->has_transaction_error
+        ) {
             $this->has_transaction_error = $err;
         }
         return $err;
@@ -588,8 +592,13 @@ class MDB2_Driver_Common
             $this->fetchmode = $fetchmode;
             break;
         default:
-            return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-                'invalid fetchmode mode', __FUNCTION__);
+            return $this->raiseError(
+                MDB2_ERROR_UNSUPPORTED,
+                null,
+                null,
+                'invalid fetchmode mode',
+                __FUNCTION__
+            );
         }
 
         return MDB2_OK;
@@ -612,8 +621,13 @@ class MDB2_Driver_Common
             $this->options[$option] = $value;
             return MDB2_OK;
         }
-        return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            "unknown option $option", __FUNCTION__);
+        return $this->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            "unknown option $option",
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -631,8 +645,13 @@ class MDB2_Driver_Common
         if (array_key_exists($option, $this->options)) {
             return $this->options[$option];
         }
-        return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            "unknown option $option", __FUNCTION__);
+        return $this->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            "unknown option $option",
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -803,7 +822,7 @@ class MDB2_Driver_Common
     }
 
      // }}}
-    // {{{ function _fixResultArrayValues(&$row, $mode)
+    // {{{ function fixResultArrayValues(&$row, $mode)
 
     /**
      * Do all necessary conversions on result arrays to fix DBMS quirks
@@ -816,7 +835,7 @@ class MDB2_Driver_Common
      *
      * @return  void
      */
-    public function _fixResultArrayValues(&$row, $mode)
+    public function fixResultArrayValues(&$row, $mode)
     {
         switch ($mode) {
         case MDB2_PORTABILITY_EMPTY_TO_NULL:
@@ -937,8 +956,13 @@ class MDB2_Driver_Common
             }
 
             if (!MDB2::classExists($class_name)) {
-                $err = $this->raiseError(MDB2_ERROR_LOADMODULE, null, null,
-                    "unable to load module '$module' into property '$property'", __FUNCTION__);
+                $err = $this->raiseError(
+                    MDB2_ERROR_LOADMODULE,
+                    null,
+                    null,
+                    "unable to load module '$module' into property '$property'",
+                    __FUNCTION__
+                );
                 return $err;
             }
             $this->{$property} = new $class_name($this->db_index);
@@ -1007,8 +1031,13 @@ class MDB2_Driver_Common
     public function beginTransaction($savepoint = null)
     {
         $this->debug('Starting transaction', __FUNCTION__, array('is_manip' => true, 'savepoint' => $savepoint));
-        return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'transactions are not supported', __FUNCTION__);
+        return $this->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'transactions are not supported',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -1026,8 +1055,13 @@ class MDB2_Driver_Common
     public function commit($savepoint = null)
     {
         $this->debug('Committing transaction/savepoint', __FUNCTION__, array('is_manip' => true, 'savepoint' => $savepoint));
-        return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'commiting transactions is not supported', __FUNCTION__);
+        return $this->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'commiting transactions is not supported',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -1045,8 +1079,13 @@ class MDB2_Driver_Common
     public function rollback($savepoint = null)
     {
         $this->debug('Rolling back transaction/savepoint', __FUNCTION__, array('is_manip' => true, 'savepoint' => $savepoint));
-        return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'rolling back transactions is not supported', __FUNCTION__);
+        return $this->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'rolling back transactions is not supported',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -1090,8 +1129,13 @@ class MDB2_Driver_Common
     public function setTransactionIsolation($isolation, $options = array())
     {
         $this->debug('Setting transaction isolation level', __FUNCTION__, array('is_manip' => true));
-        return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'isolation level setting is not supported', __FUNCTION__);
+        return $this->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'isolation level setting is not supported',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -1224,8 +1268,13 @@ class MDB2_Driver_Common
      */
     public function connect()
     {
-        return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $this->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -1240,8 +1289,13 @@ class MDB2_Driver_Common
      */
     public function databaseExists($name)
     {
-        return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $this->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -1257,8 +1311,13 @@ class MDB2_Driver_Common
      */
     public function setCharset($charset, $connection = null)
     {
-        return $this->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $this->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -1361,12 +1420,12 @@ class MDB2_Driver_Common
         switch ($type) {
         // expand to include all possible options
         case 'string':
-           $dsn = $dsn['phptype'].
-               ($dsn['dbsyntax'] ? ('('.$dsn['dbsyntax'].')') : '').
-               '://'.$dsn['username'].':'.
-                $dsn['password'].'@'.$dsn['hostspec'].
-                ($dsn['port'] ? (':'.$dsn['port']) : '').
-                '/'.$dsn['database'];
+            $dsn = $dsn['phptype'].
+                ($dsn['dbsyntax'] ? ('('.$dsn['dbsyntax'].')') : '').
+                '://'.$dsn['username'].':'.
+                 $dsn['password'].'@'.$dsn['hostspec'].
+                 ($dsn['port'] ? (':'.$dsn['port']) : '').
+                 '/'.$dsn['database'];
             break;
         case 'array':
         default:
@@ -1376,14 +1435,14 @@ class MDB2_Driver_Common
     }
 
     // }}}
-    // {{{ _isNewLinkSet()
+    // {{{ isNewLinkSet()
 
     /**
      * Check if the 'new_link' option is set
      *
      * @return boolean
      */
-    protected function _isNewLinkSet()
+    protected function isNewLinkSet()
     {
         return (isset($this->dsn['new_link'])
             && ($this->dsn['new_link'] === true
@@ -1396,7 +1455,7 @@ class MDB2_Driver_Common
     // }}}
     // {{{ function standaloneQuery($query, $types = null, $is_manip = false)
 
-   /**
+    /**
      * execute a query as database administrator
      *
      * @param   string  the SQL query
@@ -1411,28 +1470,28 @@ class MDB2_Driver_Common
         $offset = $this->offset;
         $limit = $this->limit;
         $this->offset = $this->limit = 0;
-        $query = $this->_modifyQuery($query, $is_manip, $limit, $offset);
+        $query = $this->modifyQuery($query, $is_manip, $limit, $offset);
 
         $connection = $this->getConnection();
         if (MDB2::isError($connection)) {
             return $connection;
         }
 
-        $result = $this->_doQuery($query, $is_manip, $connection, false);
+        $result = $this->doQuery($query, $is_manip, $connection, false);
         if (MDB2::isError($result)) {
             return $result;
         }
 
         if ($is_manip) {
-            $affected_rows =  $this->_affectedRows($connection, $result);
+            $affected_rows =  $this->affectedRows($connection, $result);
             return $affected_rows;
         }
-        $result = $this->_wrapResult($result, $types, true, true, $limit, $offset);
+        $result = $this->wrapResult($result, $types, true, true, $limit, $offset);
         return $result;
     }
 
     // }}}
-    // {{{ function _modifyQuery($query, $is_manip, $limit, $offset)
+    // {{{ function modifyQuery($query, $is_manip, $limit, $offset)
 
     /**
      * Changes a query string for various DBMS specific reasons
@@ -1444,13 +1503,13 @@ class MDB2_Driver_Common
      *
      * @return  string  modified query
      */
-    protected function _modifyQuery($query, $is_manip, $limit, $offset)
+    protected function modifyQuery($query, $is_manip, $limit, $offset)
     {
         return $query;
     }
 
     // }}}
-    // {{{ function _doQuery($query, $is_manip = false, $connection = null, $database_name = null)
+    // {{{ function doQuery($query, $is_manip = false, $connection = null, $database_name = null)
 
     /**
      * Execute a query
@@ -1461,7 +1520,7 @@ class MDB2_Driver_Common
      *
      * @return  result or error object
      */
-    protected function _doQuery($query, $is_manip = false, $connection = null, $database_name = null)
+    protected function doQuery($query, $is_manip = false, $connection = null, $database_name = null)
     {
         $this->last_query = $query;
         $result = $this->debug($query, 'query', array('is_manip' => $is_manip, 'when' => 'pre'));
@@ -1471,13 +1530,18 @@ class MDB2_Driver_Common
             }
             $query = $result;
         }
-        $err = MDB2_Driver_Common::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        $err = MDB2_Driver_Common::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
         return $err;
     }
 
     // }}}
-    // {{{ function _affectedRows($connection, $result = null)
+    // {{{ function affectedRows($connection, $result = null)
 
     /**
      * Returns the number of rows affected
@@ -1487,10 +1551,15 @@ class MDB2_Driver_Common
      *
      * @return  mixed   MDB2 Error Object or the number of rows affected
      */
-    protected function _affectedRows($connection, $result = null)
+    protected function affectedRows($connection, $result = null)
     {
-        return MDB2_Driver_Common::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return MDB2_Driver_Common::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -1508,19 +1577,19 @@ class MDB2_Driver_Common
         $offset = $this->offset;
         $limit = $this->limit;
         $this->offset = $this->limit = 0;
-        $query = $this->_modifyQuery($query, true, $limit, $offset);
+        $query = $this->modifyQuery($query, true, $limit, $offset);
 
         $connection = $this->getConnection();
         if (MDB2::isError($connection)) {
             return $connection;
         }
 
-        $result = $this->_doQuery($query, true, $connection, $this->database_name);
+        $result = $this->doQuery($query, true, $connection, $this->database_name);
         if (MDB2::isError($result)) {
             return $result;
         }
 
-        $affectedRows = $this->_affectedRows($connection, $result);
+        $affectedRows = $this->affectedRows($connection, $result);
         return $affectedRows;
     }
 
@@ -1543,24 +1612,24 @@ class MDB2_Driver_Common
         $offset = $this->offset;
         $limit = $this->limit;
         $this->offset = $this->limit = 0;
-        $query = $this->_modifyQuery($query, false, $limit, $offset);
+        $query = $this->modifyQuery($query, false, $limit, $offset);
 
         $connection = $this->getConnection();
         if (MDB2::isError($connection)) {
             return $connection;
         }
 
-        $result = $this->_doQuery($query, false, $connection, $this->database_name);
+        $result = $this->doQuery($query, false, $connection, $this->database_name);
         if (MDB2::isError($result)) {
             return $result;
         }
 
-        $result = $this->_wrapResult($result, $types, $result_class, $result_wrap_class, $limit, $offset);
+        $result = $this->wrapResult($result, $types, $result_class, $result_wrap_class, $limit, $offset);
         return $result;
     }
 
     // }}}
-    // {{{ function _wrapResult($result_resource, $types = array(), $result_class = true, $result_wrap_class = false, $limit = null, $offset = null)
+    // {{{ function wrapResult($result_resource, $types = array(), $result_class = true, $result_wrap_class = false, $limit = null, $offset = null)
 
     /**
      * wrap a result set into the correct class
@@ -1575,9 +1644,14 @@ class MDB2_Driver_Common
      *
      * @return mixed   an MDB2_Result, a MDB2 error on failure
      */
-    protected function _wrapResult($result_resource, $types = array(), $result_class = true,
-        $result_wrap_class = true, $limit = null, $offset = null)
-    {
+    protected function wrapResult(
+        $result_resource,
+        $types = array(),
+        $result_class = true,
+        $result_wrap_class = true,
+        $limit = null,
+        $offset = null
+    ) {
         if ($types === true) {
             if ($this->supports('result_introspection')) {
                 $this->loadModule('Reverse', null, true);
@@ -1604,14 +1678,24 @@ class MDB2_Driver_Common
         if ($result_class) {
             $class_name = sprintf($result_class, $this->phptype);
             if (!class_exists($class_name)) {
-                $err = MDB2_Driver_Common::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
-                    'result class does not exist '.$class_name, __FUNCTION__);
+                $err = MDB2_Driver_Common::raiseError(
+                    MDB2_ERROR_NOT_FOUND,
+                    null,
+                    null,
+                    'result class does not exist '.$class_name,
+                    __FUNCTION__
+                );
                 return $err;
             }
             $result = new $class_name($this, $result_resource, $limit, $offset);
             if (!MDB2::isResultCommon($result)) {
-                $err = MDB2_Driver_Common::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
-                    'result class is not extended from MDB2_Result_Common', __FUNCTION__);
+                $err = MDB2_Driver_Common::raiseError(
+                    MDB2_ERROR_NOT_FOUND,
+                    null,
+                    null,
+                    'result class is not extended from MDB2_Result_Common',
+                    __FUNCTION__
+                );
                 return $err;
             }
 
@@ -1635,8 +1719,13 @@ class MDB2_Driver_Common
             }
             if ($result_wrap_class) {
                 if (!class_exists($result_wrap_class)) {
-                    $err = MDB2_Driver_Common::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
-                        'result wrap class does not exist '.$result_wrap_class, __FUNCTION__);
+                    $err = MDB2_Driver_Common::raiseError(
+                        MDB2_ERROR_NOT_FOUND,
+                        null,
+                        null,
+                        'result wrap class does not exist '.$result_wrap_class,
+                        __FUNCTION__
+                    );
                     return $err;
                 }
                 $result = new $result_wrap_class($result, $this->fetchmode);
@@ -1660,8 +1749,13 @@ class MDB2_Driver_Common
      */
     public function getServerVersion($native = false)
     {
-        return MDB2_Driver_Common::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return MDB2_Driver_Common::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -1678,20 +1772,35 @@ class MDB2_Driver_Common
     public function setLimit($limit, $offset = null)
     {
         if (!$this->supports('limit_queries')) {
-            return MDB2_Driver_Common::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-                'limit is not supported by this driver', __FUNCTION__);
+            return MDB2_Driver_Common::raiseError(
+                MDB2_ERROR_UNSUPPORTED,
+                null,
+                null,
+                'limit is not supported by this driver',
+                __FUNCTION__
+            );
         }
         $limit = (int)$limit;
         if ($limit < 0) {
-            return MDB2_Driver_Common::raiseError(MDB2_ERROR_SYNTAX, null, null,
-                'it was not specified a valid selected range row limit', __FUNCTION__);
+            return MDB2_Driver_Common::raiseError(
+                MDB2_ERROR_SYNTAX,
+                null,
+                null,
+                'it was not specified a valid selected range row limit',
+                __FUNCTION__
+            );
         }
         $this->limit = $limit;
         if (null !== $offset) {
             $offset = (int)$offset;
             if ($offset < 0) {
-                return MDB2_Driver_Common::raiseError(MDB2_ERROR_SYNTAX, null, null,
-                    'it was not specified a valid first selected range row', __FUNCTION__);
+                return MDB2_Driver_Common::raiseError(
+                    MDB2_ERROR_SYNTAX,
+                    null,
+                    null,
+                    'it was not specified a valid first selected range row',
+                    __FUNCTION__
+                );
             }
             $this->offset = $offset;
         }
@@ -1718,8 +1827,13 @@ class MDB2_Driver_Common
         }
 
         if (!$this->supports('sub_selects')) {
-            return MDB2_Driver_Common::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-                'method not implemented', __FUNCTION__);
+            return MDB2_Driver_Common::raiseError(
+                MDB2_ERROR_UNSUPPORTED,
+                null,
+                null,
+                'method not implemented',
+                __FUNCTION__
+            );
         }
 
         $col = $this->queryCol($query, $type);
@@ -1802,8 +1916,13 @@ class MDB2_Driver_Common
     public function replace($table, $fields)
     {
         if (!$this->supports('replace')) {
-            return MDB2_Driver_Common::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-                'replace query is not supported', __FUNCTION__);
+            return MDB2_Driver_Common::raiseError(
+                MDB2_ERROR_UNSUPPORTED,
+                null,
+                null,
+                'replace query is not supported',
+                __FUNCTION__
+            );
         }
         $count = count($fields);
         $condition = $values = array();
@@ -1818,15 +1937,25 @@ class MDB2_Driver_Common
             $values[$name] = $value;
             if (isset($fields[$name]['key']) && $fields[$name]['key']) {
                 if ($value === 'NULL') {
-                    return MDB2_Driver_Common::raiseError(MDB2_ERROR_CANNOT_REPLACE, null, null,
-                        'key value '.$name.' may not be NULL', __FUNCTION__);
+                    return MDB2_Driver_Common::raiseError(
+                        MDB2_ERROR_CANNOT_REPLACE,
+                        null,
+                        null,
+                        'key value '.$name.' may not be NULL',
+                        __FUNCTION__
+                    );
                 }
                 $condition[] = $this->quoteIdentifier($name, true) . '=' . $value;
             }
         }
         if (empty($condition)) {
-            return MDB2_Driver_Common::raiseError(MDB2_ERROR_CANNOT_REPLACE, null, null,
-                'not specified which fields are keys', __FUNCTION__);
+            return MDB2_Driver_Common::raiseError(
+                MDB2_ERROR_CANNOT_REPLACE,
+                null,
+                null,
+                'not specified which fields are keys',
+                __FUNCTION__
+            );
         }
 
         $result = null;
@@ -1842,18 +1971,18 @@ class MDB2_Driver_Common
 
         $condition = ' WHERE '.implode(' AND ', $condition);
         $query = 'DELETE FROM ' . $this->quoteIdentifier($table, true) . $condition;
-        $result = $this->_doQuery($query, true, $connection);
+        $result = $this->doQuery($query, true, $connection);
         if (!MDB2::isError($result)) {
-            $affected_rows = $this->_affectedRows($connection, $result);
+            $affected_rows = $this->affectedRows($connection, $result);
             $insert = '';
             foreach ($values as $key => $value) {
                 $insert .= ($insert?', ':'') . $this->quoteIdentifier($key, true);
             }
             $values = implode(', ', $values);
             $query = 'INSERT INTO '. $this->quoteIdentifier($table, true) . "($insert) VALUES ($values)";
-            $result = $this->_doQuery($query, true, $connection);
+            $result = $this->doQuery($query, true, $connection);
             if (!MDB2::isError($result)) {
-                $affected_rows += $this->_affectedRows($connection, $result);;
+                $affected_rows += $this->affectedRows($connection, $result);;
             }
         }
 
@@ -1931,7 +2060,7 @@ class MDB2_Driver_Common
                 $placeholder_type_guess = $query[$p_position];
             }
 
-            $new_pos = $this->_skipDelimitedStrings($query, $position, $p_position);
+            $new_pos = $this->skipDelimitedStrings($query, $position, $p_position);
             if (MDB2::isError($new_pos)) {
                 return $new_pos;
             }
@@ -1960,8 +2089,13 @@ class MDB2_Driver_Common
                     $regexp = '/^.{'.($position+1).'}('.$this->options['bindname_format'].').*$/s';
                     $parameter = preg_replace($regexp, '\\1', $query);
                     if ($parameter === '') {
-                        $err = MDB2_Driver_Common::raiseError(MDB2_ERROR_SYNTAX, null, null,
-                            'named parameter name must match "bindname_format" option', __FUNCTION__);
+                        $err = MDB2_Driver_Common::raiseError(
+                            MDB2_ERROR_SYNTAX,
+                            null,
+                            null,
+                            'named parameter name must match "bindname_format" option',
+                            __FUNCTION__
+                        );
                         return $err;
                     }
                     $positions[$p_position] = $parameter;
@@ -1986,7 +2120,7 @@ class MDB2_Driver_Common
     }
 
     // }}}
-    // {{{ function _skipDelimitedStrings($query, $position, $p_position)
+    // {{{ function skipDelimitedStrings($query, $position, $p_position)
 
     /**
      * Utility method, used by prepare() to avoid replacing placeholders within delimited strings.
@@ -2001,7 +2135,7 @@ class MDB2_Driver_Common
      * @return mixed integer $new_position on success
      *               MDB2_Error on failure
      */
-    protected function _skipDelimitedStrings($query, $position, $p_position)
+    protected function skipDelimitedStrings($query, $position, $p_position)
     {
         $ignores = array();
         $ignores[] = $this->string_quoting;
@@ -2017,8 +2151,13 @@ class MDB2_Driver_Common
                             if ($ignore['end'] === "\n") {
                                 $end_quote = strlen($query) - 1;
                             } else {
-                                $err = MDB2_Driver_Common::raiseError(MDB2_ERROR_SYNTAX, null, null,
-                                    'query with an unterminated text string specified', __FUNCTION__);
+                                $err = MDB2_Driver_Common::raiseError(
+                                    MDB2_ERROR_SYNTAX,
+                                    null,
+                                    null,
+                                    'query with an unterminated text string specified',
+                                    __FUNCTION__
+                                );
                                 return $err;
                             }
                         }
@@ -2123,8 +2262,13 @@ class MDB2_Driver_Common
         if (array_key_exists($feature, $this->supported)) {
             return $this->supported[$feature];
         }
-        return MDB2_Driver_Common::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            "unknown support feature $feature", __FUNCTION__);
+        return MDB2_Driver_Common::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            "unknown support feature $feature",
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -2139,8 +2283,10 @@ class MDB2_Driver_Common
      */
     public function getSequenceName($sqn)
     {
-        return sprintf($this->options['seqname_format'],
-            preg_replace('/[^a-z0-9_\-\$.]/i', '_', $sqn));
+        return sprintf(
+            $this->options['seqname_format'],
+            preg_replace('/[^a-z0-9_\-\$.]/i', '_', $sqn)
+        );
     }
 
     // }}}
@@ -2155,8 +2301,10 @@ class MDB2_Driver_Common
      */
     public function getIndexName($idx)
     {
-        return sprintf($this->options['idxname_format'],
-            preg_replace('/[^a-z0-9_\-\$.]/i', '_', $idx));
+        return sprintf(
+            $this->options['idxname_format'],
+            preg_replace('/[^a-z0-9_\-\$.]/i', '_', $idx)
+        );
     }
 
     // }}}
@@ -2172,8 +2320,13 @@ class MDB2_Driver_Common
      */
     public function nextID($seq_name, $ondemand = true)
     {
-        return MDB2_Driver_Common::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return MDB2_Driver_Common::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -2190,8 +2343,13 @@ class MDB2_Driver_Common
      */
     public function lastInsertID($table = null, $field = null)
     {
-        return MDB2_Driver_Common::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return MDB2_Driver_Common::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -2322,9 +2480,14 @@ class MDB2_Driver_Common
      *
      * @return  mixed   MDB2_OK or data array on success, a MDB2 error on failure
      */
-    public function queryAll($query, $types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT,
-        $rekey = false, $force_array = false, $group = false)
-    {
+    public function queryAll(
+        $query,
+        $types = null,
+        $fetchmode = MDB2_FETCHMODE_DEFAULT,
+        $rekey = false,
+        $force_array = false,
+        $group = false
+    ) {
         $result = $this->query($query, $types);
         if (!MDB2::isResultCommon($result)) {
             return $result;

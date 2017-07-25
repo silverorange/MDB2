@@ -1,56 +1,55 @@
 <?php
-// +----------------------------------------------------------------------+
-// | PHP version 5                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2008 Manuel Lemos, Tomas V.V.Cox,                 |
-// | Stig. S. Bakken, Lukas Smith                                         |
-// | All rights reserved.                                                 |
-// +----------------------------------------------------------------------+
-// | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
-// | API as well as database abstraction for PHP applications.            |
-// | This LICENSE is in the BSD license style.                            |
-// |                                                                      |
-// | Redistribution and use in source and binary forms, with or without   |
-// | modification, are permitted provided that the following conditions   |
-// | are met:                                                             |
-// |                                                                      |
-// | Redistributions of source code must retain the above copyright       |
-// | notice, this list of conditions and the following disclaimer.        |
-// |                                                                      |
-// | Redistributions in binary form must reproduce the above copyright    |
-// | notice, this list of conditions and the following disclaimer in the  |
-// | documentation and/or other materials provided with the distribution. |
-// |                                                                      |
-// | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
-// | Lukas Smith nor the names of his contributors may be used to endorse |
-// | or promote products derived from this software without specific prior|
-// | written permission.                                                  |
-// |                                                                      |
-// | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
-// | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
-// | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
-// | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
-// | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
-// | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
-// | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
-// |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
-// | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
-// | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
-// | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
-// | POSSIBILITY OF SUCH DAMAGE.                                          |
-// +----------------------------------------------------------------------+
-// | Authors: Lukas Smith <smith@pooteeweet.org>                          |
-// |          Lorenzo Alberton <l.alberton@quipo.it>                      |
-// +----------------------------------------------------------------------+
-//
-// $Id$
-//
 
 /**
- * @package  MDB2
+ * +----------------------------------------------------------------------+
+ * | PHP version 5                                                        |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 1998-2008 Manuel Lemos, Tomas V.V.Cox,                 |
+ * | Stig. S. Bakken, Lukas Smith                                         |
+ * | All rights reserved.                                                 |
+ * +----------------------------------------------------------------------+
+ * | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
+ * | API as well as database abstraction for PHP applications.            |
+ * | This LICENSE is in the BSD license style.                            |
+ * |                                                                      |
+ * | Redistribution and use in source and binary forms, with or without   |
+ * | modification, are permitted provided that the following conditions   |
+ * | are met:                                                             |
+ * |                                                                      |
+ * | Redistributions of source code must retain the above copyright       |
+ * | notice, this list of conditions and the following disclaimer.        |
+ * |                                                                      |
+ * | Redistributions in binary form must reproduce the above copyright    |
+ * | notice, this list of conditions and the following disclaimer in the  |
+ * | documentation and/or other materials provided with the distribution. |
+ * |                                                                      |
+ * | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
+ * | Lukas Smith nor the names of his contributors may be used to endorse |
+ * | or promote products derived from this software without specific prior|
+ * | written permission.                                                  |
+ * |                                                                      |
+ * | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
+ * | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
+ * | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
+ * | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
+ * | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
+ * | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
+ * | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
+ * |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
+ * | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
+ * | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
+ * | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
+ * | POSSIBILITY OF SUCH DAMAGE.                                          |
+ * +----------------------------------------------------------------------+
+ * | Authors: Lukas Smith <smith@pooteeweet.org>                          |
+ * |          Lorenzo Alberton <l.alberton@quipo.it>                      |
+ * +----------------------------------------------------------------------+
+ *
  * @category Database
+ * @package  MDB2
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @author   Lorenzo Alberton <l.alberton@quipo.it>
+ * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 
 /**
@@ -59,9 +58,10 @@
  * To load this module in the MDB2 object:
  * $mdb->loadModule('Manager');
  *
- * @package  MDB2
  * @category Database
+ * @package  MDB2
  * @author   Lukas Smith <smith@pooteeweet.org>
+ * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Driver_Manager_Common extends MDB2_Module_Common
 {
@@ -112,8 +112,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         }
 
         if (!is_array($fields) || empty($fields)) {
-            return $db->raiseError(MDB2_ERROR_NEED_MORE_DATA, null, null,
-                'missing any fields', __FUNCTION__);
+            return $db->raiseError(
+                MDB2_ERROR_NEED_MORE_DATA,
+                null,
+                null,
+                'missing any fields',
+                __FUNCTION__
+            );
         }
         foreach ($fields as $field_name => $field) {
             $query = $db->getDeclaration($field['type'], $field_name, $field);
@@ -126,7 +131,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
     }
 
     // }}}
-    // {{{ _fixSequenceName()
+    // {{{ fixSequenceName()
 
     /**
      * Removes any formatting in an sequence name using the 'seqname_format' option
@@ -135,7 +140,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param bool $check if only formatted sequences should be returned
      * @return string name of the sequence with possible formatting removed
      */
-    protected function _fixSequenceName($sqn, $check = false)
+    protected function fixSequenceName($sqn, $check = false)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -154,7 +159,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
     }
 
     // }}}
-    // {{{ _fixIndexName()
+    // {{{ fixIndexName()
 
     /**
      * Removes any formatting in an index name using the 'idxname_format' option
@@ -162,7 +167,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param string $idx string that containts name of anl index
      * @return string name of the index with eventual formatting removed
      */
-    protected function _fixIndexName($idx)
+    protected function fixIndexName($idx)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -195,8 +200,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -217,8 +227,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -237,12 +252,17 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
-    // {{{ _getCreateTableQuery()
+    // {{{ getCreateTableQuery()
 
     /**
      * Create a basic SQL query for a new table creation
@@ -254,7 +274,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @return mixed string (the SQL query) on success, a MDB2 error on failure
      * @see createTable()
      */
-    protected function _getCreateTableQuery($name, $fields, $options = array())
+    protected function getCreateTableQuery($name, $fields, $options = array())
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -262,12 +282,22 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         }
 
         if (!$name) {
-            return $db->raiseError(MDB2_ERROR_CANNOT_CREATE, null, null,
-                'no valid table name specified', __FUNCTION__);
+            return $db->raiseError(
+                MDB2_ERROR_CANNOT_CREATE,
+                null,
+                null,
+                'no valid table name specified',
+                __FUNCTION__
+            );
         }
         if (empty($fields)) {
-            return $db->raiseError(MDB2_ERROR_CANNOT_CREATE, null, null,
-                'no fields specified for table "'.$name.'"', __FUNCTION__);
+            return $db->raiseError(
+                MDB2_ERROR_CANNOT_CREATE,
+                null,
+                null,
+                'no fields specified for table "'.$name.'"',
+                __FUNCTION__
+            );
         }
         $query_fields = $this->getFieldDeclarationList($fields);
         if (MDB2::isError($query_fields)) {
@@ -280,14 +310,14 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         $name = $db->quoteIdentifier($name, true);
         $result = 'CREATE ';
         if (!empty($options['temporary'])) {
-            $result .= $this->_getTemporaryTableQuery();
+            $result .= $this->getTemporaryTableQuery();
         }
         $result .= " TABLE $name ($query_fields)";
         return $result;
     }
 
     // }}}
-    // {{{ _getTemporaryTableQuery()
+    // {{{ getTemporaryTableQuery()
 
     /**
      * A method to return the required SQL string that fits between CREATE ... TABLE
@@ -303,7 +333,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @return string The string required to be placed between "CREATE" and "TABLE"
      *                to generate a temporary table, if possible.
      */
-    protected function _getTemporaryTableQuery()
+    protected function getTemporaryTableQuery()
     {
         return 'TEMPORARY';
     }
@@ -344,7 +374,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      */
     public function createTable($name, $fields, $options = array())
     {
-        $query = $this->_getCreateTableQuery($name, $fields, $options);
+        $query = $this->getCreateTableQuery($name, $fields, $options);
         if (MDB2::isError($query)) {
             return $query;
         }
@@ -431,8 +461,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -525,7 +560,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *                             can perform the requested table alterations if the value is true or
      *                             actually perform them otherwise.
      *
-      * @return mixed MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
     public function alterTable($name, $changes, $check)
     {
@@ -534,8 +569,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -553,8 +593,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implementedd', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implementedd',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -572,8 +617,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -594,8 +644,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -614,8 +669,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -634,8 +694,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -653,8 +718,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -675,8 +745,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -695,8 +770,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -796,12 +876,17 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
-    // {{{ _getAdvancedFKOptions()
+    // {{{ getAdvancedFKOptions()
 
     /**
      * Return the FOREIGN KEY query section dealing with non-standard options
@@ -810,7 +895,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      * @param array $definition
      * @return string
      */
-    protected function _getAdvancedFKOptions($definition)
+    protected function getAdvancedFKOptions($definition)
     {
         return '';
     }
@@ -884,7 +969,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
                 $referenced_fields[] = $db->quoteIdentifier($field, true);
             }
             $query .= ' ('. implode(', ', $referenced_fields) . ')';
-            $query .= $this->_getAdvancedFKOptions($definition);
+            $query .= $this->getAdvancedFKOptions($definition);
         }
         $result = $db->exec($query);
         if (MDB2::isError($result)) {
@@ -936,8 +1021,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -957,8 +1047,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -977,8 +1072,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -999,8 +1099,13 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             return $db;
         }
 
-        return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
