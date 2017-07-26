@@ -10,5 +10,5 @@
   <file>./MDB2</file>
   <file>./MDB2.php</file>
 
-  <rule ref="PEAR" />
+  <rule ref="SilverorangePEAR" />
 </ruleset>

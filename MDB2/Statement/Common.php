@@ -1,54 +1,57 @@
 <?php
-// vim: set et ts=4 sw=4 fdm=marker:
-// +----------------------------------------------------------------------+
-// | PHP version 5                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
-// | Stig. S. Bakken, Lukas Smith                                         |
-// | All rights reserved.                                                 |
-// +----------------------------------------------------------------------+
-// | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
-// | API as well as database abstraction for PHP applications.            |
-// | This LICENSE is in the BSD license style.                            |
-// |                                                                      |
-// | Redistribution and use in source and binary forms, with or without   |
-// | modification, are permitted provided that the following conditions   |
-// | are met:                                                             |
-// |                                                                      |
-// | Redistributions of source code must retain the above copyright       |
-// | notice, this list of conditions and the following disclaimer.        |
-// |                                                                      |
-// | Redistributions in binary form must reproduce the above copyright    |
-// | notice, this list of conditions and the following disclaimer in the  |
-// | documentation and/or other materials provided with the distribution. |
-// |                                                                      |
-// | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
-// | Lukas Smith nor the names of his contributors may be used to endorse |
-// | or promote products derived from this software without specific prior|
-// | written permission.                                                  |
-// |                                                                      |
-// | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
-// | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
-// | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
-// | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
-// | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
-// | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
-// | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
-// |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
-// | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
-// | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
-// | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
-// | POSSIBILITY OF SUCH DAMAGE.                                          |
-// +----------------------------------------------------------------------+
-// | Author: Lukas Smith <smith@pooteeweet.org>                           |
-// +----------------------------------------------------------------------+
+
+/**
+ * +----------------------------------------------------------------------+
+ * | PHP version 5                                                        |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
+ * | Stig. S. Bakken, Lukas Smith                                         |
+ * | All rights reserved.                                                 |
+ * +----------------------------------------------------------------------+
+ * | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
+ * | API as well as database abstraction for PHP applications.            |
+ * | This LICENSE is in the BSD license style.                            |
+ * |                                                                      |
+ * | Redistribution and use in source and binary forms, with or without   |
+ * | modification, are permitted provided that the following conditions   |
+ * | are met:                                                             |
+ * |                                                                      |
+ * | Redistributions of source code must retain the above copyright       |
+ * | notice, this list of conditions and the following disclaimer.        |
+ * |                                                                      |
+ * | Redistributions in binary form must reproduce the above copyright    |
+ * | notice, this list of conditions and the following disclaimer in the  |
+ * | documentation and/or other materials provided with the distribution. |
+ * |                                                                      |
+ * | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
+ * | Lukas Smith nor the names of his contributors may be used to endorse |
+ * | or promote products derived from this software without specific prior|
+ * | written permission.                                                  |
+ * |                                                                      |
+ * | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
+ * | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
+ * | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
+ * | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
+ * | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
+ * | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
+ * | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
+ * |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
+ * | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
+ * | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
+ * | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
+ * | POSSIBILITY OF SUCH DAMAGE.                                          |
+ * +----------------------------------------------------------------------+
+ * | Author: Lukas Smith <smith@pooteeweet.org>                           |
+ * +----------------------------------------------------------------------+
+ */
 
 /**
  * The common statement class for MDB2 statement objects
  *
- * @package     MDB2
- * @category    Database
- * @author      Lukas Smith <smith@pooteeweet.org>
+ * @category Database
+ * @package  MDB2
+ * @author   Lukas Smith <smith@pooteeweet.org>
+ * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Statement_Common
 {
@@ -105,8 +108,13 @@ class MDB2_Statement_Common
             }
         }
         if (!in_array($parameter, $this->positions)) {
-            return MDB2::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
-                'Unable to bind to missing placeholder: '.$parameter, __FUNCTION__);
+            return MDB2::raiseError(
+                MDB2_ERROR_NOT_FOUND,
+                null,
+                null,
+                'Unable to bind to missing placeholder: '.$parameter,
+                __FUNCTION__
+            );
         }
         $this->values[$parameter] = $value;
         if (null !== $type) {
@@ -175,8 +183,13 @@ class MDB2_Statement_Common
             }
         }
         if (!in_array($parameter, $this->positions)) {
-            return MDB2::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
-                'Unable to bind to missing placeholder: '.$parameter, __FUNCTION__);
+            return MDB2::raiseError(
+                MDB2_ERROR_NOT_FOUND,
+                null,
+                null,
+                'Unable to bind to missing placeholder: '.$parameter,
+                __FUNCTION__
+            );
         }
         $this->values[$parameter] =& $value;
         if (null !== $type) {
@@ -231,24 +244,34 @@ class MDB2_Statement_Common
     public function execute($values = null, $result_class = true, $result_wrap_class = false)
     {
         if (null === $this->positions) {
-            return MDB2::raiseError(MDB2_ERROR, null, null,
-                'Prepared statement has already been freed', __FUNCTION__);
+            return MDB2::raiseError(
+                MDB2_ERROR,
+                null,
+                null,
+                'Prepared statement has already been freed',
+                __FUNCTION__
+            );
         }
 
         $values = (array)$values;
         if (!empty($values)) {
             $err = $this->bindValueArray($values);
             if (MDB2::isError($err)) {
-                return MDB2::raiseError(MDB2_ERROR, null, null,
-                                            'Binding Values failed with message: ' . $err->getMessage(), __FUNCTION__);
+                return MDB2::raiseError(
+                    MDB2_ERROR,
+                    null,
+                    null,
+                    'Binding Values failed with message: ' . $err->getMessage(),
+                    __FUNCTION__
+                );
             }
         }
-        $result = $this->_execute($result_class, $result_wrap_class);
+        $result = $this->executeInternal($result_class, $result_wrap_class);
         return $result;
     }
 
     // }}}
-    // {{{ function _execute($result_class = true, $result_wrap_class = false)
+    // {{{ function executeInternal($result_class = true, $result_wrap_class = false)
 
     /**
      * Execute a prepared query statement helper method.
@@ -259,15 +282,20 @@ class MDB2_Statement_Common
      * @return mixed MDB2_Result or integer (affected rows) on success,
      *               a MDB2 error on failure
      */
-    protected function _execute($result_class = true, $result_wrap_class = false)
+    protected function executeInternal($result_class = true, $result_wrap_class = false)
     {
         $this->last_query = $this->query;
         $query = '';
         $last_position = 0;
         foreach ($this->positions as $current_position => $parameter) {
             if (!array_key_exists($parameter, $this->values)) {
-                return MDB2::raiseError(MDB2_ERROR_NOT_FOUND, null, null,
-                    'Unable to bind to missing placeholder: '.$parameter, __FUNCTION__);
+                return MDB2::raiseError(
+                    MDB2_ERROR_NOT_FOUND,
+                    null,
+                    null,
+                    'Unable to bind to missing placeholder: '.$parameter,
+                    __FUNCTION__
+                );
             }
             $value = $this->values[$parameter];
             $query.= substr($this->query, $last_position, $current_position - $last_position);
@@ -306,8 +334,13 @@ class MDB2_Statement_Common
     public function free()
     {
         if (null === $this->positions) {
-            return MDB2::raiseError(MDB2_ERROR, null, null,
-                'Prepared statement has already been freed', __FUNCTION__);
+            return MDB2::raiseError(
+                MDB2_ERROR,
+                null,
+                null,
+                'Prepared statement has already been freed',
+                __FUNCTION__
+            );
         }
 
         $this->statement = null;

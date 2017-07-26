@@ -1,54 +1,57 @@
 <?php
-// vim: set et ts=4 sw=4 fdm=marker:
-// +----------------------------------------------------------------------+
-// | PHP version 5                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
-// | Stig. S. Bakken, Lukas Smith                                         |
-// | All rights reserved.                                                 |
-// +----------------------------------------------------------------------+
-// | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
-// | API as well as database abstraction for PHP applications.            |
-// | This LICENSE is in the BSD license style.                            |
-// |                                                                      |
-// | Redistribution and use in source and binary forms, with or without   |
-// | modification, are permitted provided that the following conditions   |
-// | are met:                                                             |
-// |                                                                      |
-// | Redistributions of source code must retain the above copyright       |
-// | notice, this list of conditions and the following disclaimer.        |
-// |                                                                      |
-// | Redistributions in binary form must reproduce the above copyright    |
-// | notice, this list of conditions and the following disclaimer in the  |
-// | documentation and/or other materials provided with the distribution. |
-// |                                                                      |
-// | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
-// | Lukas Smith nor the names of his contributors may be used to endorse |
-// | or promote products derived from this software without specific prior|
-// | written permission.                                                  |
-// |                                                                      |
-// | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
-// | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
-// | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
-// | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
-// | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
-// | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
-// | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
-// |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
-// | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
-// | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
-// | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
-// | POSSIBILITY OF SUCH DAMAGE.                                          |
-// +----------------------------------------------------------------------+
-// | Author: Lukas Smith <smith@pooteeweet.org>                           |
-// +----------------------------------------------------------------------+
+
+/**
+ * +----------------------------------------------------------------------+
+ * | PHP version 5                                                        |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
+ * | Stig. S. Bakken, Lukas Smith                                         |
+ * | All rights reserved.                                                 |
+ * +----------------------------------------------------------------------+
+ * | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
+ * | API as well as database abstraction for PHP applications.            |
+ * | This LICENSE is in the BSD license style.                            |
+ * |                                                                      |
+ * | Redistribution and use in source and binary forms, with or without   |
+ * | modification, are permitted provided that the following conditions   |
+ * | are met:                                                             |
+ * |                                                                      |
+ * | Redistributions of source code must retain the above copyright       |
+ * | notice, this list of conditions and the following disclaimer.        |
+ * |                                                                      |
+ * | Redistributions in binary form must reproduce the above copyright    |
+ * | notice, this list of conditions and the following disclaimer in the  |
+ * | documentation and/or other materials provided with the distribution. |
+ * |                                                                      |
+ * | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
+ * | Lukas Smith nor the names of his contributors may be used to endorse |
+ * | or promote products derived from this software without specific prior|
+ * | written permission.                                                  |
+ * |                                                                      |
+ * | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
+ * | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
+ * | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
+ * | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
+ * | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
+ * | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
+ * | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
+ * |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
+ * | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
+ * | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
+ * | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
+ * | POSSIBILITY OF SUCH DAMAGE.                                          |
+ * +----------------------------------------------------------------------+
+ * | Author: Lukas Smith <smith@pooteeweet.org>                           |
+ * +----------------------------------------------------------------------+
+ */
 
 /**
  * The common result class for MDB2 result objects
  *
- * @package  MDB2
  * @category Database
+ * @package  MDB2
  * @author   Lukas Smith <smith@pooteeweet.org>
+ * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Result_Common extends MDB2_Result
 {
@@ -135,8 +138,13 @@ class MDB2_Result_Common extends MDB2_Result
     {
         $target_rownum = $rownum - 1;
         if ($this->rownum > $target_rownum) {
-            return MDB2::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-                'seeking to previous rows not implemented', __FUNCTION__);
+            return MDB2::raiseError(
+                MDB2_ERROR_UNSUPPORTED,
+                null,
+                null,
+                'seeking to previous rows not implemented',
+                __FUNCTION__
+            );
         }
         while ($this->rownum < $target_rownum) {
             $this->fetchRow();
@@ -157,8 +165,14 @@ class MDB2_Result_Common extends MDB2_Result
      */
     public function fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
     {
-        $err = MDB2::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        $err = MDB2::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
+
         return $err;
     }
 
@@ -181,8 +195,13 @@ class MDB2_Result_Common extends MDB2_Result
             return $row;
         }
         if (!array_key_exists($colnum, $row)) {
-            return MDB2::raiseError(MDB2_ERROR_TRUNCATED, null, null,
-                'column is not defined in the result set: '.$colnum, __FUNCTION__);
+            return MDB2::raiseError(
+                MDB2_ERROR_TRUNCATED,
+                null,
+                null,
+                'column is not defined in the result set: '.$colnum,
+                __FUNCTION__
+            );
         }
         return $row[$colnum];
     }
@@ -204,8 +223,13 @@ class MDB2_Result_Common extends MDB2_Result
         $row = $this->fetchRow($fetchmode);
         if (is_array($row)) {
             if (!array_key_exists($colnum, $row)) {
-                return MDB2::raiseError(MDB2_ERROR_TRUNCATED, null, null,
-                    'column is not defined in the result set: '.$colnum, __FUNCTION__);
+                return MDB2::raiseError(
+                    MDB2_ERROR_TRUNCATED,
+                    null,
+                    null,
+                    'column is not defined in the result set: '.$colnum,
+                    __FUNCTION__
+                );
             }
             do {
                 $column[] = $row[$colnum];
@@ -242,9 +266,12 @@ class MDB2_Result_Common extends MDB2_Result
      *
      * @see     getAssoc()
      */
-    public function fetchAll($fetchmode = MDB2_FETCHMODE_DEFAULT, $rekey = false,
-        $force_array = false, $group = false)
-    {
+    public function fetchAll(
+        $fetchmode = MDB2_FETCHMODE_DEFAULT,
+        $rekey = false,
+        $force_array = false,
+        $group = false
+    ) {
         $all = array();
         $row = $this->fetchRow($fetchmode);
         if (MDB2::isError($row)) {
@@ -261,8 +288,13 @@ class MDB2_Result_Common extends MDB2_Result
                 $colnum = count($row);
             }
             if ($colnum < 2) {
-                return MDB2::raiseError(MDB2_ERROR_TRUNCATED, null, null,
-                    'rekey feature requires atleast 2 column', __FUNCTION__);
+                return MDB2::raiseError(
+                    MDB2_ERROR_TRUNCATED,
+                    null,
+                    null,
+                    'rekey feature requires atleast 2 column',
+                    __FUNCTION__
+                );
             }
             $shift_array = (!$force_array && $colnum == 2);
         }
@@ -274,7 +306,7 @@ class MDB2_Result_Common extends MDB2_Result
                     $key = reset($arr);
                     unset($row->{$key});
                 } else {
-                    if (   $fetchmode == MDB2_FETCHMODE_ASSOC
+                    if ($fetchmode == MDB2_FETCHMODE_ASSOC
                         || $fetchmode == MDB2_FETCHMODE_OBJECT
                     ) {
                         $key = reset($row);
@@ -329,8 +361,13 @@ class MDB2_Result_Common extends MDB2_Result
      */
     public function numRows()
     {
-        return MDB2::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return MDB2::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -343,8 +380,13 @@ class MDB2_Result_Common extends MDB2_Result
      */
     public function nextResult()
     {
-        return MDB2::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return MDB2::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -364,7 +406,7 @@ class MDB2_Result_Common extends MDB2_Result
     public function getColumnNames($flip = false)
     {
         if (!isset($this->column_names)) {
-            $result = $this->_getColumnNames();
+            $result = $this->getColumnNamesInternal();
             if (MDB2::isError($result)) {
                 return $result;
             }
@@ -377,7 +419,7 @@ class MDB2_Result_Common extends MDB2_Result
     }
 
     // }}}
-    // {{{ function _getColumnNames()
+    // {{{ function getColumnNamesInternal()
 
     /**
      * Retrieve the names of columns returned by the DBMS in a query result.
@@ -387,10 +429,15 @@ class MDB2_Result_Common extends MDB2_Result
      *                  Some DBMS may not return any columns when the result set
      *                  does not contain any rows.
      */
-    protected function _getColumnNames()
+    protected function getColumnNamesInternal()
     {
-        return MDB2::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return MDB2::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -404,8 +451,13 @@ class MDB2_Result_Common extends MDB2_Result
      */
     public function numCols()
     {
-        return MDB2::raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
+        return MDB2::raiseError(
+            MDB2_ERROR_UNSUPPORTED,
+            null,
+            null,
+            'method not implemented',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -454,7 +506,7 @@ class MDB2_Result_Common extends MDB2_Result
     }
 
     // }}}
-    // {{{ function _assignBindColumns($row)
+    // {{{ function assignBindColumns($row)
 
     /**
      * Bind a variable to a value in the result row.
@@ -463,7 +515,7 @@ class MDB2_Result_Common extends MDB2_Result
      *
      * @return  mixed   MDB2_OK on success, a MDB2 error on failure
      */
-    protected function _assignBindColumns($row)
+    protected function assignBindColumns($row)
     {
         $row = array_values($row);
         foreach ($row as $column => $value) {

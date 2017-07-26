@@ -1,55 +1,53 @@
 <?php
-// vim: set et ts=4 sw=4 fdm=marker:
-// +----------------------------------------------------------------------+
-// | PHP version 5                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
-// | Stig. S. Bakken, Lukas Smith                                         |
-// | All rights reserved.                                                 |
-// +----------------------------------------------------------------------+
-// | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
-// | API as well as database abstraction for PHP applications.            |
-// | This LICENSE is in the BSD license style.                            |
-// |                                                                      |
-// | Redistribution and use in source and binary forms, with or without   |
-// | modification, are permitted provided that the following conditions   |
-// | are met:                                                             |
-// |                                                                      |
-// | Redistributions of source code must retain the above copyright       |
-// | notice, this list of conditions and the following disclaimer.        |
-// |                                                                      |
-// | Redistributions in binary form must reproduce the above copyright    |
-// | notice, this list of conditions and the following disclaimer in the  |
-// | documentation and/or other materials provided with the distribution. |
-// |                                                                      |
-// | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
-// | Lukas Smith nor the names of his contributors may be used to endorse |
-// | or promote products derived from this software without specific prior|
-// | written permission.                                                  |
-// |                                                                      |
-// | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
-// | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
-// | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
-// | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
-// | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
-// | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
-// | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
-// |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
-// | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
-// | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
-// | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
-// | POSSIBILITY OF SUCH DAMAGE.                                          |
-// +----------------------------------------------------------------------+
-// | Author: Lukas Smith <smith@pooteeweet.org>                           |
-// +----------------------------------------------------------------------+
-//
-// $Id$
-//
 
 /**
- * @package  MDB2
+ * +----------------------------------------------------------------------+
+ * | PHP version 5                                                        |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
+ * | Stig. S. Bakken, Lukas Smith                                         |
+ * | All rights reserved.                                                 |
+ * +----------------------------------------------------------------------+
+ * | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
+ * | API as well as database abstraction for PHP applications.            |
+ * | This LICENSE is in the BSD license style.                            |
+ * |                                                                      |
+ * | Redistribution and use in source and binary forms, with or without   |
+ * | modification, are permitted provided that the following conditions   |
+ * | are met:                                                             |
+ * |                                                                      |
+ * | Redistributions of source code must retain the above copyright       |
+ * | notice, this list of conditions and the following disclaimer.        |
+ * |                                                                      |
+ * | Redistributions in binary form must reproduce the above copyright    |
+ * | notice, this list of conditions and the following disclaimer in the  |
+ * | documentation and/or other materials provided with the distribution. |
+ * |                                                                      |
+ * | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
+ * | Lukas Smith nor the names of his contributors may be used to endorse |
+ * | or promote products derived from this software without specific prior|
+ * | written permission.                                                  |
+ * |                                                                      |
+ * | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
+ * | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
+ * | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
+ * | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
+ * | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
+ * | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
+ * | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
+ * |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
+ * | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
+ * | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
+ * | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
+ * | POSSIBILITY OF SUCH DAMAGE.                                          |
+ * +----------------------------------------------------------------------+
+ * | Author: Lukas Smith <smith@pooteeweet.org>                           |
+ * +----------------------------------------------------------------------+
+ *
  * @category Database
+ * @package  MDB2
  * @author   Lukas Smith <smith@pooteeweet.org>
+ * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 
 // {{{ Error constants
@@ -259,9 +257,10 @@ $GLOBALS['_MDB2_dsninfo_default'] = array(
  *              connections, the object returned is an instance of this
  *              class.
  *
- * @package  MDB2
  * @category Database
+ * @package  MDB2
  * @author   Lukas Smith <smith@pooteeweet.org>
+ * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2
 {
@@ -343,8 +342,12 @@ class MDB2
     {
         $dsninfo = self::parseDSN($dsn);
         if (empty($dsninfo['phptype'])) {
-            $err = self::raiseError(MDB2_ERROR_NOT_FOUND,
-                null, null, 'no RDBMS driver specified');
+            $err = self::raiseError(
+                MDB2_ERROR_NOT_FOUND,
+                null,
+                null,
+                'no RDBMS driver specified'
+            );
             return $err;
         }
         $class_name = 'MDB2_Driver_'.$dsninfo['phptype'];
@@ -509,13 +512,13 @@ class MDB2
      * @see     PEAR_Error
      */
     public static function raiseError($code = null,
-                         $mode = null,
-                         $options = null,
-                         $userinfo = null,
-                         $dummy1 = null,
-                         $dummy2 = null,
-                         $dummy3 = false)
-    {
+        $mode = null,
+        $options = null,
+        $userinfo = null,
+        $dummy1 = null,
+        $dummy2 = null,
+        $dummy3 = false
+    ) {
         $pear = new PEAR();
         $err = $pear->raiseError(null, $code, $mode, $options, $userinfo, 'MDB2_Error', true);
         return $err;
@@ -759,7 +762,7 @@ class MDB2
 
         // Get (if found): username and password
         // $dsn => username:password@protocol+hostspec/database
-        if (($at = strrpos($dsn,'@')) !== false) {
+        if (($at = strrpos($dsn, '@')) !== false) {
             $str = substr($dsn, 0, $at);
             $dsn = substr($dsn, $at + 1);
             if (($pos = strpos($str, ':')) !== false) {
@@ -772,18 +775,18 @@ class MDB2
 
         // Find protocol and hostspec
 
-        // $dsn => proto(proto_opts)/database
         if (preg_match('|^([^(]+)\((.*?)\)/?(.*?)$|', $dsn, $match)) {
+            // $dsn => proto(proto_opts)/database
             $proto       = $match[1];
             $proto_opts  = $match[2] ? $match[2] : false;
             $dsn         = $match[3];
 
-        // $dsn => protocol+hostspec/database (old format)
         } else {
+            // $dsn => protocol+hostspec/database (old format)
             if (strpos($dsn, '+') !== false) {
                 list($proto, $dsn) = explode('+', $dsn, 2);
             }
-            if (   strpos($dsn, '//') === 0
+            if (strpos($dsn, '//') === 0
                 && strpos($dsn, '/', 2) !== false
                 && $parsed['phptype'] == 'oci8'
             ) {
@@ -817,16 +820,17 @@ class MDB2
         // Get dabase if any
         // $dsn => database
         if ($dsn) {
-            // /database
             if (($pos = strpos($dsn, '?')) === false) {
+                // /database
                 $parsed['database'] = rawurldecode($dsn);
-            // /database?param1=value1&param2=value2
             } else {
+                // /database?param1=value1&param2=value2
                 $parsed['database'] = rawurldecode(substr($dsn, 0, $pos));
                 $dsn = substr($dsn, $pos + 1);
                 if (strpos($dsn, '&') !== false) {
                     $opts = explode('&', $dsn);
-                } else { // database?param1=value1
+                } else {
+                    // database?param1=value1
                     $opts = array($dsn);
                 }
                 foreach ($opts as $opt) {

@@ -1,53 +1,53 @@
 <?php
-// +----------------------------------------------------------------------+
-// | PHP version 5                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
-// | Stig. S. Bakken, Lukas Smith                                         |
-// | All rights reserved.                                                 |
-// +----------------------------------------------------------------------+
-// | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
-// | API as well as database abstraction for PHP applications.            |
-// | This LICENSE is in the BSD license style.                            |
-// |                                                                      |
-// | Redistribution and use in source and binary forms, with or without   |
-// | modification, are permitted provided that the following conditions   |
-// | are met:                                                             |
-// |                                                                      |
-// | Redistributions of source code must retain the above copyright       |
-// | notice, this list of conditions and the following disclaimer.        |
-// |                                                                      |
-// | Redistributions in binary form must reproduce the above copyright    |
-// | notice, this list of conditions and the following disclaimer in the  |
-// | documentation and/or other materials provided with the distribution. |
-// |                                                                      |
-// | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
-// | Lukas Smith nor the names of his contributors may be used to endorse |
-// | or promote products derived from this software without specific prior|
-// | written permission.                                                  |
-// |                                                                      |
-// | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
-// | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
-// | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
-// | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
-// | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
-// | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
-// | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
-// |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
-// | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
-// | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
-// | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
-// | POSSIBILITY OF SUCH DAMAGE.                                          |
-// +----------------------------------------------------------------------+
-// | Author: Lukas Smith <smith@pooteeweet.org>                           |
-// +----------------------------------------------------------------------+
-//
-// $Id$
 
 /**
- * @package  MDB2
+ * +----------------------------------------------------------------------+
+ * | PHP version 5                                                        |
+ * +----------------------------------------------------------------------+
+ * | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
+ * | Stig. S. Bakken, Lukas Smith                                         |
+ * | All rights reserved.                                                 |
+ * +----------------------------------------------------------------------+
+ * | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
+ * | API as well as database abstraction for PHP applications.            |
+ * | This LICENSE is in the BSD license style.                            |
+ * |                                                                      |
+ * | Redistribution and use in source and binary forms, with or without   |
+ * | modification, are permitted provided that the following conditions   |
+ * | are met:                                                             |
+ * |                                                                      |
+ * | Redistributions of source code must retain the above copyright       |
+ * | notice, this list of conditions and the following disclaimer.        |
+ * |                                                                      |
+ * | Redistributions in binary form must reproduce the above copyright    |
+ * | notice, this list of conditions and the following disclaimer in the  |
+ * | documentation and/or other materials provided with the distribution. |
+ * |                                                                      |
+ * | Neither the name of Manuel Lemos, Tomas V.V.Cox, Stig. S. Bakken,    |
+ * | Lukas Smith nor the names of his contributors may be used to endorse |
+ * | or promote products derived from this software without specific prior|
+ * | written permission.                                                  |
+ * |                                                                      |
+ * | THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS  |
+ * | "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT    |
+ * | LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS    |
+ * | FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE      |
+ * | REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,          |
+ * | INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, |
+ * | BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS|
+ * |  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED  |
+ * | AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT          |
+ * | LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY|
+ * | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
+ * | POSSIBILITY OF SUCH DAMAGE.                                          |
+ * +----------------------------------------------------------------------+
+ * | Author: Lukas Smith <smith@pooteeweet.org>                           |
+ * +----------------------------------------------------------------------+
+ *
  * @category Database
+ * @package  MDB2
  * @author   Lukas Smith <smith@pooteeweet.org>
+ * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 
 /**
@@ -61,9 +61,10 @@ const MDB2_AUTOQUERY_SELECT = 4;
 /**
  * MDB2_Extended: class which adds several high level methods to MDB2
  *
- * @package  MDB2
  * @category Database
+ * @package  MDB2
  * @author   Lukas Smith <smith@pooteeweet.org>
+ * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Extended extends MDB2_Module_Common
 {
@@ -88,9 +89,14 @@ class MDB2_Extended extends MDB2_Module_Common
      * @return resource handle for the query
      * @see buildManipSQL
      */
-    public function autoPrepare($table, $table_fields, $mode = MDB2_AUTOQUERY_INSERT,
-        $where = false, $types = null, $result_types = MDB2_PREPARE_MANIP)
-    {
+    public function autoPrepare(
+        $table,
+        $table_fields,
+        $mode = MDB2_AUTOQUERY_INSERT,
+        $where = false,
+        $types = null,
+        $result_types = MDB2_PREPARE_MANIP
+    ) {
         $query = $this->buildManipSQL($table, $table_fields, $mode, $where);
         if (MDB2::isError($query)) {
             return $query;
@@ -132,9 +138,15 @@ class MDB2_Extended extends MDB2_Module_Common
      * @see buildManipSQL
      * @see autoPrepare
      */
-    public function autoExecute($table, $fields_values, $mode = MDB2_AUTOQUERY_INSERT,
-        $where = false, $types = null, $result_class = true, $result_types = MDB2_PREPARE_MANIP)
-    {
+    public function autoExecute(
+        $table,
+        $fields_values,
+        $mode = MDB2_AUTOQUERY_INSERT,
+        $where = false,
+        $types = null,
+        $result_class = true,
+        $result_types = MDB2_PREPARE_MANIP
+    ) {
         $fields_values = (array)$fields_values;
         if ($mode == MDB2_AUTOQUERY_SELECT) {
             if (is_array($result_types)) {
@@ -221,8 +233,13 @@ class MDB2_Extended extends MDB2_Module_Common
         switch ($mode) {
         case MDB2_AUTOQUERY_INSERT:
             if (empty($table_fields)) {
-                return $db->raiseError(MDB2_ERROR_NEED_MORE_DATA, null, null,
-                'Insert requires table fields', __FUNCTION__);
+                return $db->raiseError(
+                    MDB2_ERROR_NEED_MORE_DATA,
+                    null,
+                    null,
+                    'Insert requires table fields',
+                    __FUNCTION__
+                );
             }
             $cols = implode(', ', $table_fields);
             $values = '?'.str_repeat(', ?', (count($table_fields) - 1));
@@ -230,8 +247,13 @@ class MDB2_Extended extends MDB2_Module_Common
             break;
         case MDB2_AUTOQUERY_UPDATE:
             if (empty($table_fields)) {
-                return $db->raiseError(MDB2_ERROR_NEED_MORE_DATA, null, null,
-                'Update requires table fields', __FUNCTION__);
+                return $db->raiseError(
+                    MDB2_ERROR_NEED_MORE_DATA,
+                    null,
+                    null,
+                    'Update requires table fields',
+                    __FUNCTION__
+                );
             }
             $set = implode(' = ?, ', $table_fields).' = ?';
             $sql = 'UPDATE '.$table.' SET '.$set.$where;
@@ -247,8 +269,13 @@ class MDB2_Extended extends MDB2_Module_Common
             return $sql;
             break;
         }
-        return $db->raiseError(MDB2_ERROR_SYNTAX, null, null,
-                'Non existant mode', __FUNCTION__);
+        return $db->raiseError(
+            MDB2_ERROR_SYNTAX,
+            null,
+            null,
+            'Non existant mode',
+            __FUNCTION__
+        );
     }
 
     // }}}
@@ -266,9 +293,14 @@ class MDB2_Extended extends MDB2_Module_Common
      *
      * @return MDB2_Result|MDB2_Error result set on success, a MDB2 error on failure
      */
-    public function limitQuery($query, $types, $limit, $offset = 0, $result_class = true,
-        $result_wrap_class = false)
-    {
+    public function limitQuery(
+        $query,
+        $types,
+        $limit,
+        $offset = 0,
+        $result_class = true,
+        $result_wrap_class = false
+    ) {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
             return $db;
@@ -336,9 +368,13 @@ class MDB2_Extended extends MDB2_Module_Common
      *
      * @return scalar|MDB2_Error data on success, a MDB2 error on failure
      */
-    public function getOne($query, $type = null, $params = array(),
-        $param_types = null, $colnum = 0)
-    {
+    public function getOne(
+        $query,
+        $type = null,
+        $params = array(),
+        $param_types = null,
+        $colnum = 0
+    ) {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
             return $db;
@@ -382,9 +418,13 @@ class MDB2_Extended extends MDB2_Module_Common
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
      */
-    public function getRow($query, $types = null, $params = array(),
-        $param_types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT)
-    {
+    public function getRow(
+        $query,
+        $types = null,
+        $params = array(),
+        $param_types = null,
+        $fetchmode = MDB2_FETCHMODE_DEFAULT
+    ) {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
             return $db;
@@ -427,9 +467,13 @@ class MDB2_Extended extends MDB2_Module_Common
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
      */
-    public function getCol($query, $type = null, $params = array(),
-        $param_types = null, $colnum = 0)
-    {
+    public function getCol(
+        $query,
+        $type = null,
+        $params = array(),
+        $param_types = null,
+        $colnum = 0
+    ) {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
             return $db;
@@ -481,10 +525,16 @@ class MDB2_Extended extends MDB2_Module_Common
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
      */
-    public function getAll($query, $types = null, $params = array(),
-        $param_types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT,
-        $rekey = false, $force_array = false, $group = false)
-    {
+    public function getAll(
+        $query,
+        $types = null,
+        $params = array(),
+        $param_types = null,
+        $fetchmode = MDB2_FETCHMODE_DEFAULT,
+        $rekey = false,
+        $force_array = false,
+        $group = false
+    ) {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
             return $db;
@@ -586,9 +636,15 @@ class MDB2_Extended extends MDB2_Module_Common
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
      */
-    public function getAssoc($query, $types = null, $params = array(), $param_types = null,
-        $fetchmode = MDB2_FETCHMODE_DEFAULT, $force_array = false, $group = false)
-    {
+    public function getAssoc(
+        $query,
+        $types = null,
+        $params = array(),
+        $param_types = null,
+        $fetchmode = MDB2_FETCHMODE_DEFAULT,
+        $force_array = false,
+        $group = false
+    ) {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
             return $db;
