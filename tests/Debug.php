@@ -27,7 +27,7 @@ error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
 
 // Keep tests from running twice when calling this file directly via PHPUnit.
 $call_main = false;
-if (strpos($_SERVER['argv'][0], 'phpunit') === false) {
+if (mb_strpos($_SERVER['argv'][0], 'phpunit') === false) {
     // Called via php, not PHPUnit.  Pass the request to PHPUnit.
     if (!defined('PHPUnit_MAIN_METHOD')) {
         /** An indicator of which test was called. */

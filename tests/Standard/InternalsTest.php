@@ -221,7 +221,7 @@ class Standard_InternalsTest extends Standard_Abstract {
                 break;
         }
         if (version_compare(PHP_VERSION, "5.0.0", "<")) {
-            $expected = strtolower($expected);
+            $expected = mb_strtolower($expected);
         }
         $this->assertEquals($expected ,$this->db->__toString(), '__toString');
     }
@@ -350,9 +350,9 @@ class Standard_InternalsTest extends Standard_Abstract {
      */
     public function _fixResultArrayValues_Test_Rtrim($row)
     {
-        $this->assertEquals(strlen($row[0]), 0, '_fixResultArrayValues');
-        $this->assertEquals(strlen($row[1]), 7, '_fixResultArrayValues');
-        $this->assertEquals(strlen($row[2]), 7, '_fixResultArrayValues');
+        $this->assertEquals(mb_strlen($row[0]), 0, '_fixResultArrayValues');
+        $this->assertEquals(mb_strlen($row[1]), 7, '_fixResultArrayValues');
+        $this->assertEquals(mb_strlen($row[2]), 7, '_fixResultArrayValues');
     }
 
     /**
@@ -607,7 +607,7 @@ class Standard_InternalsTest extends Standard_Abstract {
 
         $tmp = $this->db->options['seqname_format'];
         $this->db->options['seqname_format'] = '%s_seq';
-        $this->assertEquals('test_seq', strtolower($this->db->getSequenceName('test')), 'getSequenceName');
+        $this->assertEquals('test_seq', mb_strtolower($this->db->getSequenceName('test')), 'getSequenceName');
         $this->db->options['seqname_format'] = $tmp;
     }
 
