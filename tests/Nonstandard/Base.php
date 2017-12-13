@@ -82,8 +82,8 @@ class Nonstandard_Base {
      * Check if getTriggerDefinition() returns the correct definition for the trigger
      */
     public function checkTrigger($trigger_name, $table_name, $def) {
-        $this->test->assertEquals(strtoupper($trigger_name), strtoupper($def['trigger_name']), 'Error getting trigger definition (name)');
-        $this->test->assertEquals(strtoupper($table_name),  strtoupper($def['table_name']),   'Error getting trigger definition (table)');
+        $this->test->assertEquals(mb_strtoupper($trigger_name), mb_strtoupper($def['trigger_name']), 'Error getting trigger definition (name)');
+        $this->test->assertEquals(mb_strtoupper($table_name),  mb_strtoupper($def['table_name']),   'Error getting trigger definition (table)');
         $this->test->assertEquals('AFTER',  $def['trigger_type'], 'Error getting trigger definition (type)');
         $this->test->assertEquals('UPDATE', $def['trigger_event'], 'Error getting trigger definition (event)');
         $this->test->assertTrue(is_string($def['trigger_body']), 'Error getting trigger definition (body)');

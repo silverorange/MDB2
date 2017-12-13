@@ -614,13 +614,13 @@ class Standard_UsageTest extends Standard_Abstract {
         //test correct placeholder
         $query = 'SELECT what FROM tbl WHERE x = ?';
         $position = 0;
-        $p_position = strpos($query, '?');
+        $p_position = mb_strpos($query, '?');
         $this->assertEquals($position, $this->db->_skipDelimitedStrings($query, $position, $p_position), 'Error: the cursor position has changed');
 
         //test placeholder within a quoted string
         $query = 'SELECT what FROM tbl WHERE x = '. $this->db->string_quoting['start'] .'blah?blah'. $this->db->string_quoting['end'] .' AND y = ?';
         $position = 0;
-        $p_position = strpos($query, '?');
+        $p_position = mb_strpos($query, '?');
         $new_pos = $this->db->_skipDelimitedStrings($query, $position, $p_position);
         $this->assertTrue($position !=$new_pos, 'Error: the cursor position was not advanced');
 
@@ -628,7 +628,7 @@ class Standard_UsageTest extends Standard_Abstract {
         foreach ($this->db->sql_comments as $comment) {
             $query = 'SELECT what FROM tbl WHERE x = '. $comment['start'] .'blah?blah'. $comment['end'] .' AND y = ?';
             $position = 0;
-            $p_position = strpos($query, '?');
+            $p_position = mb_strpos($query, '?');
             $new_pos = $this->db->_skipDelimitedStrings($query, $position, $p_position);
             $this->assertTrue($position != $new_pos, 'Error: the cursor position was not advanced');
         }
@@ -636,7 +636,7 @@ class Standard_UsageTest extends Standard_Abstract {
         // bug 17039: http://pear.php.net/bugs/17039
         $query = "SELECT 'a\'b:+c'";
         $position = 0;
-        $p_position = strpos($query, ':');
+        $p_position = mb_strpos($query, ':');
         $new_pos = $this->db->_skipDelimitedStrings($query, $position, $p_position);
         $this->assertTrue($position != $new_pos, 'Error: the cursor position was not advanced');
 
@@ -1566,9 +1566,9 @@ class Standard_UsageTest extends Standard_Abstract {
             } else {
                 if ($buffered) {
                     $this->assertTrue($result->valid(), 'The query result seem to have reached the end of result too soon'.$msgPost);
-                    $this->assertEquals('mdb2_bufferedresult_', strtolower(substr(get_class($result), 0, 20)), 'Error: not a buffered result');
+                    $this->assertEquals('mdb2_bufferedresult_', mb_strtolower(mb_substr(get_class($result), 0, 20)), 'Error: not a buffered result');
                 } else {
-                    $this->assertEquals('mdb2_result_', strtolower(substr(get_class($result), 0, 12)), 'Error: an unbuffered result was expected');
+                    $this->assertEquals('mdb2_result_', mb_strtolower(mb_substr(get_class($result), 0, 12)), 'Error: an unbuffered result was expected');
                 }
                 for ($i = 1; $i <= ($buffered ? 2 : 1); ++$i) {
                     $result->seek(0);
@@ -2061,7 +2061,7 @@ class Standard_UsageTest extends Standard_Abstract {
         }
         $field = reset($fields);
         foreach (array_keys($result) as $fieldname) {
-            $this->assertEquals(strtoupper($field), $fieldname, 'MDB2_PORTABILITY_FIX_CASE CASE_UPPER not working');
+            $this->assertEquals(mb_strtoupper($field), $fieldname, 'MDB2_PORTABILITY_FIX_CASE CASE_UPPER not working');
             $field = next($fields);
         }
 
@@ -2073,7 +2073,7 @@ class Standard_UsageTest extends Standard_Abstract {
         }
         $field = reset($fields);
         foreach (array_keys($result) as $fieldname) {
-            $this->assertEquals(strtolower($field), $fieldname, 'MDB2_PORTABILITY_FIX_CASE CASE_LOWER not working');
+            $this->assertEquals(mb_strtolower($field), $fieldname, 'MDB2_PORTABILITY_FIX_CASE CASE_LOWER not working');
             $field = next($fields);
         }
 

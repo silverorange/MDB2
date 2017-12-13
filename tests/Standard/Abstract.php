@@ -301,7 +301,7 @@ abstract class Standard_Abstract extends PHPUnit_Framework_TestCase {
 
     public function methodExists(&$class, $name) {
         if (is_object($class)
-            && in_array(strtolower($name), array_map('strtolower', get_class_methods($class)))
+            && in_array(mb_strtolower($name), array_map('mb_strtolower', get_class_methods($class)))
         ) {
             return true;
         }
@@ -316,6 +316,6 @@ abstract class Standard_Abstract extends PHPUnit_Framework_TestCase {
             //$this->fail('Cannot list tables: '. $tables->getUserInfo());
             return false;
         }
-        return in_array(strtolower($table), array_map('strtolower', $tables));
+        return in_array(mb_strtolower($table), array_map('mb_strtolower', $tables));
     }
 }

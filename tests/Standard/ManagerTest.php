@@ -95,7 +95,7 @@ class Standard_ManagerTest extends Standard_Abstract {
             ),
         );
         $options = array();
-        if ('mysql' == substr($this->db->phptype, 0, 5)) {
+        if ('mysql' === mb_substr($this->db->phptype, 0, 5)) {
             $options['type'] = 'innodb';
         }
         if (!$this->tableExists($this->table)) {
@@ -547,7 +547,7 @@ class Standard_ManagerTest extends Standard_Abstract {
         }
         $result = $this->db->manager->listDatabases();
         $this->checkResultForErrors($result, $action);
-        $this->assertTrue(in_array(strtolower($this->database), $result), 'Error listing databases');
+        $this->assertTrue(in_array(mb_strtolower($this->database), $result), 'Error listing databases');
     }
 
     /**
@@ -918,8 +918,8 @@ class Standard_ManagerTest extends Standard_Abstract {
         $action = 'listUsers';
         $result = $this->db->manager->listUsers();
         $this->checkResultForErrors($result, $action);
-        $result = array_map('strtolower', $result);
-        $this->assertContains(strtolower($this->db->dsn['username']), $result,
+        $result = array_map('mb_strtolower', $result);
+        $this->assertContains(mb_strtolower($this->db->dsn['username']), $result,
                 "Result of $action() does not contain expected value");
     }
 
@@ -995,10 +995,10 @@ class Standard_ManagerTest extends Standard_Abstract {
             'name' => $rename,
             'charset' => 'UTF8',
         );
-        if ('pgsql' == substr($this->db->phptype, 0, 5)) {
+        if ('pgsql' === mb_substr($this->db->phptype, 0, 5)) {
             $options['charset'] = 'WIN1252';
         }
-        if ('mssql' == substr($this->db->phptype, 0, 5)) {
+        if ('mssql' === mb_substr($this->db->phptype, 0, 5)) {
             $options['collation'] = 'WIN1252';
             $options['collation'] = 'Latin1_General_BIN';
         }

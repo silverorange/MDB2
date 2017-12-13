@@ -125,7 +125,7 @@ class Standard_ReverseTest extends Standard_Abstract
         );
 
         $options = array();
-        if ('mysql' == substr($this->db->phptype, 0, 5)) {
+        if ('mysql' === mb_substr($this->db->phptype, 0, 5)) {
             $options['type'] = 'innodb';
         }
 
@@ -345,7 +345,7 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->assertEquals(count($this->fields), count($table_info), 'The number of fields retrieved is different from the expected one');
             foreach ($table_info as $field_info) {
                 $this->assertEquals($this->table, $field_info['table'], 'the table name is not correct');
-                if (!array_key_exists(strtolower($field_info['name']), $this->fields)) {
+                if (!array_key_exists(mb_strtolower($field_info['name']), $this->fields)) {
                     $this->fail('Field names do not match ('.$field_info['name'].' is unknown)');
                 }
                 //expand test, for instance adding a check on types...
@@ -368,7 +368,7 @@ class Standard_ReverseTest extends Standard_Abstract
                 if (!empty($field_info['table'])) {
                     $this->assertEquals($this->table, $field_info['table'], 'the table name is not correct');
                 }
-                if (!array_key_exists(strtolower($field_info['name']), $this->fields)) {
+                if (!array_key_exists(mb_strtolower($field_info['name']), $this->fields)) {
                     $this->fail('Field names do not match ('.$field_info['name'].' is unknown)');
                 }
                 //expand test, for instance adding a check on types...

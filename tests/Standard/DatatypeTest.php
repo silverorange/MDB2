@@ -72,22 +72,22 @@ function datatype_test_callback(&$db, $method, $aParameters)
         $db->loadModule('Datatype', null, true);
     }
     // Lowercase method names for PHP4/PHP5 compatibility
-    $method = strtolower($method);
-    switch($method) {
-        // For all cases, return a string that identifies that the
-        // callback method was able to call to the appropriate point
-        case 'getvalidtypes':
-            return 'datatype_test_callback::getvalidtypes';
-        case 'convertresult':
-            return 'datatype_test_callback::convertresult';
-        case 'getdeclaration':
-            return 'datatype_test_callback::getdeclaration';
-        case 'comparedefinition':
-            return 'datatype_test_callback::comparedefinition';
-        case 'quote':
-            return 'datatype_test_callback::quote';
-        case 'mappreparedatatype':
-            return 'datatype_test_callback::mappreparedatatype';
+    $method = mb_strtolower($method);
+    switch ($method) {
+    // For all cases, return a string that identifies that the
+    // callback method was able to call to the appropriate point
+    case 'getvalidtypes':
+        return 'datatype_test_callback::getvalidtypes';
+    case 'convertresult':
+        return 'datatype_test_callback::convertresult';
+    case 'getdeclaration':
+        return 'datatype_test_callback::getdeclaration';
+    case 'comparedefinition':
+        return 'datatype_test_callback::comparedefinition';
+    case 'quote':
+        return 'datatype_test_callback::quote';
+    case 'mappreparedatatype':
+        return 'datatype_test_callback::mappreparedatatype';
     }
 }
 
@@ -125,12 +125,12 @@ function nativetype_test_callback($db, $aFields)
     $aType[] = 'test';
     // Can the length of the field be found?
     $length = null;
-    $start = strpos($aFields['type'], '(');
-    $end = strpos($aFields['type'], ')');
+    $start = mb_strpos($aFields['type'], '(');
+    $end = mb_strpos($aFields['type'], ')');
     if ($start && $end) {
         $start++;
         $chars = $end - $start;
-        $length = substr($aFields['type'], $start, $chars);
+        $length = mb_substr($aFields['type'], $start, $chars);
     }
     // No unsigned value needed
     $unsigned = null;
@@ -692,7 +692,7 @@ class Standard_DatatypeTest extends Standard_Abstract
 
         $query = 'SELECT user_name FROM ' . $this->table_users . ' WHERE user_name LIKE '.$this->db->datatype->matchPattern(array(1 => '_', 'oo', '%'));
         $value = $this->db->queryOne($query, 'text');
-        $this->assertEquals('Foo', substr($value, 0, 3), "the value retrieved for field \"user_name\" doesn't match what was stored");
+        $this->assertEquals('Foo', mb_substr($value, 0, 3), "the value retrieved for field \"user_name\" doesn't match what was stored");
     }
 
     /**
