@@ -17,7 +17,7 @@
     "pear/pear-core-minimal": "^1.9.0"
   },
   "require-dev": {
-    "silverorange/coding-standard": "^0.6.0"
+    "silverorange/coding-standard": "^1.0.0"
   },
   "autoload": {
     "psr-0": {
