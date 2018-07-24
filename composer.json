@@ -19,6 +19,9 @@
   "require-dev": {
     "silverorange/coding-standard": "^1.0.0"
   },
+  "replace": {
+    "pear-pear.php.net/mdb2": "2.*"
+  },
   "autoload": {
     "psr-0": {
       "MDB2": ""
