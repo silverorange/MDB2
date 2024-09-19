@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -46,27 +47,37 @@
 
 require_once dirname(__DIR__) . '/autoload.inc';
 
-class Standard_InternalsTest extends Standard_Abstract {
-
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+class Standard_InternalsTest extends Standard_Abstract
+{
     public $clear_tables = false;
 
     /**
      * Tests that the MDB2::apiVersion() method returns an API version number.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_apiVersion($ci) {
+    public function testApiVersion($ci)
+    {
         $this->manualSetUp($ci);
 
         $result = MDB2::apiVersion();
-        if ('@'.'package_version'.'@' == '@package_version@') {
-            $this->assertEquals('@'.'package_version'.'@', $result);
+        if ('@package_version@' == '@package_version@') {
+            $this->assertEquals('@package_version@', $result);
+
             return;
         }
-        $this->assertNotNull($result, 'apiVersion null: '.$result);
+        $this->assertNotNull($result, 'apiVersion null: ' . $result);
         $result = strtok($result, '.');
-        $this->assertTrue(is_numeric($result), 'apiVersion major: '.$result);
+        $this->assertTrue(is_numeric($result), 'apiVersion major: ' . $result);
         $result = strtok('.');
-        $this->assertTrue(is_numeric($result), 'apiVersion minor: '.$result);
+        $this->assertTrue(is_numeric($result), 'apiVersion minor: ' . $result);
         $result = strtok('.');
         $this->assertRegExp('/\d+((b|a|pl|rc)\d+)?/', $result);
     }
@@ -74,9 +85,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::classExists() method correctly tests for
      * existence of a class.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_classExists($ci) {
+    public function testClassExists($ci)
+    {
         $this->manualSetUp($ci);
 
         $this->assertFalse(MDB2::classExists('null'), 'classExists');
@@ -85,9 +100,13 @@ class Standard_InternalsTest extends Standard_Abstract {
 
     /**
      * Tests that the MDB2::loadClass() method correctly loads classes.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_loadClass($ci) {
+    public function testLoadClass($ci)
+    {
         $this->manualSetUp($ci);
 
         $this->assertTrue(MDB2::loadClass('MDB2', false), 'loadClass');
@@ -101,9 +120,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::factory() method correctly connects to a
      * database.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_factory($ci) {
+    public function testFactory($ci)
+    {
         $this->manualSetUp($ci);
 
         $db = MDB2::factory($this->dsn);
@@ -119,9 +142,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::isConnection() method correctly reports
      * connections.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_isConnection($ci) {
+    public function testIsConnection($ci)
+    {
         $this->manualSetUp($ci);
 
         $this->assertTrue(MDB2::isConnection($this->db), 'isConnection');
@@ -131,9 +158,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::isResult() method correctly identifies
      * results.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_isResult($ci) {
+    public function testIsResult($ci)
+    {
         $this->manualSetUp($ci);
 
         $obj = new MDB2_Result();
@@ -145,9 +176,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::isResultCommon() method correctly identifies
      * common results.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_isResultCommon($ci) {
+    public function testIsResultCommon($ci)
+    {
         $this->manualSetUp($ci);
 
         $result = null;
@@ -159,59 +194,67 @@ class Standard_InternalsTest extends Standard_Abstract {
 
     /**
      * Tests that the MDB2::parseDSN() method works.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_parseDSN($ci) {
+    public function testParseDSN($ci)
+    {
         $this->manualSetUp($ci);
 
         $dsn = $this->dsn;
         $result = MDB2::parseDSN($dsn);
-        $this->assertEquals($dsn['phptype'],$result['dbsyntax'],'parseDSN');
+        $this->assertEquals($dsn['phptype'], $result['dbsyntax'], 'parseDSN');
 
-        $dsn = "mydbms://myname:mypassword@localhost";
+        $dsn = 'mydbms://myname:mypassword@localhost';
         $result = MDB2::parseDSN($dsn);
-        $this->assertEquals('mydbms', $result['phptype'],'parseDSN');
-        $this->assertEquals('mydbms',$result['dbsyntax'],'parseDSN');
-        $this->assertEquals('tcp',$result['protocol'],'parseDSN');
-        $this->assertEquals('localhost',$result['hostspec'],'parseDSN');
-        $this->assertEquals(false,$result['port'],'parseDSN');
-        $this->assertEquals(false,$result['socket'],'parseDSN');
-        $this->assertEquals('myname',$result['username'],'parseDSN');
-        $this->assertEquals('mypassword',$result['password'],'parseDSN');
-        $this->assertEquals(false,$result['database'],'parseDSN');
+        $this->assertEquals('mydbms', $result['phptype'], 'parseDSN');
+        $this->assertEquals('mydbms', $result['dbsyntax'], 'parseDSN');
+        $this->assertEquals('tcp', $result['protocol'], 'parseDSN');
+        $this->assertEquals('localhost', $result['hostspec'], 'parseDSN');
+        $this->assertEquals(false, $result['port'], 'parseDSN');
+        $this->assertEquals(false, $result['socket'], 'parseDSN');
+        $this->assertEquals('myname', $result['username'], 'parseDSN');
+        $this->assertEquals('mypassword', $result['password'], 'parseDSN');
+        $this->assertEquals(false, $result['database'], 'parseDSN');
 
-        $dsn = "somesql://myname:mypassword@localhost:1234/mydb";
+        $dsn = 'somesql://myname:mypassword@localhost:1234/mydb';
         $result = MDB2::parseDSN($dsn);
-        $this->assertEquals('somesql',$result['phptype'],'parseDSN');
-        $this->assertEquals('somesql',$result['dbsyntax'],'parseDSN');
-        $this->assertEquals('tcp',$result['protocol'],'parseDSN');
-        $this->assertEquals('localhost',$result['hostspec'],'parseDSN');
-        $this->assertEquals('1234',$result['port'],'parseDSN');
-        $this->assertEquals(false,$result['socket'],'parseDSN');
-        $this->assertEquals('myname',$result['username'],'parseDSN');
-        $this->assertEquals('mypassword',$result['password'],'parseDSN');
-        $this->assertEquals('mydb',$result['database'],'parseDSN');
+        $this->assertEquals('somesql', $result['phptype'], 'parseDSN');
+        $this->assertEquals('somesql', $result['dbsyntax'], 'parseDSN');
+        $this->assertEquals('tcp', $result['protocol'], 'parseDSN');
+        $this->assertEquals('localhost', $result['hostspec'], 'parseDSN');
+        $this->assertEquals('1234', $result['port'], 'parseDSN');
+        $this->assertEquals(false, $result['socket'], 'parseDSN');
+        $this->assertEquals('myname', $result['username'], 'parseDSN');
+        $this->assertEquals('mypassword', $result['password'], 'parseDSN');
+        $this->assertEquals('mydb', $result['database'], 'parseDSN');
 
-        $dsn = "dbms1://myname@unix(opts)/mydb?param1=value1";
+        $dsn = 'dbms1://myname@unix(opts)/mydb?param1=value1';
         $result = MDB2::parseDSN($dsn);
-        $this->assertEquals('dbms1',$result['phptype'],'parseDSN');
-        $this->assertEquals('dbms1',$result['dbsyntax'],'parseDSN');
-        $this->assertEquals('unix',$result['protocol'],'parseDSN');
-        $this->assertEquals(false,$result['hostspec'],'parseDSN');
-        $this->assertEquals(false,$result['port'],'parseDSN');
-        $this->assertEquals('opts',$result['socket'],'parseDSN');
-        $this->assertEquals('myname',$result['username'],'parseDSN');
-        $this->assertEquals(false,$result['password'],'parseDSN');
-        $this->assertEquals('mydb',$result['database'],'parseDSN');
-        $this->assertEquals('value1',$result['param1'],'parseDSN');
+        $this->assertEquals('dbms1', $result['phptype'], 'parseDSN');
+        $this->assertEquals('dbms1', $result['dbsyntax'], 'parseDSN');
+        $this->assertEquals('unix', $result['protocol'], 'parseDSN');
+        $this->assertEquals(false, $result['hostspec'], 'parseDSN');
+        $this->assertEquals(false, $result['port'], 'parseDSN');
+        $this->assertEquals('opts', $result['socket'], 'parseDSN');
+        $this->assertEquals('myname', $result['username'], 'parseDSN');
+        $this->assertEquals(false, $result['password'], 'parseDSN');
+        $this->assertEquals('mydb', $result['database'], 'parseDSN');
+        $this->assertEquals('value1', $result['param1'], 'parseDSN');
     }
 
     /**
      * Tests that the MDB2::__toString() method returns the expected
      * string result.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test__toString($ci) {
+    public function testToString($ci)
+    {
         $this->manualSetUp($ci);
 
         $expected = "MDB2_Driver_{$this->dsn['phptype']}: (phptype = {$this->dsn['phptype']}, dbsyntax = {$this->db->dbsyntax})";
@@ -220,18 +263,22 @@ class Standard_InternalsTest extends Standard_Abstract {
                 $expected .= ' [connected]';
                 break;
         }
-        if (version_compare(PHP_VERSION, "5.0.0", "<")) {
+        if (version_compare(PHP_VERSION, '5.0.0', '<')) {
             $expected = mb_strtolower($expected);
         }
-        $this->assertEquals($expected ,$this->db->__toString(), '__toString');
+        $this->assertEquals($expected, $this->db->__toString(), '__toString');
     }
 
     /**
      * Tests that the MDB2::setFetchMode() method correctly sets the
      * fetch mode.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_setFetchMode($ci) {
+    public function testSetFetchMode($ci)
+    {
         $this->manualSetUp($ci);
 
         $tmp = $this->db->fetchmode;
@@ -246,16 +293,21 @@ class Standard_InternalsTest extends Standard_Abstract {
 
     /**
      * Tests that the MDB2::escape() method correctly escapes strings.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_escape($ci) {
+    public function testEscape($ci)
+    {
         $this->manualSetUp($ci);
         $text = "xxx'z'xxx";
         switch ($this->db->phptype) {
             case 'mysql':
             case 'mysqli':
-                $expect = "xxx\'z\'xxx";
+                $expect = "xxx\\'z\\'xxx";
                 break;
+
             default:
                 $expect = "xxx''z''xxx";
         }
@@ -264,9 +316,13 @@ class Standard_InternalsTest extends Standard_Abstract {
 
     /**
      * Tests that the MDB2::quoteIdentifier() method correctly quotes strings.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_quoteIdentifier($ci) {
+    public function testQuoteIdentifier($ci)
+    {
         $this->manualSetUp($ci);
 
         if ($this->db->phptype == 'ibase') {
@@ -284,9 +340,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::getAsKeyword() method correctly returns
      * the set "as" keyword.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_getAsKeyword($ci) {
+    public function testGetAsKeyword($ci)
+    {
         $this->manualSetUp($ci);
 
         $tmp = $this->db->as_keyword;
@@ -298,9 +358,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::getConnection() method correctly returns
      * a database resource.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_getConnection($ci) {
+    public function testGetConnection($ci)
+    {
         $this->manualSetUp($ci);
 
         $result = $this->db->getConnection();
@@ -311,26 +375,26 @@ class Standard_InternalsTest extends Standard_Abstract {
      * A private method to return a defined "row" of data for use
      * in the next set of tests.
      *
-     * @access private
-     * @return array The array of "row" data.
+     * @return array the array of "row" data
+     *
      * @dataProvider provider
      */
     public function _fetchRowData()
     {
-        return array(
+        return [
             0         => '',
             1         => 'notnull',
             2         => 'length7   ',
-            '1?2:3.4' => 'assoc'
-        );
+            '1?2:3.4' => 'assoc',
+        ];
     }
 
     /**
      * A private method to test results from the MDB2::_fixResultArrayValues()
      * method when the $mode parameter was set to MDB2_PORTABILITY_EMPTY_TO_NULL.
      *
-     * @access private
-     * @param array $row The result of the call to MDB2::_fixResultArrayValues().
+     * @param array $row the result of the call to MDB2::_fixResultArrayValues()
+     *
      * @dataProvider provider
      */
     public function _fixResultArrayValues_Test_EmptyToNull($row)
@@ -344,8 +408,8 @@ class Standard_InternalsTest extends Standard_Abstract {
      * A private method to test results from the MDB2::_fixResultArrayValues()
      * method when the $mode parameter was set to MDB2_PORTABILITY_RTRIM.
      *
-     * @access private
-     * @param array $row The result of the call to MDB2::_fixResultArrayValues().
+     * @param array $row the result of the call to MDB2::_fixResultArrayValues()
+     *
      * @dataProvider provider
      */
     public function _fixResultArrayValues_Test_Rtrim($row)
@@ -359,8 +423,8 @@ class Standard_InternalsTest extends Standard_Abstract {
      * A private method to test results from the MDB2::_fixResultArrayValues()
      * method when the $mode parameter was set to MDB2_PORTABILITY_FIX_ASSOC_FIELD_NAMES.
      *
-     * @access private
-     * @param array $row The result of the call to MDB2::_fixResultArrayValues().
+     * @param array $row the result of the call to MDB2::_fixResultArrayValues()
+     *
      * @dataProvider provider
      */
     public function _fixResultArrayValues_Test_FixAssocFieldNames($row)
@@ -372,9 +436,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::_fixResultArrayValues() method fixes array
      * values when used with various $mode parameters.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test__fixResultArrayValues($ci) {
+    public function testFixResultArrayValues($ci)
+    {
         $this->manualSetUp($ci);
 
         $mode = MDB2_PORTABILITY_EMPTY_TO_NULL;
@@ -422,13 +490,16 @@ class Standard_InternalsTest extends Standard_Abstract {
      * Tests that the MDB2::transaction() method returns expected values
      * when starting or rolling back a transaction, and for testing if
      * the connection is in a transaction.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_transaction($ci) {
+    public function testTransaction($ci)
+    {
         $this->manualSetUp($ci);
 
-        if (!$this->db->supports('transactions'))
-        {
+        if (!$this->db->supports('transactions')) {
             $this->assertTrue($this->db->beginTransaction(), 'transaction');
             $this->assertTrue($this->db->in_transaction, 'transaction');
             $this->assertTrue($this->db->rollback(), 'transaction');
@@ -449,9 +520,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::setDatabase() and MDB2::getDatabase() methods
      * correctly set and get the database name.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_setGetDatabase($ci) {
+    public function testSetGetDatabase($ci)
+    {
         $this->manualSetUp($ci);
 
         $old_name = $this->db->database_name;
@@ -463,65 +538,77 @@ class Standard_InternalsTest extends Standard_Abstract {
 
     /**
      * Tests that the MDB2::setDSN() method correctly sets the DSN.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_setDSN($ci) {
+    public function testSetDSN($ci)
+    {
         $this->manualSetUp($ci);
 
-        $dsn = "mydbms://myname:mypassword@localhost";
+        $dsn = 'mydbms://myname:mypassword@localhost';
         $result = $this->db->setDSN($dsn);
         $dsn_set = $this->db->dsn;
 
-        $this->assertEquals('mydbms', $dsn_set['phptype'],'setDSN');
-        $this->assertEquals('mydbms',$dsn_set['dbsyntax'],'setDSN');
-        $this->assertEquals('tcp',$dsn_set['protocol'],'setDSN');
-        $this->assertEquals('localhost',$dsn_set['hostspec'],'setDSN');
-        $this->assertEquals(false,$dsn_set['port'],'setDSN');
-        $this->assertEquals(false,$dsn_set['socket'],'setDSN');
-        $this->assertEquals('myname',$dsn_set['username'],'setDSN');
-        $this->assertEquals('mypassword',$dsn_set['password'],'setDSN');
-        $this->assertEquals(false,$dsn_set['database'],'setDSN');
+        $this->assertEquals('mydbms', $dsn_set['phptype'], 'setDSN');
+        $this->assertEquals('mydbms', $dsn_set['dbsyntax'], 'setDSN');
+        $this->assertEquals('tcp', $dsn_set['protocol'], 'setDSN');
+        $this->assertEquals('localhost', $dsn_set['hostspec'], 'setDSN');
+        $this->assertEquals(false, $dsn_set['port'], 'setDSN');
+        $this->assertEquals(false, $dsn_set['socket'], 'setDSN');
+        $this->assertEquals('myname', $dsn_set['username'], 'setDSN');
+        $this->assertEquals('mypassword', $dsn_set['password'], 'setDSN');
+        $this->assertEquals(false, $dsn_set['database'], 'setDSN');
     }
 
     /**
      * Tests that the MDB2::getDSN() method correctly gets the DSN.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_getDSN($ci) {
+    public function testGetDSN($ci)
+    {
         $this->manualSetUp($ci);
 
-        $dsn_set = "mydbms://myname:mypassword@localhost";
+        $dsn_set = 'mydbms://myname:mypassword@localhost';
         $result = $this->db->setDSN($dsn_set);
         $dsn_get = $this->db->getDSN();
-        $dsn_rex = "/(([\w]+)\(mydbms\):\/\/myname:mypassword@localhost\/)/";
-        //preg_match($dsn_rex, $dsn_get, $matches);
+        $dsn_rex = '/(([\\w]+)\\(mydbms\\):\\/\\/myname:mypassword@localhost\\/)/';
+        // preg_match($dsn_rex, $dsn_get, $matches);
         $this->assertRegExp($dsn_rex, $dsn_get, 'testGetDSN');
-        $dsn_rex = "/{$this->dsn['phptype']}[\w\W]+/";
+        $dsn_rex = "/{$this->dsn['phptype']}[\\w\\W]+/";
         $this->assertRegExp($dsn_rex, $dsn_get, 'testGetDSN');
 
-        $dsn_set = "mydbms://myname:mypassword@localhost";
+        $dsn_set = 'mydbms://myname:mypassword@localhost';
         $result = $this->db->setDSN($dsn_set);
         $dsn_get = $this->db->getDSN('string', true);
-        $dsn_rex = "/(([\w]+)\(mydbms\):\/\/myname:1@localhost\/)/";
+        $dsn_rex = '/(([\\w]+)\\(mydbms\\):\\/\\/myname:1@localhost\\/)/';
         $this->assertRegExp($dsn_rex, $dsn_get, 'testGetDSN');
-        $dsn_rex = "/{$this->dsn['phptype']}[\w\W]+/";
+        $dsn_rex = "/{$this->dsn['phptype']}[\\w\\W]+/";
         $this->assertRegExp($dsn_rex, $dsn_get, 'testGetDSN');
     }
 
     /**
-     * Tests that the 'new_link' DSN option is read correctly
+     * Tests that the 'new_link' DSN option is read correctly.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_isNewLinkSet($ci) {
+    public function testIsNewLinkSet($ci)
+    {
         $this->manualSetUp($ci);
 
-        $dsn = array(
+        $dsn = [
             'phptype'  => 'mydbms',
             'host'     => 'localhost',
             'database' => 'dbname',
             'username' => 'myname',
             'password' => 'mypassword',
-        );
+        ];
         $this->db->setDSN($dsn);
         $this->assertFalse($this->db->_isNewLinkSet());
         $dsn['new_link'] = true;
@@ -554,8 +641,8 @@ class Standard_InternalsTest extends Standard_Abstract {
         $dsn['new_link'] = 'TRUE';
         $this->db->setDSN($dsn);
         $this->assertTrue($this->db->_isNewLinkSet());
-        //now test some invalid values...
-        $dsn['new_link'] = new StdClass;
+        // now test some invalid values...
+        $dsn['new_link'] = new stdClass();
         $this->db->setDSN($dsn);
         $this->assertFalse($this->db->_isNewLinkSet());
         $dsn['new_link'] = '';
@@ -569,27 +656,34 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::setLimit() method correctly sets the limit
      * and offset values.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_setLimit($ci) {
+    public function testSetLimit($ci)
+    {
         $this->manualSetUp($ci);
 
-        if (!$this->db->supports('limit_queries'))
-        {
+        if (!$this->db->supports('limit_queries')) {
             $this->db->limit = null;
             $this->db->offset = null;
             $this->db->setLimit(100, 50);
-            $this->assertEquals(100, $this->db->limit , 'setLimit');
-            $this->assertEquals( 50, $this->db->offset, 'setLimit');
+            $this->assertEquals(100, $this->db->limit, 'setLimit');
+            $this->assertEquals(50, $this->db->offset, 'setLimit');
         }
     }
 
     /**
      * Tests that the MDB2::supports() method correctly finds keys
      * in the "supports" array.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_supports($ci) {
+    public function testSupports($ci)
+    {
         $this->manualSetUp($ci);
 
         $this->db->supported['testkey'] = true;
@@ -600,9 +694,13 @@ class Standard_InternalsTest extends Standard_Abstract {
     /**
      * Tests that the MDB2::getSequenceName() method correctly gets
      * sequence names.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_getSequenceName($ci) {
+    public function testGetSequenceName($ci)
+    {
         $this->manualSetUp($ci);
 
         $tmp = $this->db->options['seqname_format'];
@@ -613,9 +711,13 @@ class Standard_InternalsTest extends Standard_Abstract {
 
     /**
      * Tests that the MDB2::getIndexName() method correctly gets index names.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_getIndexName($ci) {
+    public function testGetIndexName($ci)
+    {
         $this->manualSetUp($ci);
 
         $tmp = $this->db->options['idxname_format'];
@@ -626,15 +728,19 @@ class Standard_InternalsTest extends Standard_Abstract {
 
     /**
      * Tests that the MDB2::disconnect() method correctly disconnects.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_disconnect($ci) {
+    public function testDisconnect($ci)
+    {
         $this->manualSetUp($ci);
 
         $this->db->connect();
         $this->assertTrue($this->db->disconnect(), 'disconnect');
         $this->assertEquals(0, $this->db->connection, 'disconnect');
-        $this->assertEquals(array(), $this->db->connected_dsn, 'disconnect');
+        $this->assertEquals([], $this->db->connected_dsn, 'disconnect');
         $this->assertEquals('', $this->db->connected_database_name, 'disconnect');
         $this->assertNull($this->db->opened_persistent, 'disconnect');
         $this->assertEquals('', $this->db->connected_server_info, 'disconnect');
@@ -644,10 +750,14 @@ class Standard_InternalsTest extends Standard_Abstract {
 
     /**
      * Test that the MDB2::_skipDelimitedStrings() method correctly recognizes
-     * parameter placeholders from quoted strings
+     * parameter placeholders from quoted strings.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function test_skipDelimitedStrings($ci) {
+    public function testSkipDelimitedStrings($ci)
+    {
         $this->manualSetUp($ci);
 
         $query = "UPDATE tbl SET fld='' WHERE fld2=:param AND fld3=':fakeparam' AND fld3=:param2";
@@ -665,12 +775,11 @@ class Standard_InternalsTest extends Standard_Abstract {
         $this->assertEquals(71, $this->db->_skipDelimitedStrings($query, 71, 72));
         $this->assertEquals(72, $this->db->_skipDelimitedStrings($query, 72, 72));
 
-        //be careful about SQL comments that are not comments (because within quotes)
+        // be careful about SQL comments that are not comments (because within quotes)
         $query = "UPDATE tbl SET fld='--some text' WHERE col2=?";
         $this->assertEquals(0, $this->db->_skipDelimitedStrings($query, 0, 0));
         $this->assertEquals(18, $this->db->_skipDelimitedStrings($query, 18, 19));
         $this->assertEquals(20, $this->db->_skipDelimitedStrings($query, 20, 20));
         $this->assertEquals(32, $this->db->_skipDelimitedStrings($query, 19, 21));
     }
-
 }

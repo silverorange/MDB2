@@ -42,19 +42,19 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 
 /**
- * MDB2_LOB: user land stream wrapper implementation for LOB support
+ * MDB2_LOB: user land stream wrapper implementation for LOB support.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
@@ -64,17 +64,17 @@ class MDB2_LOB
 
     /**
      * contains the key to the global MDB2 instance array of the associated
-     * MDB2 instance
+     * MDB2 instance.
      *
-     * @var integer
+     * @var int
      */
     protected $db_index;
 
     /**
      * contains the key to the global MDB2_LOB instance array of the associated
-     * MDB2_LOB instance
+     * MDB2_LOB instance.
      *
-     * @var integer
+     * @var int
      */
     protected $lob_index;
 
@@ -82,12 +82,16 @@ class MDB2_LOB
     // {{{ stream_open()
 
     /**
-     * open stream
+     * open stream.
      *
      * @param string specifies the URL that was passed to fopen()
      * @param string the mode used to open the file
      * @param int holds additional flags set by the streams API
      * @param string not used
+     * @param mixed $path
+     * @param mixed $mode
+     * @param mixed $options
+     * @param mixed $opened_path
      *
      * @return bool
      */
@@ -101,15 +105,16 @@ class MDB2_LOB
         if (empty($url['host'])) {
             return false;
         }
-        $this->db_index = (int)$url['host'];
+        $this->db_index = (int) $url['host'];
         if (!isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
             return false;
         }
-        $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
-        $this->lob_index = (int)$url['user'];
+        $db = &$GLOBALS['_MDB2_databases'][$this->db_index];
+        $this->lob_index = (int) $url['user'];
         if (!isset($db->datatype->lobs[$this->lob_index])) {
             return false;
         }
+
         return true;
     }
 
@@ -117,9 +122,10 @@ class MDB2_LOB
     // {{{ stream_read()
 
     /**
-     * read stream
+     * read stream.
      *
      * @param int number of bytes to read
+     * @param mixed $count
      *
      * @return string
      */
@@ -127,7 +133,7 @@ class MDB2_LOB
     public function stream_read($count)
     {
         if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
-            $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
+            $db = &$GLOBALS['_MDB2_databases'][$this->db_index];
             $db->datatype->retrieveLOB($db->datatype->lobs[$this->lob_index]);
 
             $data = $db->datatype->readLOB($db->datatype->lobs[$this->lob_index], $count);
@@ -136,6 +142,7 @@ class MDB2_LOB
                 $db->datatype->lobs[$this->lob_index]['endOfLOB'] = true;
             }
             $db->datatype->lobs[$this->lob_index]['position'] += $length;
+
             return $data;
         }
     }
@@ -144,9 +151,10 @@ class MDB2_LOB
     // {{{ stream_write()
 
     /**
-     * write stream, note implemented
+     * write stream, note implemented.
      *
      * @param string data
+     * @param mixed $data
      *
      * @return int
      */
@@ -160,7 +168,7 @@ class MDB2_LOB
     // {{{ stream_tell()
 
     /**
-     * return the current position
+     * return the current position.
      *
      * @return int current position
      */
@@ -168,7 +176,8 @@ class MDB2_LOB
     public function stream_tell()
     {
         if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
-            $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
+            $db = &$GLOBALS['_MDB2_databases'][$this->db_index];
+
             return $db->datatype->lobs[$this->lob_index]['position'];
         }
     }
@@ -177,7 +186,7 @@ class MDB2_LOB
     // {{{ stream_eof()
 
     /**
-     * Check if stream reaches EOF
+     * Check if stream reaches EOF.
      *
      * @return bool
      */
@@ -188,13 +197,14 @@ class MDB2_LOB
             return true;
         }
 
-        $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
+        $db = &$GLOBALS['_MDB2_databases'][$this->db_index];
         $result = $db->datatype->endOfLOB($db->datatype->lobs[$this->lob_index]);
-        if (version_compare(phpversion(), "5.0", ">=")
-            && version_compare(phpversion(), "5.1", "<")
+        if (version_compare(phpversion(), '5.0', '>=')
+            && version_compare(phpversion(), '5.1', '<')
         ) {
             return !$result;
         }
+
         return $result;
     }
 
@@ -202,10 +212,12 @@ class MDB2_LOB
     // {{{ stream_seek()
 
     /**
-     * Seek stream, not implemented
+     * Seek stream, not implemented.
      *
      * @param int offset
      * @param int whence
+     * @param mixed $offset
+     * @param mixed $whence
      *
      * @return bool
      */
@@ -219,17 +231,18 @@ class MDB2_LOB
     // {{{ stream_stat()
 
     /**
-     * return information about stream
+     * return information about stream.
      */
     // @codingStandardsIgnoreLine
     public function stream_stat()
     {
         if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
-            $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
-            return array(
-              'db_index' => $this->db_index,
-              'lob_index' => $this->lob_index,
-            );
+            $db = &$GLOBALS['_MDB2_databases'][$this->db_index];
+
+            return [
+                'db_index'  => $this->db_index,
+                'lob_index' => $this->lob_index,
+            ];
         }
     }
 
@@ -237,13 +250,13 @@ class MDB2_LOB
     // {{{ stream_close()
 
     /**
-     * close stream
+     * close stream.
      */
     // @codingStandardsIgnoreLine
     public function stream_close()
     {
         if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
-            $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
+            $db = &$GLOBALS['_MDB2_databases'][$this->db_index];
             if (isset($db->datatype->lobs[$this->lob_index])) {
                 $db->datatype->destroyLOB($db->datatype->lobs[$this->lob_index]);
                 unset($db->datatype->lobs[$this->lob_index]);
@@ -255,9 +268,8 @@ class MDB2_LOB
 }
 
 // register streams wrapper
-if (!stream_wrapper_register("MDB2LOB", "MDB2_LOB")) {
+if (!stream_wrapper_register('MDB2LOB', 'MDB2_LOB')) {
     MDB2::raiseError();
+
     return false;
 }
-
-?>

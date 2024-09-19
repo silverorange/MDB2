@@ -42,22 +42,18 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  */
 
 /**
- * Base class for the natuve modules that is extended by each MDB2 driver
+ * Base class for the natuve modules that is extended by each MDB2 driver.
  *
  * To load this module in the MDB2 object:
  * $mdb->loadModule('Native');
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
-class MDB2_Driver_Native_Common extends MDB2_Module_Common
-{
-}
-
-?>
+class MDB2_Driver_Native_Common extends MDB2_Module_Common {}

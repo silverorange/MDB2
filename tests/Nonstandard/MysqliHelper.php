@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -43,31 +44,37 @@
 //
 // $Id$
 
-class Nonstandard_MysqliHelper extends Nonstandard_Base {
-
+class Nonstandard_MysqliHelper extends Nonstandard_Base
+{
     public $trigger_body = '';
 
-    public function createTrigger($trigger_name, $table_name) {
+    public function createTrigger($trigger_name, $table_name)
+    {
         $this->trigger_body = 'BEGIN
-  UPDATE '. $table_name .' SET somedescription = OLD.somename WHERE id = NEW.id;
+  UPDATE ' . $table_name . ' SET somedescription = OLD.somename WHERE id = NEW.id;
 END';
-        $query = 'CREATE TRIGGER '. $trigger_name .' AFTER UPDATE ON '. $table_name .'
-                  FOR EACH ROW '. $this->trigger_body .';';
+        $query = 'CREATE TRIGGER ' . $trigger_name . ' AFTER UPDATE ON ' . $table_name . '
+                  FOR EACH ROW ' . $this->trigger_body . ';';
+
         return $this->db->exec($query);
     }
 
-    public function checkTrigger($trigger_name, $table_name, $def) {
+    public function checkTrigger($trigger_name, $table_name, $def)
+    {
         parent::checkTrigger($trigger_name, $table_name, $def);
         $this->test->assertEquals($this->trigger_body, $def['trigger_body']);
     }
 
-    public function dropTrigger($trigger_name, $table_name) {
-        return $this->db->exec('DROP TRIGGER '.$trigger_name);
+    public function dropTrigger($trigger_name, $table_name)
+    {
+        return $this->db->exec('DROP TRIGGER ' . $trigger_name);
     }
 
-    public function createFunction($name) {
-        $query = 'CREATE FUNCTION '.$name.'(a INT, b INT) RETURNS INT
+    public function createFunction($name)
+    {
+        $query = 'CREATE FUNCTION ' . $name . '(a INT, b INT) RETURNS INT
 RETURN a + b;';
+
         return $this->db->exec($query);
     }
 }

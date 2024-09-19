@@ -52,20 +52,20 @@
 /**
  * These are constants for the tableInfo-function
  * they are bitwised or'ed. so if there are more constants to be defined
- * in the future, adjust MDB2_TABLEINFO_FULL accordingly
+ * in the future, adjust MDB2_TABLEINFO_FULL accordingly.
  */
-const MDB2_TABLEINFO_ORDER      = 1;
+const MDB2_TABLEINFO_ORDER = 1;
 const MDB2_TABLEINFO_ORDERTABLE = 2;
-const MDB2_TABLEINFO_FULL       = 3;
+const MDB2_TABLEINFO_FULL = 3;
 
 /**
- * Base class for the schema reverse engineering module that is extended by each MDB2 driver
+ * Base class for the schema reverse engineering module that is extended by each MDB2 driver.
  *
  * To load this module in the MDB2 object:
  * $mdb->loadModule('Reverse');
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
@@ -74,7 +74,7 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
     // {{{ splitTableSchema()
 
     /**
-     * Split the "[owner|schema].table" notation into an array
+     * Split the "[owner|schema].table" notation into an array.
      *
      * @param string $table [schema and] table name
      *
@@ -82,25 +82,27 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      */
     public function splitTableSchema($table)
     {
-        $ret = array();
+        $ret = [];
         if (strpos($table, '.') !== false) {
             return explode('.', $table);
         }
-        return array(null, $table);
+
+        return [null, $table];
     }
 
     // }}}
     // {{{ getTableFieldDefinition()
 
     /**
-     * Get the structure of a field into an array
+     * Get the structure of a field into an array.
      *
-     * @param string    $table     name of table that should be used in method
-     * @param string    $field     name of field that should be used in method
+     * @param string $table name of table that should be used in method
+     * @param string $field name of field that should be used in method
+     *
      * @return mixed data array on success, a MDB2 error on failure.
-     *          The returned array contains an array for each field definition,
-     *          with all or some of these indices, depending on the field data type:
-     *          [notnull] [nativetype] [length] [fixed] [default] [type] [mdb2type]
+     *               The returned array contains an array for each field definition,
+     *               with all or some of these indices, depending on the field data type:
+     *               [notnull] [nativetype] [length] [fixed] [default] [type] [mdb2type]
      */
     public function getTableFieldDefinition($table, $field)
     {
@@ -122,23 +124,24 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
     // {{{ getTableIndexDefinition()
 
     /**
-     * Get the structure of an index into an array
+     * Get the structure of an index into an array.
      *
-     * @param string    $table      name of table that should be used in method
-     * @param string    $index      name of index that should be used in method
+     * @param string $table name of table that should be used in method
+     * @param string $index name of index that should be used in method
+     *
      * @return mixed data array on success, a MDB2 error on failure
-     *          The returned array has this structure:
-     *          </pre>
-     *          array (
-     *              [fields] => array (
-     *                  [field1name] => array() // one entry per each field covered
-     *                  [field2name] => array() // by the index
-     *                  [field3name] => array(
-     *                      [sorting] => ascending
-     *                  )
-     *              )
-     *          );
-     *          </pre>
+     *               The returned array has this structure:
+     *               </pre>
+     *               array (
+     *               [fields] => array (
+     *               [field1name] => array() // one entry per each field covered
+     *               [field2name] => array() // by the index
+     *               [field3name] => array(
+     *               [sorting] => ascending
+     *               )
+     *               )
+     *               );
+     *               </pre>
      */
     public function getTableIndexDefinition($table, $index)
     {
@@ -160,41 +163,42 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
     // {{{ getTableConstraintDefinition()
 
     /**
-     * Get the structure of an constraints into an array
+     * Get the structure of an constraints into an array.
      *
-     * @param string    $table      name of table that should be used in method
-     * @param string    $index      name of index that should be used in method
+     * @param string $table name of table that should be used in method
+     * @param string $index name of index that should be used in method
+     *
      * @return mixed data array on success, a MDB2 error on failure
-     *          The returned array has this structure:
-     *          <pre>
-     *          array (
-     *              [primary] => 0
-     *              [unique]  => 0
-     *              [foreign] => 1
-     *              [check]   => 0
-     *              [fields] => array (
-     *                  [field1name] => array() // one entry per each field covered
-     *                  [field2name] => array() // by the index
-     *                  [field3name] => array(
-     *                      [sorting]  => ascending
-     *                      [position] => 3
-     *                  )
-     *              )
-     *              [references] => array(
-     *                  [table] => name
-     *                  [fields] => array(
-     *                      [field1name] => array(  //one entry per each referenced field
-     *                           [position] => 1
-     *                      )
-     *                  )
-     *              )
-     *              [deferrable] => 0
-     *              [initiallydeferred] => 0
-     *              [onupdate] => CASCADE|RESTRICT|SET NULL|SET DEFAULT|NO ACTION
-     *              [ondelete] => CASCADE|RESTRICT|SET NULL|SET DEFAULT|NO ACTION
-     *              [match] => SIMPLE|PARTIAL|FULL
-     *          );
-     *          </pre>
+     *               The returned array has this structure:
+     *               <pre>
+     *               array (
+     *               [primary] => 0
+     *               [unique]  => 0
+     *               [foreign] => 1
+     *               [check]   => 0
+     *               [fields] => array (
+     *               [field1name] => array() // one entry per each field covered
+     *               [field2name] => array() // by the index
+     *               [field3name] => array(
+     *               [sorting]  => ascending
+     *               [position] => 3
+     *               )
+     *               )
+     *               [references] => array(
+     *               [table] => name
+     *               [fields] => array(
+     *               [field1name] => array(  //one entry per each referenced field
+     *               [position] => 1
+     *               )
+     *               )
+     *               )
+     *               [deferrable] => 0
+     *               [initiallydeferred] => 0
+     *               [onupdate] => CASCADE|RESTRICT|SET NULL|SET DEFAULT|NO ACTION
+     *               [ondelete] => CASCADE|RESTRICT|SET NULL|SET DEFAULT|NO ACTION
+     *               [match] => SIMPLE|PARTIAL|FULL
+     *               );
+     *               </pre>
      */
     public function getTableConstraintDefinition($table, $index)
     {
@@ -216,16 +220,17 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
     // {{{ getSequenceDefinition()
 
     /**
-     * Get the structure of a sequence into an array
+     * Get the structure of a sequence into an array.
      *
-     * @param string    $sequence   name of sequence that should be used in method
+     * @param string $sequence name of sequence that should be used in method
+     *
      * @return mixed data array on success, a MDB2 error on failure
-     *          The returned array has this structure:
-     *          <pre>
-     *          array (
-     *              [start] => n
-     *          );
-     *          </pre>
+     *               The returned array has this structure:
+     *               <pre>
+     *               array (
+     *               [start] => n
+     *               );
+     *               </pre>
      */
     public function getSequenceDefinition($sequence)
     {
@@ -244,10 +249,11 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
             $db->warnings[] = 'database does not support getting current
                 sequence value, the sequence value was incremented';
         }
-        $definition = array();
+        $definition = [];
         if ($start != 1) {
-            $definition = array('start' => $start);
+            $definition = ['start' => $start];
         }
+
         return $definition;
     }
 
@@ -255,29 +261,30 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
     // {{{ getTriggerDefinition()
 
     /**
-     * Get the structure of a trigger into an array
+     * Get the structure of a trigger into an array.
      *
      * EXPERIMENTAL
      *
      * WARNING: this function is experimental and may change the returned value
      * at any time until labelled as non-experimental
      *
-     * @param string    $trigger    name of trigger that should be used in method
+     * @param string $trigger name of trigger that should be used in method
+     *
      * @return mixed data array on success, a MDB2 error on failure
-     *          The returned array has this structure:
-     *          <pre>
-     *          array (
-     *              [trigger_name]    => 'trigger name',
-     *              [table_name]      => 'table name',
-     *              [trigger_body]    => 'trigger body definition',
-     *              [trigger_type]    => 'BEFORE' | 'AFTER',
-     *              [trigger_event]   => 'INSERT' | 'UPDATE' | 'DELETE'
-     *                  //or comma separated list of multiple events, when supported
-     *              [trigger_enabled] => true|false
-     *              [trigger_comment] => 'trigger comment',
-     *          );
-     *          </pre>
-     *          The oci8 driver also returns a [when_clause] index.
+     *               The returned array has this structure:
+     *               <pre>
+     *               array (
+     *               [trigger_name]    => 'trigger name',
+     *               [table_name]      => 'table name',
+     *               [trigger_body]    => 'trigger body definition',
+     *               [trigger_type]    => 'BEFORE' | 'AFTER',
+     *               [trigger_event]   => 'INSERT' | 'UPDATE' | 'DELETE'
+     *               //or comma separated list of multiple events, when supported
+     *               [trigger_enabled] => true|false
+     *               [trigger_comment] => 'trigger comment',
+     *               );
+     *               </pre>
+     *               The oci8 driver also returns a [when_clause] index
      */
     public function getTriggerDefinition($trigger)
     {
@@ -299,7 +306,7 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
     // {{{ tableInfo()
 
     /**
-     * Returns information about a table or a result set
+     * Returns information about a table or a result set.
      *
      * The format of the resulting array depends on which <var>$mode</var>
      * you select.  The sample output below is based on this query:
@@ -401,20 +408,20 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
      * If the 'portability' option has <samp>MDB2_PORTABILITY_FIX_CASE</samp>
      * turned on, the names of tables and fields will be lower or upper cased.
      *
-     * @param object|string  $result  MDB2_result object from a query or a
-     *                                string containing the name of a table.
-     *                                While this also accepts a query result
-     *                                resource identifier, this behavior is
-     *                                deprecated.
-     * @param int  $mode   either unused or one of the tableInfo modes:
-     *                     <kbd>MDB2_TABLEINFO_ORDERTABLE</kbd>,
-     *                     <kbd>MDB2_TABLEINFO_ORDER</kbd> or
-     *                     <kbd>MDB2_TABLEINFO_FULL</kbd> (which does both).
-     *                     These are bitwise, so the first two can be
-     *                     combined using <kbd>|</kbd>.
+     * @param object|string $result MDB2_result object from a query or a
+     *                              string containing the name of a table.
+     *                              While this also accepts a query result
+     *                              resource identifier, this behavior is
+     *                              deprecated.
+     * @param int           $mode   either unused or one of the tableInfo modes:
+     *                              <kbd>MDB2_TABLEINFO_ORDERTABLE</kbd>,
+     *                              <kbd>MDB2_TABLEINFO_ORDER</kbd> or
+     *                              <kbd>MDB2_TABLEINFO_FULL</kbd> (which does both).
+     *                              These are bitwise, so the first two can be
+     *                              combined using <kbd>|</kbd>.
      *
-     * @return array  an associative array with the information requested.
-     *                 A MDB2_Error object on failure.
+     * @return array an associative array with the information requested.
+     *               A MDB2_Error object on failure.
      *
      * @see MDB2_Driver_Common::setOption()
      */
@@ -441,7 +448,7 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
             return $fields;
         }
 
-        $flags = array();
+        $flags = [];
 
         $idxname_format = $db->getOption('idxname_format');
         $db->setOption('idxname_format', '%s');
@@ -449,6 +456,7 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
         $indexes = $db->manager->listTableIndexes($result);
         if (MDB2::isError($indexes)) {
             $db->setOption('idxname_format', $idxname_format);
+
             return $indexes;
         }
 
@@ -456,6 +464,7 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
             $definition = $this->getTableIndexDefinition($result, $index);
             if (MDB2::isError($definition)) {
                 $db->setOption('idxname_format', $idxname_format);
+
                 return $definition;
             }
             if (count($definition['fields']) > 1) {
@@ -474,6 +483,7 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
             $definition = $this->getTableConstraintDefinition($result, $constraint);
             if (MDB2::isError($definition)) {
                 $db->setOption('idxname_format', $idxname_format);
+
                 return $definition;
             }
             $flag = !empty($definition['primary'])
@@ -488,7 +498,7 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
             }
         }
 
-        $res = array();
+        $res = [];
 
         if ($mode) {
             $res['num_fields'] = count($fields);
@@ -498,26 +508,27 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
             $definition = $this->getTableFieldDefinition($result, $field);
             if (MDB2::isError($definition)) {
                 $db->setOption('idxname_format', $idxname_format);
+
                 return $definition;
             }
             $res[$i] = $definition[0];
             $res[$i]['name'] = $field;
             $res[$i]['table'] = $result;
-            $res[$i]['type'] = preg_replace('/^([a-z]+).*$/i', '\\1', trim($definition[0]['nativetype']));
+            $res[$i]['type'] = preg_replace('/^([a-z]+).*$/i', '\1', trim($definition[0]['nativetype']));
             // 'primary_key', 'unique_key', 'multiple_key'
             $res[$i]['flags'] = empty($flags[$field]) ? '' : $flags[$field];
             // not_null', 'unsigned', 'auto_increment', 'default_[rawencodedvalue]'
             if (!empty($res[$i]['notnull'])) {
-                $res[$i]['flags'].= ' not_null';
+                $res[$i]['flags'] .= ' not_null';
             }
             if (!empty($res[$i]['unsigned'])) {
-                $res[$i]['flags'].= ' unsigned';
+                $res[$i]['flags'] .= ' unsigned';
             }
             if (!empty($res[$i]['auto_increment'])) {
-                $res[$i]['flags'].= ' autoincrement';
+                $res[$i]['flags'] .= ' autoincrement';
             }
             if (!empty($res[$i]['default'])) {
-                $res[$i]['flags'].= ' default_'.rawurlencode($res[$i]['default']);
+                $res[$i]['flags'] .= ' default_' . rawurlencode($res[$i]['default']);
             }
 
             if ($mode & MDB2_TABLEINFO_ORDER) {
@@ -529,10 +540,9 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
         }
 
         $db->setOption('idxname_format', $idxname_format);
+
         return $res;
     }
 
     // }}}
 }
-
-?>

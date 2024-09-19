@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -45,16 +46,25 @@
 
 require_once dirname(__DIR__) . '/autoload.inc';
 
-class Standard_ApiTest extends Standard_Abstract {
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+class Standard_ApiTest extends Standard_Abstract
+{
     public $clear_tables = false;
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testParseDSN($ci) {
+    public function testParseDSN($ci)
+    {
         $this->manualSetUp($ci);
 
-        $expected = array (
+        $expected = [
             'phptype'  => 'phptype',
             'dbsyntax' => 'phptype',
             'username' => 'username',
@@ -65,14 +75,14 @@ class Standard_ApiTest extends Standard_Abstract {
             'socket'   => false,
             'database' => '/usr/db_file.db',
             'mode'     => '0644',
-        );
+        ];
         $original = 'phptype://username:password@protocol+hostspec:110//usr/db_file.db?mode=0644';
         $this->assertEquals($expected, MDB2::parseDSN($original));
 
         // ---------------------------------------------------------------------
 
         $original = 'phptype(dbsyntax)://username:password@hostspec/database_name';
-        $expected = array (
+        $expected = [
             'phptype'  => 'phptype',
             'dbsyntax' => 'dbsyntax',
             'username' => 'username',
@@ -83,7 +93,7 @@ class Standard_ApiTest extends Standard_Abstract {
             'socket'   => false,
             'database' => 'database_name',
             'mode'     => false,
-        );
+        ];
         $this->assertEquals($expected, MDB2::parseDSN($original));
 
         // ---------------------------------------------------------------------
@@ -122,9 +132,9 @@ class Standard_ApiTest extends Standard_Abstract {
 
         // ---------------------------------------------------------------------
 
-        //oracle's "Easy Connect" syntax (Oracle 10g, @see Bug #4854)
+        // oracle's "Easy Connect" syntax (Oracle 10g, @see Bug #4854)
         $original = 'oci8://scott:tiger@//localhost/XE';
-        $expected = array (
+        $expected = [
             'phptype'  => 'oci8',
             'dbsyntax' => 'oci8',
             'username' => 'scott',
@@ -135,14 +145,14 @@ class Standard_ApiTest extends Standard_Abstract {
             'socket'   => false,
             'database' => 'XE',
             'mode'     => false,
-        );
+        ];
         $this->assertEquals($expected, MDB2::parseDSN($original));
 
         // ---------------------------------------------------------------------
 
-        //ibase dbname+path on windows
-        $original = 'ibase://user:pwd@localhost/C:\\PATH_TO_DB\\TEST.FDB';
-        $expected = array (
+        // ibase dbname+path on windows
+        $original = 'ibase://user:pwd@localhost/C:\PATH_TO_DB\TEST.FDB';
+        $expected = [
             'phptype'  => 'ibase',
             'dbsyntax' => 'ibase',
             'username' => 'user',
@@ -151,16 +161,16 @@ class Standard_ApiTest extends Standard_Abstract {
             'hostspec' => 'localhost',
             'port'     => false,
             'socket'   => false,
-            'database' => 'C:\\PATH_TO_DB\\TEST.FDB',
+            'database' => 'C:\PATH_TO_DB\TEST.FDB',
             'mode'     => false,
-        );
+        ];
         $this->assertEquals($expected, MDB2::parseDSN($original));
 
         // ---------------------------------------------------------------------
 
-        //sqlite dbname+path on unix
+        // sqlite dbname+path on unix
         $original = 'sqlite:////full/unix/path/to/file.db?mode=0666';
-        $expected = array (
+        $expected = [
             'phptype'  => 'sqlite',
             'dbsyntax' => 'sqlite',
             'username' => false,
@@ -171,20 +181,23 @@ class Standard_ApiTest extends Standard_Abstract {
             'socket'   => false,
             'database' => '/full/unix/path/to/file.db',
             'mode'     => '0666',
-        );
+        ];
         $this->assertEquals($expected, MDB2::parseDSN($original));
     }
 
-    //test stuff in common.php
+    // test stuff in common.php
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testConnect($ci) {
+    public function testConnect($ci)
+    {
         $this->manualSetUp($ci);
 
         $db = MDB2::factory($this->dsn, $this->options);
         if (MDB2::isError($db)) {
-            $this->fail('Connect failed bailing out - ' .$db->getMessage() . ' - ' .$db->getUserInfo());
+            $this->fail('Connect failed bailing out - ' . $db->getMessage() . ' - ' . $db->getUserInfo());
         }
         if (MDB2::isError($this->db)) {
             exit;
@@ -193,8 +206,11 @@ class Standard_ApiTest extends Standard_Abstract {
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testGetOption($ci) {
+    public function testGetOption($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db, 'getOption')) {
@@ -206,8 +222,11 @@ class Standard_ApiTest extends Standard_Abstract {
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testSetOption($ci) {
+    public function testSetOption($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db, 'setOption')) {
@@ -221,8 +240,11 @@ class Standard_ApiTest extends Standard_Abstract {
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testLoadModule($ci) {
+    public function testLoadModule($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db, 'loadModule')) {
@@ -233,21 +255,27 @@ class Standard_ApiTest extends Standard_Abstract {
 
     // test of the driver
     /**
-     * A helper that executes a simple SELECT query
-     * @return mixed  the query result on success, false on failure
+     * A helper that executes a simple SELECT query.
+     *
+     * @return mixed the query result on success, false on failure
      */
-    public function standardQuery() {
+    public function standardQuery()
+    {
         $query = 'SELECT * FROM ' . $this->table_users;
         if (!MDB2::isError($this->db)) {
             return $this->db->query($query);
         }
+
         return false;
     }
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testQuery($ci) {
+    public function testQuery($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db, 'query')) {
@@ -260,8 +288,11 @@ class Standard_ApiTest extends Standard_Abstract {
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testExec($ci) {
+    public function testExec($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db, 'exec')) {
@@ -269,29 +300,35 @@ class Standard_ApiTest extends Standard_Abstract {
         }
         $result = $this->db->exec('UPDATE ' . $this->table_users . ' SET user_name = user_name WHERE user_id = user_id');
         if (MDB2::isError($result)) {
-            $this->fail('exec: $result returned is an error: '.$result->getMessage().' :: '.$result->getUserInfo());
+            $this->fail('exec: $result returned is an error: ' . $result->getMessage() . ' :: ' . $result->getUserInfo());
         }
         $this->assertEquals(0, $result, 'exec: incorrect number of affected rows returned');
     }
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testPrepare($ci) {
+    public function testPrepare($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db, 'prepare')) {
             return;
         }
-        $stmt = $this->db->prepare('SELECT user_name FROM ' . $this->table_users . ' WHERE user_id = ?', array('integer'), MDB2_PREPARE_RESULT);
+        $stmt = $this->db->prepare('SELECT user_name FROM ' . $this->table_users . ' WHERE user_id = ?', ['integer'], MDB2_PREPARE_RESULT);
         $this->assertTrue(MDB2::isStatement($stmt));
         $stmt->free();
     }
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testFetchRow($ci) {
+    public function testFetchRow($ci)
+    {
         $this->manualSetUp($ci);
 
         $result = $this->standardQuery();
@@ -302,14 +339,17 @@ class Standard_ApiTest extends Standard_Abstract {
         $result->free();
 
         if (MDB2::isError($err)) {
-            $this->fail('Error testFetch: '.$err->getMessage().' - '.$err->getUserInfo());
+            $this->fail('Error testFetch: ' . $err->getMessage() . ' - ' . $err->getUserInfo());
         }
     }
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testNumRows($ci) {
+    public function testNumRows($ci)
+    {
         $this->manualSetUp($ci);
 
         $result = $this->standardQuery();
@@ -323,8 +363,11 @@ class Standard_ApiTest extends Standard_Abstract {
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testNumCols($ci) {
+    public function testNumCols($ci)
+    {
         $this->manualSetUp($ci);
 
         $result = $this->standardQuery();
@@ -338,8 +381,11 @@ class Standard_ApiTest extends Standard_Abstract {
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testSingleton($ci) {
+    public function testSingleton($ci)
+    {
         $this->manualSetUp($ci);
 
         $db = MDB2::singleton();
@@ -353,28 +399,34 @@ class Standard_ApiTest extends Standard_Abstract {
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testGetServerVersion($ci) {
+    public function testGetServerVersion($ci)
+    {
         $this->manualSetUp($ci);
 
         $server_info = $this->db->getServerVersion(true);
         if (MDB2::isError($server_info)) {
-            $this->fail('Error: '.$server_info->getMessage().' - '.$server_info->getUserInfo());
+            $this->fail('Error: ' . $server_info->getMessage() . ' - ' . $server_info->getUserInfo());
         } else {
-            $this->assertTrue(is_string($server_info), 'Error: Server info is not returned as a string: '. serialize($server_info));
+            $this->assertTrue(is_string($server_info), 'Error: Server info is not returned as a string: ' . serialize($server_info));
         }
         $server_info = $this->db->getServerVersion();
         if (MDB2::isError($server_info)) {
-            $this->fail('Error: '.$server_info->getMessage().' - '.$server_info->getUserInfo());
+            $this->fail('Error: ' . $server_info->getMessage() . ' - ' . $server_info->getUserInfo());
         } else {
-            $this->assertTrue(is_array($server_info), 'Error: Server info is not returned as an array: '. serialize($server_info));
+            $this->assertTrue(is_array($server_info), 'Error: Server info is not returned as an array: ' . serialize($server_info));
         }
     }
 
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testQuoteIdentifier($ci) {
+    public function testQuoteIdentifier($ci)
+    {
         $this->manualSetUp($ci);
 
         if ($this->db->phptype != 'ibase') {

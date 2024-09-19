@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -45,14 +46,23 @@
 
 require_once dirname(__DIR__) . '/autoload.inc';
 
-class Standard_BugsTest extends Standard_Abstract {
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+class Standard_BugsTest extends Standard_Abstract
+{
     /**
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testFetchModeBug($ci) {
+    public function testFetchModeBug($ci)
+    {
         $this->manualSetUp($ci);
 
-        $data = array();
+        $data = [];
 
         $stmt = $this->db->prepare('INSERT INTO ' . $this->table_users . ' (' . implode(', ', array_keys($this->fields)) . ') VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', array_values($this->fields), MDB2_PREPARE_MANIP);
 
@@ -60,7 +70,7 @@ class Standard_BugsTest extends Standard_Abstract {
         $data['user_password'] = 'somepass';
         $data['subscribed'] = true;
         $data['user_id'] = 0;
-        $data['quota'] = sprintf("%.2f", strval(2/100));
+        $data['quota'] = sprintf('%.2f', strval(2 / 100));
         $data['weight'] = sqrt(0);
         $data['access_date'] = MDB2_Date::mdbToday();
         $data['access_time'] = MDB2_Date::mdbTime();
@@ -69,7 +79,7 @@ class Standard_BugsTest extends Standard_Abstract {
         $result = $stmt->execute(array_values($data));
 
         if (MDB2::isError($result)) {
-            $this->fail('Error executing prepared query '.$result->getMessage());
+            $this->fail('Error executing prepared query ' . $result->getMessage());
         }
 
         $stmt->free();
@@ -78,7 +88,7 @@ class Standard_BugsTest extends Standard_Abstract {
         $result = $this->db->query($query);
 
         if (MDB2::isError($result)) {
-            $this->fail('Error selecting from users: '.$result->getMessage());
+            $this->fail('Error selecting from users: ' . $result->getMessage());
         }
 
         $this->db->setFetchMode(MDB2_FETCHMODE_ASSOC);
@@ -88,7 +98,7 @@ class Standard_BugsTest extends Standard_Abstract {
 
         $result = $this->db->query('SELECT user_name, user_id, quota FROM ' . $this->table_users . ' ORDER BY user_name');
         if (MDB2::isError($result)) {
-            $this->fail('Error selecting from users: '.$result->getMessage());
+            $this->fail('Error selecting from users: ' . $result->getMessage());
         }
         $this->db->setFetchMode(MDB2_FETCHMODE_ORDERED);
 
@@ -99,9 +109,13 @@ class Standard_BugsTest extends Standard_Abstract {
 
     /**
      * @see http://bugs.php.net/bug.php?id=22328
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testBug22328($ci) {
+    public function testBug22328($ci)
+    {
         $this->manualSetUp($ci);
 
         $result = $this->db->query('SELECT * FROM ' . $this->table_users);
@@ -115,16 +129,20 @@ class Standard_BugsTest extends Standard_Abstract {
 
     /**
      * @see http://pear.php.net/bugs/bug.php?id=670
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testBug670($ci) {
+    public function testBug670($ci)
+    {
         $this->manualSetUp($ci);
 
         $data['user_name'] = null;
         $data['user_password'] = 'somepass';
         $data['subscribed'] = true;
         $data['user_id'] = 1;
-        $data['quota'] = sprintf("%.2f",strval(3/100));
+        $data['quota'] = sprintf('%.2f', strval(3 / 100));
         $data['weight'] = sqrt(1);
         $data['access_date'] = MDB2_Date::mdbToday();
         $data['access_time'] = MDB2_Date::mdbTime();
@@ -136,10 +154,10 @@ class Standard_BugsTest extends Standard_Abstract {
         $result = $this->db->query('SELECT user_name FROM ' . $this->table_users);
         $col = $result->fetchCol('user_name');
         if (MDB2::isError($col)) {
-            $this->fail('Error when fetching column first first row as NULL: '.$col->getMessage());
+            $this->fail('Error when fetching column first first row as NULL: ' . $col->getMessage());
         }
 
-        $data['user_name'] = "user_1";
+        $data['user_name'] = 'user_1';
         $data['user_id'] = 2;
 
         $result = $stmt->execute(array_values($data));
@@ -147,7 +165,7 @@ class Standard_BugsTest extends Standard_Abstract {
         $result = $this->db->query('SELECT user_name FROM ' . $this->table_users);
         $col = $result->fetchCol('user_name');
         if (MDB2::isError($col)) {
-            $this->fail('Error when fetching column: '.$col->getMessage());
+            $this->fail('Error when fetching column: ' . $col->getMessage());
         }
 
         $data['user_name'] = null;
@@ -157,9 +175,13 @@ class Standard_BugsTest extends Standard_Abstract {
 
     /**
      * @see http://pear.php.net/bugs/bug.php?id=681
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testBug681($ci) {
+    public function testBug681($ci)
+    {
         $this->manualSetUp($ci);
 
         $result = $this->db->query('SELECT * FROM ' . $this->table_users . ' WHERE 1=0');
@@ -181,9 +203,13 @@ class Standard_BugsTest extends Standard_Abstract {
 
     /**
      * @see http://pear.php.net/bugs/bug.php?id=718
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testBug718($ci) {
+    public function testBug718($ci)
+    {
         $this->manualSetUp($ci);
 
         $data = $this->getSampleData(1);
@@ -191,20 +217,24 @@ class Standard_BugsTest extends Standard_Abstract {
         $stmt = $this->db->prepare('INSERT INTO ' . $this->table_users . ' (' . implode(', ', array_keys($this->fields)) . ') VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', array_values($this->fields), MDB2_PREPARE_MANIP);
         $result = $stmt->execute(array_values($data));
 
-        $row = $this->db->queryRow('SELECT a.user_id, b.user_id FROM ' . $this->table_users . ' a, ' . $this->table_users . ' b where a.user_id = b.user_id', array('integer', 'integer'), MDB2_FETCHMODE_ORDERED);
-        $this->assertEquals(2, count($row), "Columns with the same name get overwritten in ordered mode");
+        $row = $this->db->queryRow('SELECT a.user_id, b.user_id FROM ' . $this->table_users . ' a, ' . $this->table_users . ' b where a.user_id = b.user_id', ['integer', 'integer'], MDB2_FETCHMODE_ORDERED);
+        $this->assertEquals(2, count($row), 'Columns with the same name get overwritten in ordered mode');
 
         $stmt->free();
     }
 
     /**
      * @see http://pear.php.net/bugs/bug.php?id=946
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testBug946($ci) {
+    public function testBug946($ci)
+    {
         $this->manualSetUp($ci);
 
-        $data = array();
+        $data = [];
         $total_rows = 5;
 
         $stmt = $this->db->prepare('INSERT INTO ' . $this->table_users . ' (' . implode(', ', array_keys($this->fields)) . ') VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', array_values($this->fields), MDB2_PREPARE_MANIP);
@@ -215,7 +245,7 @@ class Standard_BugsTest extends Standard_Abstract {
             $result = $stmt->execute(array_values($data[$row]));
 
             if (MDB2::isError($result)) {
-                $this->fail('Error executing prepared query: '.$result->getMessage());
+                $this->fail('Error executing prepared query: ' . $result->getMessage());
             }
         }
         $stmt->free();
@@ -227,7 +257,7 @@ class Standard_BugsTest extends Standard_Abstract {
         $numrows = $result->numRows();
         while ($row = $result->fetchRow()) {
             if (MDB2::isError($row)) {
-                $this->fail('Error fetching a row: '.$row->getMessage());
+                $this->fail('Error fetching a row: ' . $row->getMessage());
             }
         }
         $result->free();
@@ -236,7 +266,7 @@ class Standard_BugsTest extends Standard_Abstract {
         $numrows = $result->numRows();
         while ($row = $result->fetchRow()) {
             if (MDB2::isError($row)) {
-                $this->fail('Error fetching a row: '.$row->getMessage());
+                $this->fail('Error fetching a row: ' . $row->getMessage());
             }
         }
         $result->free();
@@ -244,15 +274,19 @@ class Standard_BugsTest extends Standard_Abstract {
 
     /**
      * @see http://pear.php.net/bugs/bug.php?id=3146
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testBug3146($ci) {
+    public function testBug3146($ci)
+    {
         $this->manualSetUp($ci);
 
-        $data = array();
+        $data = [];
         $total_rows = 5;
 
-        $query = 'INSERT INTO ' . $this->table_users . ' (' . implode(', ', array_keys($this->fields)) . ') VALUES ('.implode(', ', array_fill(0, count($this->fields), '?')).')';
+        $query = 'INSERT INTO ' . $this->table_users . ' (' . implode(', ', array_keys($this->fields)) . ') VALUES (' . implode(', ', array_fill(0, count($this->fields), '?')) . ')';
         $stmt = $this->db->prepare($query, array_values($this->fields), MDB2_PREPARE_MANIP);
 
         for ($row = 0; $row < $total_rows; $row++) {
@@ -260,7 +294,7 @@ class Standard_BugsTest extends Standard_Abstract {
 
             $result = $stmt->execute(array_values($data[$row]));
             if (MDB2::isError($result)) {
-                $this->fail('Error executing prepared query: '.$result->getMessage());
+                $this->fail('Error executing prepared query: ' . $result->getMessage());
             }
         }
         $stmt->free();
@@ -279,11 +313,16 @@ class Standard_BugsTest extends Standard_Abstract {
     }
 
     /**
-     * Strong typing query result misbehaves when $n_columns > $n_types
+     * Strong typing query result misbehaves when $n_columns > $n_types.
+     *
      * @see http://pear.php.net/bugs/bug.php?id=9502
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testBug9502($ci) {
+    public function testBug9502($ci)
+    {
         $this->manualSetUp($ci);
 
         $row = 5;
@@ -292,16 +331,16 @@ class Standard_BugsTest extends Standard_Abstract {
         $result = $stmt->execute(array_values($data));
         $stmt->free();
 
-        //provide an incomplete and scrambled types array
-        $types = array();
+        // provide an incomplete and scrambled types array
+        $types = [];
         $types['subscribed'] = $this->fields['subscribed'];
-        $types['user_name']  = $this->fields['user_name'];
-        $types['weight']     = $this->fields['weight'];
+        $types['user_name'] = $this->fields['user_name'];
+        $types['weight'] = $this->fields['weight'];
 
-        $query = 'SELECT weight, user_name, user_id, quota, subscribed FROM ' . $this->table_users . ' WHERE user_id = '.$row;
+        $query = 'SELECT weight, user_name, user_id, quota, subscribed FROM ' . $this->table_users . ' WHERE user_id = ' . $row;
         $result = $this->db->queryRow($query, $types, MDB2_FETCHMODE_ASSOC);
         if (MDB2::isError($result)) {
-            $this->fail('Error executing query: '.$result->getMessage() .' - '. $result->getUserInfo());
+            $this->fail('Error executing query: ' . $result->getMessage() . ' - ' . $result->getUserInfo());
         } else {
             $this->assertInternalType('boolean', $result['subscribed']);
             $this->assertInternalType('numeric', $result['user_id']);
@@ -311,11 +350,16 @@ class Standard_BugsTest extends Standard_Abstract {
     }
 
     /**
-     * Type introspection breaks with associative arrays if names are identical
+     * Type introspection breaks with associative arrays if names are identical.
+     *
      * @see http://pear.php.net/bugs/bug.php?id=18203
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testBug18203($ci) {
+    public function testBug18203($ci)
+    {
         $this->manualSetUp($ci);
 
         $res = $this->db->query("SELECT 1 as id, 2 as id, 'foo' as title", true);
@@ -323,19 +367,24 @@ class Standard_BugsTest extends Standard_Abstract {
             $this->fail($res->getMessage());
         }
         $record = $res->fetchRow(MDB2_FETCHMODE_ASSOC);
-        $expected = array(
+        $expected = [
             'id'    => 2,
-            'title' => 'foo'
-        );
+            'title' => 'foo',
+        ];
         $this->assertEquals($expected, $record);
     }
 
     /**
-     * Call to a member function seek() on a non-object
+     * Call to a member function seek() on a non-object.
+     *
      * @see https://pear.php.net/bugs/bug.php?id=18978
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testBug18978($ci) {
+    public function testBug18978($ci)
+    {
         $this->manualSetUp($ci);
 
         $data = $this->populateUserData(3);
@@ -346,7 +395,7 @@ class Standard_BugsTest extends Standard_Abstract {
         if (MDB2::isError($res)) {
             $this->fail($res->getUserInfo());
         }
-        foreach($res as $key => $row) {
+        foreach ($res as $key => $row) {
             $this->assertEquals($data[$key - 1]['user_name'], $row['user_name']);
         }
         $res->free();
@@ -366,11 +415,16 @@ class Standard_BugsTest extends Standard_Abstract {
     }
 
     /**
-     * Make setOption('result_wrap_class') work without convoluted query() calls
+     * Make setOption('result_wrap_class') work without convoluted query() calls.
+     *
      * @see https://pear.php.net/bugs/bug.php?id=16970
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testRequest16970($ci) {
+    public function testRequest16970($ci)
+    {
         $this->manualSetUp($ci);
 
         $data = $this->populateUserData(1);
@@ -380,6 +434,7 @@ class Standard_BugsTest extends Standard_Abstract {
             case 'mysqli':
                 $expect = 'mysqli_result';
                 break;
+
             default:
                 $expect = 'resource';
         }
@@ -430,7 +485,6 @@ class Standard_BugsTest extends Standard_Abstract {
         } else {
             $this->assertInstanceOf($expect, $res);
         }
-
 
         // Utilize a default result wrap class.
 
@@ -483,13 +537,15 @@ class Standard_BugsTest extends Standard_Abstract {
     }
 
     /**
-     * non-static functions called statically
+     * non-static functions called statically.
+     *
      * @see https://pear.php.net/bugs/bug.php?id=18398
      */
-    public function testBug18398() {
+    public function testBug18398()
+    {
         $oer = error_reporting(error_reporting() | E_STRICT);
-        $dsn = array('phptype' => 'x');
-        $db = new MDB2;
+        $dsn = ['phptype' => 'x'];
+        $db = new MDB2();
         $db->connect($dsn);
         error_reporting($oer);
     }

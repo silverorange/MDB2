@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -45,28 +46,38 @@
 
 require_once dirname(__DIR__) . '/autoload.inc';
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class Standard_FunctionTest extends Standard_Abstract
 {
     /**
      * Can not use setUp() because we are using a dataProvider to get multiple
      * MDB2 objects per test.
      *
-     * @param array $ci  an associative array with two elements.  The "dsn"
-     *                   element must contain an array of DSN information.
-     *                   The "options" element must be an array of connection
-     *                   options.
+     * @param array $ci an associative array with two elements.  The "dsn"
+     *                  element must contain an array of DSN information.
+     *                  The "options" element must be an array of connection
+     *                  options.
      */
-    protected function manualSetUp($ci) {
+    protected function manualSetUp($ci)
+    {
         parent::manualSetUp($ci);
 
         $this->db->loadModule('Function', null, true);
     }
 
     /**
-     * Test functionTable()
+     * Test functionTable().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testFunctionTable($ci) {
+    public function testFunctionTable($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'functionTable')) {
@@ -74,50 +85,58 @@ class Standard_FunctionTest extends Standard_Abstract
         }
 
         $functionTable_clause = $this->db->function->functionTable();
-        $query = 'SELECT 1 '.$functionTable_clause;
+        $query = 'SELECT 1 ' . $functionTable_clause;
         $result = $this->db->queryOne($query);
         if (MDB2::isError($result)) {
-            $this->fail('Error fetching from function table: '.$result->getMessage().' :: '.$result->getUserInfo());
+            $this->fail('Error fetching from function table: ' . $result->getMessage() . ' :: ' . $result->getUserInfo());
         } else {
             $this->assertEquals('1', $result, 'Error fetching value from function table');
         }
     }
 
     /**
-     * Test now()
+     * Test now().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testNow($ci) {
+    public function testNow($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'now')) {
             return;
         }
 
-        $tests = array(
+        $tests = [
             'timestamp' => '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/',
-            'date' => '/^\d{4}-\d{2}-\d{2}$/',
-            'time' => '/^\d{2}:\d{2}:\d{2}$/',
-        );
+            'date'      => '/^\d{4}-\d{2}-\d{2}$/',
+            'time'      => '/^\d{2}:\d{2}:\d{2}$/',
+        ];
 
         foreach ($tests as $type => $regexp) {
             $functionTable_clause = $this->db->function->functionTable();
             $now_clause = $this->db->function->now($type);
-            $query = 'SELECT '.$now_clause . $functionTable_clause;
+            $query = 'SELECT ' . $now_clause . $functionTable_clause;
             $result = $this->db->queryOne($query, $type);
             if (MDB2::isError($result)) {
-                $this->fail('Error getting '.$type);
+                $this->fail('Error getting ' . $type);
             } else {
-                $this->assertRegExp($regexp, $result, 'Error: not a proper '.$type);
+                $this->assertRegExp($regexp, $result, 'Error: not a proper ' . $type);
             }
         }
     }
 
     /**
-     * Test substring()
+     * Test substring().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testSubstring($ci) {
+    public function testSubstring($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'substring')) {
@@ -125,18 +144,18 @@ class Standard_FunctionTest extends Standard_Abstract
         }
         $data = $this->getSampleData(1234);
 
-        $query = 'INSERT INTO ' . $this->table_users . ' (' . implode(', ', array_keys($this->fields)) . ') VALUES ('.implode(', ', array_fill(0, count($this->fields), '?')).')';
+        $query = 'INSERT INTO ' . $this->table_users . ' (' . implode(', ', array_keys($this->fields)) . ') VALUES (' . implode(', ', array_fill(0, count($this->fields), '?')) . ')';
         $stmt = $this->db->prepare($query, array_values($this->fields), MDB2_PREPARE_MANIP);
 
         $result = $stmt->execute(array_values($data));
         $stmt->free();
 
         if (MDB2::isError($result)) {
-            $this->fail('Error executing prepared query'.$result->getMessage());
+            $this->fail('Error executing prepared query' . $result->getMessage());
         }
 
         $substring_clause = $this->db->function->substring('user_name', 1, 4);
-        $query = 'SELECT '.$substring_clause .' FROM ' . $this->table_users;
+        $query = 'SELECT ' . $substring_clause . ' FROM ' . $this->table_users;
         $result = $this->db->queryOne($query);
         if (MDB2::isError($result)) {
             $this->fail('Error getting substring');
@@ -145,7 +164,7 @@ class Standard_FunctionTest extends Standard_Abstract
         }
 
         $substring_clause = $this->db->function->substring('user_name', 5, 1);
-        $query = 'SELECT '.$substring_clause .' FROM ' . $this->table_users;
+        $query = 'SELECT ' . $substring_clause . ' FROM ' . $this->table_users;
         $result = $this->db->queryOne($query);
         if (MDB2::isError($result)) {
             $this->fail('Error getting substring');
@@ -153,9 +172,9 @@ class Standard_FunctionTest extends Standard_Abstract
             $this->assertEquals('_', $result, 'Error: substrings not equals');
         }
 
-        //test NULL 2nd parameter
+        // test NULL 2nd parameter
         $substring_clause = $this->db->function->substring('user_name', 6);
-        $query = 'SELECT '.$substring_clause .' FROM ' . $this->table_users;
+        $query = 'SELECT ' . $substring_clause . ' FROM ' . $this->table_users;
         $result = $this->db->queryOne($query);
         if (MDB2::isError($result)) {
             $this->fail('Error getting substring');
@@ -165,10 +184,14 @@ class Standard_FunctionTest extends Standard_Abstract
     }
 
     /**
-     * Test concat()
+     * Test concat().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testConcat($ci) {
+    public function testConcat($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'concat')) {
@@ -177,7 +200,7 @@ class Standard_FunctionTest extends Standard_Abstract
 
         $functionTable_clause = $this->db->function->functionTable();
         $concat_clause = $this->db->function->concat($this->db->quote('time', 'text'), $this->db->quote('stamp', 'text'));
-        $query = 'SELECT '.$concat_clause . $functionTable_clause;
+        $query = 'SELECT ' . $concat_clause . $functionTable_clause;
         $result = $this->db->queryOne($query);
         if (MDB2::isError($result)) {
             $this->fail('Error getting concat');
@@ -187,10 +210,14 @@ class Standard_FunctionTest extends Standard_Abstract
     }
 
     /**
-     * Test random()
+     * Test random().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testRandom($ci) {
+    public function testRandom($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'random')) {
@@ -199,20 +226,24 @@ class Standard_FunctionTest extends Standard_Abstract
 
         $rand_clause = $this->db->function->random();
         $functionTable_clause = $this->db->function->functionTable();
-        $query = 'SELECT '.$rand_clause . $functionTable_clause;
+        $query = 'SELECT ' . $rand_clause . $functionTable_clause;
         $result = $this->db->queryOne($query, 'float');
         if (MDB2::isError($result)) {
-            $this->fail('Error getting random value:'. $result->getMessage());
+            $this->fail('Error getting random value:' . $result->getMessage());
         } else {
-            $this->assertTrue(($result >= 0 && $result <= 1), 'Error: could not get random value between 0 and 1: '.$result);
+            $this->assertTrue($result >= 0 && $result <= 1, 'Error: could not get random value between 0 and 1: ' . $result);
         }
     }
 
     /**
-     * Test lower()
+     * Test lower().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testLower($ci) {
+    public function testLower($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'lower')) {
@@ -221,20 +252,24 @@ class Standard_FunctionTest extends Standard_Abstract
         $string = $this->db->quote('FoO');
         $lower_clause = $this->db->function->lower($string);
         $functionTable_clause = $this->db->function->functionTable();
-        $query = 'SELECT '.$lower_clause . $functionTable_clause;
+        $query = 'SELECT ' . $lower_clause . $functionTable_clause;
         $result = $this->db->queryOne($query, 'text');
         if (MDB2::isError($result)) {
-            $this->fail('Error getting lower case value:'. $result->getMessage());
+            $this->fail('Error getting lower case value:' . $result->getMessage());
         } else {
-            $this->assertTrue(($result === 'foo'), 'Error: could not lower case "FoO": '.$result);
+            $this->assertTrue($result === 'foo', 'Error: could not lower case "FoO": ' . $result);
         }
     }
 
     /**
-     * Test upper()
+     * Test upper().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testUpper($ci) {
+    public function testUpper($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'upper')) {
@@ -243,20 +278,24 @@ class Standard_FunctionTest extends Standard_Abstract
         $string = $this->db->quote('FoO');
         $upper_clause = $this->db->function->upper($string);
         $functionTable_clause = $this->db->function->functionTable();
-        $query = 'SELECT '.$upper_clause . $functionTable_clause;
+        $query = 'SELECT ' . $upper_clause . $functionTable_clause;
         $result = $this->db->queryOne($query, 'text');
         if (MDB2::isError($result)) {
-            $this->fail('Error getting upper case value:'. $result->getMessage());
+            $this->fail('Error getting upper case value:' . $result->getMessage());
         } else {
-            $this->assertTrue(($result === 'FOO'), 'Error: could not upper case "FoO": '.$result);
+            $this->assertTrue($result === 'FOO', 'Error: could not upper case "FoO": ' . $result);
         }
     }
 
     /**
-     * Test length()
+     * Test length().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testLenght($ci) {
+    public function testLenght($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'length')) {
@@ -265,28 +304,32 @@ class Standard_FunctionTest extends Standard_Abstract
         $string = $this->db->quote('foo');
         $length_clause = $this->db->function->length($string);
         $functionTable_clause = $this->db->function->functionTable();
-        $query = 'SELECT '.$length_clause . $functionTable_clause;
+        $query = 'SELECT ' . $length_clause . $functionTable_clause;
         $len = $this->db->queryOne($query, 'integer');
         if (MDB2::isError($len)) {
-            $this->fail('Error getting upper case value:'. $len->getMessage());
+            $this->fail('Error getting upper case value:' . $len->getMessage());
         } else {
-            $this->assertEquals(3, $len, 'Error: incorrect length for "foo" string: '.$len);
+            $this->assertEquals(3, $len, 'Error: incorrect length for "foo" string: ' . $len);
         }
     }
 
     /**
-     * Test replace()
+     * Test replace().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testReplace($ci) {
+    public function testReplace($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'replace')) {
             return;
         }
 
-        $string  = $this->db->quote('so what');
-        $search  = $this->db->quote('o');
+        $string = $this->db->quote('so what');
+        $search = $this->db->quote('o');
         $replace = $this->db->quote('ay');
         $this->db->pushErrorHandling(PEAR_ERROR_RETURN);
         $this->db->expectError(MDB2_ERROR_UNSUPPORTED);
@@ -298,20 +341,24 @@ class Standard_FunctionTest extends Standard_Abstract
         }
 
         $functionTable_clause = $this->db->function->functionTable();
-        $query = 'SELECT '.$replace_clause . $functionTable_clause;
+        $query = 'SELECT ' . $replace_clause . $functionTable_clause;
         $result = $this->db->queryOne($query, 'text');
         if (MDB2::isError($result)) {
-            $this->fail('Error getting replaced value:'. $result->getMessage() . ' :: ' . $result->getUserInfo());
+            $this->fail('Error getting replaced value:' . $result->getMessage() . ' :: ' . $result->getUserInfo());
         } else {
-            $this->assertEquals('say what', $result, 'Error: could not get replace string: '.$result);
+            $this->assertEquals('say what', $result, 'Error: could not get replace string: ' . $result);
         }
     }
 
     /**
-     * Test unixtimestamp()
+     * Test unixtimestamp().
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testUnixtimestamp($ci) {
+    public function testUnixtimestamp($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->function, 'unixtimestamp')) {
@@ -332,7 +379,7 @@ class Standard_FunctionTest extends Standard_Abstract
         }
 
         $functionTable_clause = $this->db->function->functionTable();
-        $query = 'SELECT '.$unixts_clause . $functionTable_clause;
+        $query = 'SELECT ' . $unixts_clause . $functionTable_clause;
         $result = $this->db->queryOne($query, 'text');
         if (MDB2::isError($result)) {
             $this->fail('Error getting UNIX timestamp: ' . $result->getUserInfo());

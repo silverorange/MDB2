@@ -42,14 +42,14 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  */
 
 /**
- * PHP5 Iterator
+ * PHP5 Iterator.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
@@ -69,7 +69,9 @@ class MDB2_Iterator implements Iterator
     // {{{ constructor
 
     /**
-     * Constructor
+     * Constructor.
+     *
+     * @param mixed $fetchmode
      */
     public function __construct(MDB2_Result_Common $result, $fetchmode = MDB2_FETCHMODE_DEFAULT)
     {
@@ -81,11 +83,10 @@ class MDB2_Iterator implements Iterator
     // {{{ seek()
 
     /**
-     * Seek forward to a specific row in a result set
+     * Seek forward to a specific row in a result set.
      *
      * @param int number of the row where the data can be found
-     *
-     * @return void
+     * @param mixed $rownum
      */
     public function seek($rownum)
     {
@@ -99,9 +100,7 @@ class MDB2_Iterator implements Iterator
     // {{{ next()
 
     /**
-     * Fetch next row of data
-     *
-     * @return void
+     * Fetch next row of data.
      */
     public function next()
     {
@@ -112,9 +111,7 @@ class MDB2_Iterator implements Iterator
     // {{{ current()
 
     /**
-     * return a row of data
-     *
-     * @return void
+     * return a row of data.
      */
     public function current()
     {
@@ -125,6 +122,7 @@ class MDB2_Iterator implements Iterator
             }
             $this->row = $row;
         }
+
         return $this->row;
     }
 
@@ -132,13 +130,13 @@ class MDB2_Iterator implements Iterator
     // {{{ valid()
 
     /**
-     * Check if the end of the result set has been reached
+     * Check if the end of the result set has been reached.
      *
      * @return bool true/false, false is also returned on failure
      */
     public function valid()
     {
-        return (bool)$this->current();
+        return (bool) $this->current();
     }
 
     // }}}
@@ -156,6 +154,7 @@ class MDB2_Iterator implements Iterator
         }
         $this->result = false;
         $this->row = null;
+
         return false;
     }
 
@@ -163,15 +162,16 @@ class MDB2_Iterator implements Iterator
     // {{{ key()
 
     /**
-     * Returns the row number
+     * Returns the row number.
      *
-     * @return int|bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
+     * @return bool|int|MDB2_Error true on success, false|MDB2_Error if result is invalid
      */
     public function key()
     {
         if ($this->result) {
             return $this->result->rowCount();
         }
+
         return false;
     }
 
@@ -179,20 +179,15 @@ class MDB2_Iterator implements Iterator
     // {{{ rewind()
 
     /**
-     * Seek to the first row in a result set
-     *
-     * @return void
-     * @access public
+     * Seek to the first row in a result set.
      */
-    public function rewind()
-    {
-    }
+    public function rewind() {}
 
     // }}}
     // {{{ destructor
 
     /**
-     * Destructor
+     * Destructor.
      */
     public function __destruct()
     {
@@ -201,5 +196,3 @@ class MDB2_Iterator implements Iterator
 
     // }}}
 }
-
-?>

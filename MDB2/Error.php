@@ -42,7 +42,7 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  */
 
 /**
@@ -50,7 +50,7 @@
  * messages.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Stig Bakken <ssb@fast.no>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
@@ -61,10 +61,14 @@ class MDB2_Error extends PEAR_Error
     /**
      * MDB2_Error constructor.
      *
-     * @param   mixed   MDB2 error code, or string with error message.
+     * @param   mixed   MDB2 error code, or string with error message
      * @param   int     what 'error mode' to operate in
      * @param   int     what error level to use for $mode & PEAR_ERROR_TRIGGER
      * @param   mixed   additional debug info, such as the last query
+     * @param mixed      $code
+     * @param mixed      $level
+     * @param mixed|null $debuginfo
+     * @param mixed|null $dummy
      */
     public function __construct(
         $code = MDB2_ERROR,
@@ -78,7 +82,7 @@ class MDB2_Error extends PEAR_Error
         }
 
         parent::__construct(
-            'MDB2 Error: '.MDB2::errorMessage($code),
+            'MDB2 Error: ' . MDB2::errorMessage($code),
             $code,
             $mode,
             $level,
@@ -88,5 +92,3 @@ class MDB2_Error extends PEAR_Error
 
     // }}}
 }
-
-?>

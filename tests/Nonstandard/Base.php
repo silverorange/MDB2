@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -43,7 +44,8 @@
 //
 // $Id$
 
-class Nonstandard_Base {
+class Nonstandard_Base
+{
     /**
      * @var MDB2_Driver_Common
      */
@@ -55,79 +57,127 @@ class Nonstandard_Base {
     public $test;
 
     /**
-     * Returns a driver-specific object
+     * Returns a driver-specific object.
+     *
      * @param MDB2_Driver_Common
      * @param Standard_Abstract
+     * @param mixed $db
+     * @param mixed $test
      */
-    public static function factory($db, $test) {
+    public static function factory($db, $test)
+    {
         $classname = 'Nonstandard_' . ucfirst($db->phptype) . 'Helper';
         if (class_exists($classname)) {
-            $obj = new $classname;
+            $obj = new $classname();
             $obj->db = $db;
             $obj->test = $test;
+
             return $obj;
         }
+
         return false;
     }
 
     /**
-     * Create a TRIGGER
+     * Create a TRIGGER.
+     *
+     * @param mixed $trigger_name
+     * @param mixed $table_name
      */
-    public function createTrigger($trigger_name, $table_name) {
-        return $this->db->raiseError(MDB2_ERROR_NOT_CAPABLE, null, null,
-            'not capable', __FUNCTION__);
+    public function createTrigger($trigger_name, $table_name)
+    {
+        return $this->db->raiseError(
+            MDB2_ERROR_NOT_CAPABLE,
+            null,
+            null,
+            'not capable',
+            __FUNCTION__
+        );
     }
 
     /**
-     * Check if getTriggerDefinition() returns the correct definition for the trigger
+     * Check if getTriggerDefinition() returns the correct definition for the trigger.
+     *
+     * @param mixed $trigger_name
+     * @param mixed $table_name
+     * @param mixed $def
      */
-    public function checkTrigger($trigger_name, $table_name, $def) {
+    public function checkTrigger($trigger_name, $table_name, $def)
+    {
         $this->test->assertEquals(mb_strtoupper($trigger_name), mb_strtoupper($def['trigger_name']), 'Error getting trigger definition (name)');
-        $this->test->assertEquals(mb_strtoupper($table_name),  mb_strtoupper($def['table_name']),   'Error getting trigger definition (table)');
-        $this->test->assertEquals('AFTER',  $def['trigger_type'], 'Error getting trigger definition (type)');
+        $this->test->assertEquals(mb_strtoupper($table_name), mb_strtoupper($def['table_name']), 'Error getting trigger definition (table)');
+        $this->test->assertEquals('AFTER', $def['trigger_type'], 'Error getting trigger definition (type)');
         $this->test->assertEquals('UPDATE', $def['trigger_event'], 'Error getting trigger definition (event)');
         $this->test->assertTrue(is_string($def['trigger_body']), 'Error getting trigger definition (body)');
         $this->test->assertTrue($def['trigger_enabled'], 'Error getting trigger definition (enabled)');
-        //$this->test->assertTrue(empty($def['trigger_comment']),  'Error getting trigger definition (comment)');
+        // $this->test->assertTrue(empty($def['trigger_comment']),  'Error getting trigger definition (comment)');
     }
 
     /**
-     * Drop a TRIGGER
+     * Drop a TRIGGER.
+     *
+     * @param mixed $trigger_name
+     * @param mixed $table_name
      */
-    public function dropTrigger($trigger_name, $table_name) {
-        return $this->db->raiseError(MDB2_ERROR_NOT_CAPABLE, null, null,
-            'not capable', __FUNCTION__);
+    public function dropTrigger($trigger_name, $table_name)
+    {
+        return $this->db->raiseError(
+            MDB2_ERROR_NOT_CAPABLE,
+            null,
+            null,
+            'not capable',
+            __FUNCTION__
+        );
     }
 
     /**
-     * Create a VIEW
+     * Create a VIEW.
+     *
+     * @param mixed $view_name
+     * @param mixed $table_name
      */
-    public function createView($view_name, $table_name) {
-        $query = 'CREATE VIEW '. $this->db->quoteIdentifier($view_name, true)
-                .' (id) AS SELECT id FROM '
-                . $this->db->quoteIdentifier($table_name, true) .' WHERE id > 1';
+    public function createView($view_name, $table_name)
+    {
+        $query = 'CREATE VIEW ' . $this->db->quoteIdentifier($view_name, true)
+                . ' (id) AS SELECT id FROM '
+                . $this->db->quoteIdentifier($table_name, true) . ' WHERE id > 1';
+
         return $this->db->exec($query);
     }
 
     /**
-     * Drop a VIEW
+     * Drop a VIEW.
+     *
+     * @param mixed $view_name
      */
-    public function dropView($view_name) {
-        return $this->db->exec('DROP VIEW '.$view_name);
+    public function dropView($view_name)
+    {
+        return $this->db->exec('DROP VIEW ' . $view_name);
     }
 
     /**
-     * Create a FUNCTION
+     * Create a FUNCTION.
+     *
+     * @param mixed $name
      */
-    public function createFunction($name) {
-        return $this->db->raiseError(MDB2_ERROR_NOT_CAPABLE, null, null,
-            'not capable', __FUNCTION__);
+    public function createFunction($name)
+    {
+        return $this->db->raiseError(
+            MDB2_ERROR_NOT_CAPABLE,
+            null,
+            null,
+            'not capable',
+            __FUNCTION__
+        );
     }
 
     /**
-     * Drop a FUNCTION
+     * Drop a FUNCTION.
+     *
+     * @param mixed $name
      */
-    public function dropFunction($name) {
-        return $this->db->exec('DROP FUNCTION '.$name);
+    public function dropFunction($name)
+    {
+        return $this->db->exec('DROP FUNCTION ' . $name);
     }
 }

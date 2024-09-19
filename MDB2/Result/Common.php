@@ -42,14 +42,14 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  */
 
 /**
- * The common result class for MDB2 result objects
+ * The common result class for MDB2 result objects.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
@@ -60,9 +60,9 @@ class MDB2_Result_Common extends MDB2_Result
     public $db;
     public $result;
     public $rownum = -1;
-    public $types = array();
-    public $types_assoc = array();
-    public $values = array();
+    public $types = [];
+    public $types_assoc = [];
+    public $values = [];
     public $offset;
     public $offset_count = 0;
     public $limit;
@@ -72,7 +72,12 @@ class MDB2_Result_Common extends MDB2_Result
     // {{{ constructor: function __construct($db, &$result, $limit = 0, $offset = 0)
 
     /**
-     * Constructor
+     * Constructor.
+     *
+     * @param mixed $db
+     * @param mixed $result
+     * @param mixed $limit
+     * @param mixed $offset
      */
     public function __construct($db, &$result, $limit = 0, $offset = 0)
     {
@@ -101,8 +106,9 @@ class MDB2_Result_Common extends MDB2_Result
      *       in the result set, the remaining columns are assumed to be of the
      *       type text. Currently, the types clob and blob are not fully
      *       supported.
+     * @param mixed $types
      *
-     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
     public function setResultTypes($types)
     {
@@ -121,6 +127,7 @@ class MDB2_Result_Common extends MDB2_Result
                 $this->types_assoc[$key] = $value;
             }
         }
+
         return MDB2_OK;
     }
 
@@ -128,11 +135,12 @@ class MDB2_Result_Common extends MDB2_Result
     // {{{ function seek($rownum = 0)
 
     /**
-     * Seek to a specific row in a result set
+     * Seek to a specific row in a result set.
      *
      * @param   int     number of the row where the data can be found
+     * @param mixed $rownum
      *
-     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
     public function seek($rownum = 0)
     {
@@ -149,6 +157,7 @@ class MDB2_Result_Common extends MDB2_Result
         while ($this->rownum < $target_rownum) {
             $this->fetchRow();
         }
+
         return MDB2_OK;
     }
 
@@ -156,34 +165,36 @@ class MDB2_Result_Common extends MDB2_Result
     // {{{ function fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
 
     /**
-     * Fetch and return a row of data
+     * Fetch and return a row of data.
      *
      * @param   int     how the array data should be indexed
      * @param   int     number of the row where the data can be found
+     * @param mixed      $fetchmode
+     * @param mixed|null $rownum
      *
-     * @return  int     data array on success, a MDB2 error on failure
+     * @return int data array on success, a MDB2 error on failure
      */
     public function fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
     {
-        $err = MDB2::raiseError(
+        return MDB2::raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
             'method not implemented',
             __FUNCTION__
         );
-
-        return $err;
     }
 
     // }}}
     // {{{ function fetchOne($colnum = 0)
 
     /**
-     * fetch single column from the next row from a result set
+     * fetch single column from the next row from a result set.
      *
      * @param int|string the column number (or name) to fetch
      * @param int        number of the row where the data can be found
+     * @param mixed      $colnum
+     * @param mixed|null $rownum
      *
      * @return string data on success, a MDB2 error on failure
      */
@@ -199,10 +210,11 @@ class MDB2_Result_Common extends MDB2_Result
                 MDB2_ERROR_TRUNCATED,
                 null,
                 null,
-                'column is not defined in the result set: '.$colnum,
+                'column is not defined in the result set: ' . $colnum,
                 __FUNCTION__
             );
         }
+
         return $row[$colnum];
     }
 
@@ -210,15 +222,16 @@ class MDB2_Result_Common extends MDB2_Result
     // {{{ function fetchCol($colnum = 0)
 
     /**
-     * Fetch and return a column from the current row pointer position
+     * Fetch and return a column from the current row pointer position.
      *
      * @param int|string the column number (or name) to fetch
+     * @param mixed $colnum
      *
-     * @return  mixed data array on success, a MDB2 error on failure
+     * @return mixed data array on success, a MDB2 error on failure
      */
     public function fetchCol($colnum = 0)
     {
-        $column = array();
+        $column = [];
         $fetchmode = is_numeric($colnum) ? MDB2_FETCHMODE_ORDERED : MDB2_FETCHMODE_ASSOC;
         $row = $this->fetchRow($fetchmode);
         if (is_array($row)) {
@@ -227,7 +240,7 @@ class MDB2_Result_Common extends MDB2_Result
                     MDB2_ERROR_TRUNCATED,
                     null,
                     null,
-                    'column is not defined in the result set: '.$colnum,
+                    'column is not defined in the result set: ' . $colnum,
                     __FUNCTION__
                 );
             }
@@ -238,6 +251,7 @@ class MDB2_Result_Common extends MDB2_Result
         if (MDB2::isError($row)) {
             return $row;
         }
+
         return $column;
     }
 
@@ -245,13 +259,13 @@ class MDB2_Result_Common extends MDB2_Result
     // {{{ function fetchAll($fetchmode = MDB2_FETCHMODE_DEFAULT, $rekey = false, $force_array = false, $group = false)
 
     /**
-     * Fetch and return all rows from the current row pointer position
+     * Fetch and return all rows from the current row pointer position.
      *
-     * @param   int     $fetchmode  the fetch mode to use:
-     *                            + MDB2_FETCHMODE_ORDERED
-     *                            + MDB2_FETCHMODE_ASSOC
-     *                            + MDB2_FETCHMODE_ORDERED | MDB2_FETCHMODE_FLIPPED
-     *                            + MDB2_FETCHMODE_ASSOC | MDB2_FETCHMODE_FLIPPED
+     * @param int $fetchmode the fetch mode to use:
+     *                       + MDB2_FETCHMODE_ORDERED
+     *                       + MDB2_FETCHMODE_ASSOC
+     *                       + MDB2_FETCHMODE_ORDERED | MDB2_FETCHMODE_FLIPPED
+     *                       + MDB2_FETCHMODE_ASSOC | MDB2_FETCHMODE_FLIPPED
      * @param   bool    if set to true, the $all will have the first
      *       column as its first dimension
      * @param   bool    used only when the query returns exactly
@@ -261,8 +275,11 @@ class MDB2_Result_Common extends MDB2_Result
      *       wrapped in another array.  If the same key value (in the first
      *       column) repeats itself, the values will be appended to this array
      *       instead of overwriting the existing values.
+     * @param mixed $rekey
+     * @param mixed $force_array
+     * @param mixed $group
      *
-     * @return  mixed   data array on success, a MDB2 error on failure
+     * @return mixed data array on success, a MDB2 error on failure
      *
      * @see     getAssoc()
      */
@@ -272,11 +289,12 @@ class MDB2_Result_Common extends MDB2_Result
         $force_array = false,
         $group = false
     ) {
-        $all = array();
+        $all = [];
         $row = $this->fetchRow($fetchmode);
         if (MDB2::isError($row)) {
             return $row;
-        } elseif (!$row) {
+        }
+        if (!$row) {
             return $all;
         }
 
@@ -323,17 +341,17 @@ class MDB2_Result_Common extends MDB2_Result
                 } else {
                     $all[$key] = $row;
                 }
-            } while (($row = $this->fetchRow($fetchmode)));
+            } while ($row = $this->fetchRow($fetchmode));
         } elseif ($fetchmode == MDB2_FETCHMODE_FLIPPED) {
             do {
                 foreach ($row as $key => $val) {
                     $all[$key][] = $val;
                 }
-            } while (($row = $this->fetchRow($fetchmode)));
+            } while ($row = $this->fetchRow($fetchmode));
         } else {
             do {
                 $all[] = $row;
-            } while (($row = $this->fetchRow($fetchmode)));
+            } while ($row = $this->fetchRow($fetchmode));
         }
 
         return $all;
@@ -343,8 +361,9 @@ class MDB2_Result_Common extends MDB2_Result
     // {{{ function rowCount()
 
     /**
-     * Returns the actual row number that was last fetched (count from 0)
-     * @return  int
+     * Returns the actual row number that was last fetched (count from 0).
+     *
+     * @return int
      */
     public function rowCount()
     {
@@ -355,9 +374,9 @@ class MDB2_Result_Common extends MDB2_Result
     // {{{ function numRows()
 
     /**
-     * Returns the number of rows in a result object
+     * Returns the number of rows in a result object.
      *
-     * @return  mixed   MDB2 Error Object or the number of rows
+     * @return mixed MDB2 Error Object or the number of rows
      */
     public function numRows()
     {
@@ -374,9 +393,9 @@ class MDB2_Result_Common extends MDB2_Result
     // {{{ function nextResult()
 
     /**
-     * Move the internal result pointer to the next available result
+     * Move the internal result pointer to the next available result.
      *
-     * @return  true on success, false if there is no more result set or an error object on failure
+     * @return true on success, false if there is no more result set or an error object on failure
      */
     public function nextResult()
     {
@@ -396,12 +415,14 @@ class MDB2_Result_Common extends MDB2_Result
      * Retrieve the names of columns returned by the DBMS in a query result or
      * from the cache.
      *
-     * @param   bool    If set to true the values are the column names,
-     *                  otherwise the names of the columns are the keys.
-     * @return  mixed   Array variable that holds the names of columns or an
-     *                  MDB2 error on failure.
-     *                  Some DBMS may not return any columns when the result set
-     *                  does not contain any rows.
+     * @param   bool    if set to true the values are the column names,
+     *                  otherwise the names of the columns are the keys
+     * @param mixed $flip
+     *
+     * @return mixed Array variable that holds the names of columns or an
+     *               MDB2 error on failure.
+     *               Some DBMS may not return any columns when the result set
+     *               does not contain any rows.
      */
     public function getColumnNames($flip = false)
     {
@@ -415,6 +436,7 @@ class MDB2_Result_Common extends MDB2_Result
         if ($flip) {
             return array_flip($this->column_names);
         }
+
         return $this->column_names;
     }
 
@@ -424,10 +446,10 @@ class MDB2_Result_Common extends MDB2_Result
     /**
      * Retrieve the names of columns returned by the DBMS in a query result.
      *
-     * @return  mixed   Array variable that holds the names of columns as keys
-     *                  or an MDB2 error on failure.
-     *                  Some DBMS may not return any columns when the result set
-     *                  does not contain any rows.
+     * @return mixed Array variable that holds the names of columns as keys
+     *               or an MDB2 error on failure.
+     *               Some DBMS may not return any columns when the result set
+     *               does not contain any rows.
      */
     protected function getColumnNamesInternal()
     {
@@ -446,8 +468,8 @@ class MDB2_Result_Common extends MDB2_Result
     /**
      * Count the number of columns returned by the DBMS in a query result.
      *
-     * @return  mixed   integer value with the number of columns, a MDB2 error
-     *       on failure
+     * @return mixed integer value with the number of columns, a MDB2 error
+     *               on failure
      */
     public function numCols()
     {
@@ -464,9 +486,9 @@ class MDB2_Result_Common extends MDB2_Result
     // {{{ function getResource()
 
     /**
-     * return the resource associated with the result object
+     * return the resource associated with the result object.
      *
-     * @return  resource
+     * @return resource
      */
     public function getResource()
     {
@@ -482,8 +504,11 @@ class MDB2_Result_Common extends MDB2_Result
      * @param   int     column number or name
      * @param   mixed   variable reference
      * @param   string  specifies the type of the field
+     * @param mixed      $column
+     * @param mixed      $value
+     * @param mixed|null $type
      *
-     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
     public function bindColumn($column, &$value, $type = null)
     {
@@ -498,10 +523,11 @@ class MDB2_Result_Common extends MDB2_Result
             }
             $column = $column_names[$column];
         }
-        $this->values[$column] =& $value;
+        $this->values[$column] = &$value;
         if (null !== $type) {
             $this->types[$column] = $type;
         }
+
         return MDB2_OK;
     }
 
@@ -512,8 +538,9 @@ class MDB2_Result_Common extends MDB2_Result
      * Bind a variable to a value in the result row.
      *
      * @param   array   row data
+     * @param mixed $row
      *
-     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
     protected function assignBindColumns($row)
     {
@@ -523,6 +550,7 @@ class MDB2_Result_Common extends MDB2_Result
                 $this->values[$column] = $value;
             }
         }
+
         return MDB2_OK;
     }
 
@@ -532,15 +560,14 @@ class MDB2_Result_Common extends MDB2_Result
     /**
      * Free the internal resources associated with result.
      *
-     * @return  bool    true on success, false if result is invalid
+     * @return bool true on success, false if result is invalid
      */
     public function free()
     {
         $this->result = false;
+
         return MDB2_OK;
     }
 
     // }}}
 }
-
-?>
