@@ -55,8 +55,6 @@
  */
 class MDB2_BufferedIterator extends MDB2_Iterator implements SeekableIterator
 {
-    // {{{ valid()
-
     /**
      * Check if the end of the result set has been reached.
      *
@@ -70,9 +68,6 @@ class MDB2_BufferedIterator extends MDB2_Iterator implements SeekableIterator
 
         return false;
     }
-
-    // }}}
-    // {{{ count()
 
     /**
      * Returns the number of rows in a result object.
@@ -88,9 +83,6 @@ class MDB2_BufferedIterator extends MDB2_Iterator implements SeekableIterator
         return false;
     }
 
-    // }}}
-    // {{{ rewind()
-
     /**
      * Seek to the first row in a result set.
      */
@@ -98,6 +90,4 @@ class MDB2_BufferedIterator extends MDB2_Iterator implements SeekableIterator
     {
         $this->seek(0);
     }
-
-    // }}}
 }

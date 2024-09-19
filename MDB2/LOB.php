@@ -60,8 +60,6 @@
  */
 class MDB2_LOB
 {
-    // {{{ Variables
-
     /**
      * contains the key to the global MDB2 instance array of the associated
      * MDB2 instance.
@@ -77,9 +75,6 @@ class MDB2_LOB
      * @var int
      */
     protected $lob_index;
-
-    // }}}
-    // {{{ stream_open()
 
     /**
      * open stream.
@@ -118,9 +113,6 @@ class MDB2_LOB
         return true;
     }
 
-    // }}}
-    // {{{ stream_read()
-
     /**
      * read stream.
      *
@@ -147,9 +139,6 @@ class MDB2_LOB
         }
     }
 
-    // }}}
-    // {{{ stream_write()
-
     /**
      * write stream, note implemented.
      *
@@ -163,9 +152,6 @@ class MDB2_LOB
     {
         return 0;
     }
-
-    // }}}
-    // {{{ stream_tell()
 
     /**
      * return the current position.
@@ -181,9 +167,6 @@ class MDB2_LOB
             return $db->datatype->lobs[$this->lob_index]['position'];
         }
     }
-
-    // }}}
-    // {{{ stream_eof()
 
     /**
      * Check if stream reaches EOF.
@@ -208,9 +191,6 @@ class MDB2_LOB
         return $result;
     }
 
-    // }}}
-    // {{{ stream_seek()
-
     /**
      * Seek stream, not implemented.
      *
@@ -226,9 +206,6 @@ class MDB2_LOB
     {
         return false;
     }
-
-    // }}}
-    // {{{ stream_stat()
 
     /**
      * return information about stream.
@@ -246,9 +223,6 @@ class MDB2_LOB
         }
     }
 
-    // }}}
-    // {{{ stream_close()
-
     /**
      * close stream.
      */
@@ -263,8 +237,6 @@ class MDB2_LOB
             }
         }
     }
-
-    // }}}
 }
 
 // register streams wrapper

@@ -13,6 +13,11 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/MDB2',
         __DIR__ . '/MDB2.php',
+        __DIR__ . '/tests',
+    ])
+    ->withFileExtensions([
+        'php',
+        'inc',
     ])
     // Choose the correct PHP version for your project
     ->withPhpSets(php82: true)

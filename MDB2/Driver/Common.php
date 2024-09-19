@@ -53,10 +53,8 @@
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
-class MDB2_Driver_Common implements \Stringable
+class MDB2_Driver_Common implements Stringable
 {
-    // {{{ Variables (Properties)
-
     /**
      * @var MDB2_Driver_Datatype_Common
      */
@@ -409,9 +407,6 @@ class MDB2_Driver_Common implements \Stringable
      */
     protected $pear;
 
-    // }}}
-    // {{{ constructor: function __construct()
-
     /**
      * Constructor.
      */
@@ -423,9 +418,6 @@ class MDB2_Driver_Common implements \Stringable
         $this->pear = new PEAR();
     }
 
-    // }}}
-    // {{{ destructor: function __destruct()
-
     /**
      *  Destructor.
      */
@@ -433,9 +425,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         $this->disconnect(false);
     }
-
-    // }}}
-    // {{{ function free()
 
     /**
      * Free the internal references so that the instance can be destroyed.
@@ -448,9 +437,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ function __toString()
 
     /**
      * String conversation.
@@ -468,9 +454,6 @@ class MDB2_Driver_Common implements \Stringable
         return $info;
     }
 
-    // }}}
-    // {{{ function errorInfo($error = null)
-
     /**
      * This method is used to collect information about an error.
      *
@@ -483,9 +466,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return [$error, null, null];
     }
-
-    // }}}
-    // {{{ function raiseError($code = null, $mode = null, $options = null, $userinfo = null)
 
     /**
      * This method is used to communicate an error and invoke error
@@ -564,9 +544,6 @@ class MDB2_Driver_Common implements \Stringable
         return $err;
     }
 
-    // }}}
-    // {{{ function resetWarnings()
-
     /**
      * reset the warning array.
      */
@@ -574,9 +551,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         $this->warnings = [];
     }
-
-    // }}}
-    // {{{ function getWarnings()
 
     /**
      * Get all warnings in reverse order.
@@ -590,9 +564,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return array_reverse($this->warnings);
     }
-
-    // }}}
-    // {{{ function setFetchMode($fetchmode, $object_class = 'stdClass')
 
     /**
      * Sets which fetch mode should be used by default on queries
@@ -639,9 +610,6 @@ class MDB2_Driver_Common implements \Stringable
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function setOption($option, $value)
-
     /**
      * set the option for the db class.
      *
@@ -669,9 +637,6 @@ class MDB2_Driver_Common implements \Stringable
         );
     }
 
-    // }}}
-    // {{{ function getOption($option)
-
     /**
      * Returns the value of an option.
      *
@@ -694,9 +659,6 @@ class MDB2_Driver_Common implements \Stringable
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ function debug($message, $scope = '', $is_manip = null)
 
     /**
      * set a debug message.
@@ -727,9 +689,6 @@ class MDB2_Driver_Common implements \Stringable
         return null;
     }
 
-    // }}}
-    // {{{ function getDebugOutput()
-
     /**
      * output debug info.
      *
@@ -739,9 +698,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->debug_output;
     }
-
-    // }}}
-    // {{{ function escape($text)
 
     /**
      * Quotes a string so it can be safely used in a query. It will quote
@@ -763,9 +719,6 @@ class MDB2_Driver_Common implements \Stringable
         return str_replace($this->string_quoting['end'], $this->string_quoting['escape'] . $this->string_quoting['end'], $text);
     }
 
-    // }}}
-    // {{{ function escapePattern($text)
-
     /**
      * Quotes pattern (% and _) characters in a string).
      *
@@ -785,9 +738,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $text;
     }
-
-    // }}}
-    // {{{ function quoteIdentifier($str, $check_option = false)
 
     /**
      * Quote a string so it can be safely used as a table or column name.
@@ -840,9 +790,6 @@ class MDB2_Driver_Common implements \Stringable
         return implode('.', $parts);
     }
 
-    // }}}
-    // {{{ function getAsKeyword()
-
     /**
      * Gets the string to alias column.
      *
@@ -852,9 +799,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->as_keyword;
     }
-
-    // }}}
-    // {{{ function getConnection()
 
     /**
      * Returns a native connection.
@@ -871,9 +815,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $this->connection;
     }
-
-    // }}}
-    // {{{ function fixResultArrayValues(&$row, $mode)
 
     /**
      * Do all necessary conversions on result arrays to fix DBMS quirks.
@@ -960,9 +901,6 @@ class MDB2_Driver_Common implements \Stringable
         }
     }
 
-    // }}}
-    // {{{ function loadModule($module, $property = null, $phptype_specific = null)
-
     /**
      * loads a module.
      *
@@ -1037,9 +975,6 @@ class MDB2_Driver_Common implements \Stringable
         return $this->{$property};
     }
 
-    // }}}
-    // {{{ function __call($method, $params)
-
     /**
      * Calls a module method using the __call magic method.
      *
@@ -1080,9 +1015,6 @@ class MDB2_Driver_Common implements \Stringable
         trigger_error(sprintf('Call to undefined function: %s::%s().', static::class, $method), E_USER_ERROR);
     }
 
-    // }}}
-    // {{{ function beginTransaction($savepoint = null)
-
     /**
      * Start a transaction or set a savepoint.
      *
@@ -1103,9 +1035,6 @@ class MDB2_Driver_Common implements \Stringable
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ function commit($savepoint = null)
 
     /**
      * Commit the database changes done during a transaction that is in
@@ -1131,9 +1060,6 @@ class MDB2_Driver_Common implements \Stringable
         );
     }
 
-    // }}}
-    // {{{ function rollback($savepoint = null)
-
     /**
      * Cancel any database changes done during a transaction or since a specific
      * savepoint that is in progress. This function may only be called when
@@ -1158,9 +1084,6 @@ class MDB2_Driver_Common implements \Stringable
         );
     }
 
-    // }}}
-    // {{{ function inTransaction($ignore_nested = false)
-
     /**
      * If a transaction is currently open.
      *
@@ -1180,9 +1103,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $this->in_transaction;
     }
-
-    // }}}
-    // {{{ function setTransactionIsolation($isolation)
 
     /**
      * Set the transacton isolation level.
@@ -1215,9 +1135,6 @@ class MDB2_Driver_Common implements \Stringable
         );
     }
 
-    // }}}
-    // {{{ function beginNestedTransaction($savepoint = false)
-
     /**
      * Start a nested transaction.
      *
@@ -1242,9 +1159,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $result;
     }
-
-    // }}}
-    // {{{ function completeNestedTransaction($force_rollback = false, $release = false)
 
     /**
      * Finish a nested transaction by rolling back if an error occured or
@@ -1300,9 +1214,6 @@ class MDB2_Driver_Common implements \Stringable
         return $result;
     }
 
-    // }}}
-    // {{{ function failNestedTransaction($error = null, $immediately = false)
-
     /**
      * Force setting nested transaction to failed.
      *
@@ -1330,9 +1241,6 @@ class MDB2_Driver_Common implements \Stringable
         return $this->rollback();
     }
 
-    // }}}
-    // {{{ function getNestedTransactionError()
-
     /**
      * The first error that occured since the transaction start.
      *
@@ -1344,9 +1252,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->has_transaction_error;
     }
-
-    // }}}
-    // {{{ connect()
 
     /**
      * Connect to the database.
@@ -1363,9 +1268,6 @@ class MDB2_Driver_Common implements \Stringable
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ databaseExists()
 
     /**
      * check if given database name is exists?
@@ -1384,9 +1286,6 @@ class MDB2_Driver_Common implements \Stringable
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ setCharset($charset, $connection = null)
 
     /**
      * Set the charset on the current connection.
@@ -1409,9 +1308,6 @@ class MDB2_Driver_Common implements \Stringable
         );
     }
 
-    // }}}
-    // {{{ function disconnect($force = true)
-
     /**
      * Log out and disconnect from the database.
      *
@@ -1433,9 +1329,6 @@ class MDB2_Driver_Common implements \Stringable
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function setDatabase($name)
-
     /**
      * Select a different database.
      *
@@ -1455,9 +1348,6 @@ class MDB2_Driver_Common implements \Stringable
         return $previous_database_name;
     }
 
-    // }}}
-    // {{{ function getDatabase()
-
     /**
      * Get the current database.
      *
@@ -1467,9 +1357,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->database_name;
     }
-
-    // }}}
-    // {{{ function setDSN($dsn)
 
     /**
      * set the DSN.
@@ -1491,9 +1378,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $this->disconnect(false);
     }
-
-    // }}}
-    // {{{ function getDSN($type = 'string', $hidepw = false)
 
     /**
      * return the DSN as a string.
@@ -1532,9 +1416,6 @@ class MDB2_Driver_Common implements \Stringable
         return $dsn;
     }
 
-    // }}}
-    // {{{ isNewLinkSet()
-
     /**
      * Check if the 'new_link' option is set.
      *
@@ -1549,9 +1430,6 @@ class MDB2_Driver_Common implements \Stringable
              || (is_numeric($this->dsn['new_link']) && 0 != (int) $this->dsn['new_link'])
             );
     }
-
-    // }}}
-    // {{{ function standaloneQuery($query, $types = null, $is_manip = false)
 
     /**
      * execute a query as database administrator.
@@ -1590,9 +1468,6 @@ class MDB2_Driver_Common implements \Stringable
         return $this->wrapResult($result, $types, true, true, $limit, $offset);
     }
 
-    // }}}
-    // {{{ function modifyQuery($query, $is_manip, $limit, $offset)
-
     /**
      * Changes a query string for various DBMS specific reasons.
      *
@@ -1611,9 +1486,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $query;
     }
-
-    // }}}
-    // {{{ function doQuery($query, $is_manip = false, $connection = null, $database_name = null)
 
     /**
      * Execute a query.
@@ -1649,9 +1521,6 @@ class MDB2_Driver_Common implements \Stringable
         );
     }
 
-    // }}}
-    // {{{ function affectedRows($connection, $result = null)
-
     /**
      * Returns the number of rows affected.
      *
@@ -1672,9 +1541,6 @@ class MDB2_Driver_Common implements \Stringable
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ function exec($query)
 
     /**
      * Execute a manipulation query to the database and return the number of affected rows.
@@ -1703,9 +1569,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $this->affectedRows($connection, $result);
     }
-
-    // }}}
-    // {{{ function query($query, $types = null, $result_class = true, $result_wrap_class = false)
 
     /**
      * Send a query to the database and return any results.
@@ -1741,9 +1604,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $this->wrapResult($result, $types, $result_class, $result_wrap_class, $limit, $offset);
     }
-
-    // }}}
-    // {{{ function wrapResult($result_resource, $types = array(), $result_class = true, $result_wrap_class = false, $limit = null, $offset = null)
 
     /**
      * wrap a result set into the correct class.
@@ -1856,9 +1716,6 @@ class MDB2_Driver_Common implements \Stringable
         return $result_resource;
     }
 
-    // }}}
-    // {{{ function getServerVersion($native = false)
-
     /**
      * return version information about the server.
      *
@@ -1877,9 +1734,6 @@ class MDB2_Driver_Common implements \Stringable
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ function setLimit($limit, $offset = null)
 
     /**
      * set the range of the next query.
@@ -1930,9 +1784,6 @@ class MDB2_Driver_Common implements \Stringable
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function subSelect($query, $type = false)
-
     /**
      * simple subselect emulation: leaves the query untouched for all RDBMS
      * that support subselects.
@@ -1976,9 +1827,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return implode(', ', $col);
     }
-
-    // }}}
-    // {{{ function replace($table, $fields)
 
     /**
      * Execute a SQL REPLACE query. A REPLACE query is identical to a INSERT
@@ -2130,9 +1978,6 @@ class MDB2_Driver_Common implements \Stringable
         return $affected_rows;
     }
 
-    // }}}
-    // {{{ function prepare($query, $types = null, $result_types = null, $lobs = array())
-
     /**
      * Prepares a query for multiple execution with execute().
      * With some database backends, this is emulated.
@@ -2253,9 +2098,6 @@ class MDB2_Driver_Common implements \Stringable
         return $obj;
     }
 
-    // }}}
-    // {{{ function skipDelimitedStrings($query, $position, $p_position)
-
     /**
      * Utility method, used by prepare() to avoid replacing placeholders within delimited strings.
      * Check if the placeholder is contained within a delimited string.
@@ -2309,9 +2151,6 @@ class MDB2_Driver_Common implements \Stringable
         return $position;
     }
 
-    // }}}
-    // {{{ function quote($value, $type = null, $quote = true)
-
     /**
      * Convert a text value into a DBMS specific format that is suitable to
      * compose query statements.
@@ -2338,9 +2177,6 @@ class MDB2_Driver_Common implements \Stringable
         return $this->datatype->quote($value, $type, $quote, $escape_wildcards);
     }
 
-    // }}}
-    // {{{ function getDeclaration($type, $name, $field)
-
     /**
      * Obtain DBMS specific SQL code portion needed to declare
      * of the given type.
@@ -2365,9 +2201,6 @@ class MDB2_Driver_Common implements \Stringable
         return $this->datatype->getDeclaration($type, $name, $field);
     }
 
-    // }}}
-    // {{{ function compareDefinition($current, $previous)
-
     /**
      * Obtain an array of changes that may need to applied.
      *
@@ -2387,9 +2220,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $this->datatype->compareDefinition($current, $previous);
     }
-
-    // }}}
-    // {{{ function supports($feature)
 
     /**
      * Tell whether a DB implementation or its backend extension
@@ -2417,9 +2247,6 @@ class MDB2_Driver_Common implements \Stringable
         );
     }
 
-    // }}}
-    // {{{ function getSequenceName($sqn)
-
     /**
      * adds sequence name formatting to a sequence name.
      *
@@ -2436,9 +2263,6 @@ class MDB2_Driver_Common implements \Stringable
         );
     }
 
-    // }}}
-    // {{{ function getIndexName($idx)
-
     /**
      * adds index name formatting to a index name.
      *
@@ -2454,9 +2278,6 @@ class MDB2_Driver_Common implements \Stringable
             preg_replace('/[^a-z0-9_\-\$.]/i', '_', $idx)
         );
     }
-
-    // }}}
-    // {{{ function nextID($seq_name, $ondemand = true)
 
     /**
      * Returns the next free id of a sequence.
@@ -2478,9 +2299,6 @@ class MDB2_Driver_Common implements \Stringable
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ function lastInsertID($table = null, $field = null)
 
     /**
      * Returns the autoincrement ID if supported or $id or fetches the current
@@ -2504,9 +2322,6 @@ class MDB2_Driver_Common implements \Stringable
         );
     }
 
-    // }}}
-    // {{{ function currID($seq_name)
-
     /**
      * Returns the current id of a sequence.
      *
@@ -2522,9 +2337,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $this->nextID($seq_name);
     }
-
-    // }}}
-    // {{{ function queryOne($query, $type = null, $colnum = 0)
 
     /**
      * Execute the specified query, fetch the value from the first column of
@@ -2552,9 +2364,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $one;
     }
-
-    // }}}
-    // {{{ function queryRow($query, $types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT)
 
     /**
      * Execute the specified query, fetch the values from the first
@@ -2586,9 +2395,6 @@ class MDB2_Driver_Common implements \Stringable
         return $row;
     }
 
-    // }}}
-    // {{{ function queryCol($query, $type = null, $colnum = 0)
-
     /**
      * Execute the specified query, fetch the value from the first column of
      * each row of the result set into an array and then frees the result set.
@@ -2614,9 +2420,6 @@ class MDB2_Driver_Common implements \Stringable
 
         return $col;
     }
-
-    // }}}
-    // {{{ function queryAll($query, $types = null, $fetchmode = MDB2_FETCHMODE_DEFAULT, $rekey = false, $force_array = false, $group = false)
 
     /**
      * Execute the specified query, fetch all the rows of the result set into
@@ -2665,9 +2468,6 @@ class MDB2_Driver_Common implements \Stringable
         return $all;
     }
 
-    // }}}
-    // {{{ function delExpect($error_code)
-
     /**
      * This method deletes all occurences of the specified element from
      * the expected error codes stack.
@@ -2682,9 +2482,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->pear->delExpect($error_code);
     }
-
-    // }}}
-    // {{{ function expectError($code)
 
     /**
      * This method is used to tell which errors you expect to get.
@@ -2707,9 +2504,6 @@ class MDB2_Driver_Common implements \Stringable
         return $this->pear->expectError($code);
     }
 
-    // }}}
-    // {{{ function getStaticProperty($class, $var)
-
     /**
      * If you have a class that's mostly/entirely static, and you need static
      * properties, you can use this method to simulate them. Eg. in your method(s)
@@ -2731,9 +2525,6 @@ class MDB2_Driver_Common implements \Stringable
         return $tmp;
     }
 
-    // }}}
-    // {{{ function popErrorHandling()
-
     /**
      * Pop the last error handler used.
      *
@@ -2748,9 +2539,6 @@ class MDB2_Driver_Common implements \Stringable
         return $this->pear->popErrorHandling();
     }
 
-    // }}}
-    // {{{ function popExpect()
-
     /**
      * This method pops one element off the expected error codes
      * stack.
@@ -2763,9 +2551,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->pear->popExpect();
     }
-
-    // }}}
-    // {{{ function pushErrorHandling($mode, $options = null)
 
     /**
      * Push a new error handler on top of the error handler options stack. With this
@@ -2786,9 +2571,6 @@ class MDB2_Driver_Common implements \Stringable
         return $this->pear->pushErrorHandling($mode, $options);
     }
 
-    // }}}
-    // {{{ function registerShutdownFunc($func, $args = array())
-
     /**
      * Use this function to register a shutdown method for static
      * classes.
@@ -2802,9 +2584,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->pear->registerShutdownFunc($func, $args);
     }
-
-    // }}}
-    // {{{ function setErrorHandling($mode = null, $options = null)
 
     /**
      * Sets how errors generated by this object should be handled.
@@ -2847,9 +2626,6 @@ class MDB2_Driver_Common implements \Stringable
         return $this->pear->setErrorHandling($mode, $options);
     }
 
-    // }}}
-    // {{{ function staticPopErrorHandling()
-
     /**
      * @uses PEAR::staticPopErrorHandling()
      */
@@ -2857,9 +2633,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->pear->staticPopErrorHandling();
     }
-
-    // }}}
-    // {{{ function staticPushErrorHandling($mode, $options = null)
 
     /**
      * @uses PEAR::staticPushErrorHandling($mode, $options)
@@ -2871,9 +2644,6 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->pear->staticPushErrorHandling($mode, $options);
     }
-
-    // }}}
-    // {{{ function throwError($message = null, $code = null, $userinfo = null)
 
     /**
      * Simpler form of raiseError with fewer options.  In most cases
@@ -2895,6 +2665,4 @@ class MDB2_Driver_Common implements \Stringable
     {
         return $this->pear->throwError($message, $code, $userinfo);
     }
-
-    // }}}
 }

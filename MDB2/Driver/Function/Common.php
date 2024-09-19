@@ -63,8 +63,6 @@
  */
 class MDB2_Driver_Function_Common extends MDB2_Module_Common
 {
-    // {{{ executeStoredProc()
-
     /**
      * Execute a stored procedure and return any results.
      *
@@ -93,9 +91,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ functionTable()
-
     /**
      * return string for internal table used when calling only a function.
      *
@@ -105,9 +100,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
     {
         return '';
     }
-
-    // }}}
-    // {{{ now()
 
     /**
      * Return string to call a variable with the current timestamp inside an SQL statement
@@ -123,14 +115,11 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
     public function now($type = 'timestamp')
     {
         return match ($type) {
-            'time' => 'CURRENT_TIME',
-            'date' => 'CURRENT_DATE',
+            'time'  => 'CURRENT_TIME',
+            'date'  => 'CURRENT_DATE',
             default => 'CURRENT_TIMESTAMP',
         };
     }
-
-    // }}}
-    // {{{ unixtimestamp()
 
     /**
      * return string to call a function to get the unix timestamp from a iso timestamp.
@@ -155,9 +144,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ substring()
-
     /**
      * return string to call a function to get a substring inside an SQL statement.
      *
@@ -176,9 +162,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
         return "SUBSTRING({$value} FROM {$position})";
     }
 
-    // }}}
-    // {{{ replace()
-
     /**
      * return string to call a function to get replace inside an SQL statement.
      *
@@ -192,9 +175,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
     {
         return "REPLACE({$str}, {$from_str} , {$to_str})";
     }
-
-    // }}}
-    // {{{ concat()
 
     /**
      * Returns string to concatenate two or more string parameters.
@@ -211,9 +191,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
         return '(' . implode(' || ', $args) . ')';
     }
 
-    // }}}
-    // {{{ random()
-
     /**
      * return string to call a function to get random value inside an SQL statement.
      *
@@ -223,9 +200,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
     {
         return 'RAND()';
     }
-
-    // }}}
-    // {{{ lower()
 
     /**
      * return string to call a function to lower the case of an expression.
@@ -239,9 +213,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
         return "LOWER({$expression})";
     }
 
-    // }}}
-    // {{{ upper()
-
     /**
      * return string to call a function to upper the case of an expression.
      *
@@ -254,9 +225,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
         return "UPPER({$expression})";
     }
 
-    // }}}
-    // {{{ length()
-
     /**
      * return string to call a function to get the length of a string expression.
      *
@@ -268,9 +236,6 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
     {
         return "LENGTH({$expression})";
     }
-
-    // }}}
-    // {{{ guid()
 
     /**
      * Returns global unique identifier.
@@ -292,6 +257,4 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
 }

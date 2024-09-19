@@ -55,8 +55,6 @@
  */
 class MDB2_Statement_Common
 {
-    // {{{ Variables (Properties)
-
     public $db;
     public $statement;
     public $query;
@@ -66,9 +64,6 @@ class MDB2_Statement_Common
     public $limit;
     public $offset;
     public $is_manip;
-
-    // }}}
-    // {{{ constructor: function __construct($db, $statement, $positions, $query, $types, $result_types, $is_manip = false, $limit = null, $offset = null)
 
     /**
      * Constructor.
@@ -95,9 +90,6 @@ class MDB2_Statement_Common
         $this->is_manip = $is_manip;
         $this->offset = $offset;
     }
-
-    // }}}
-    // {{{ function bindValue($parameter, &$value, $type = null)
 
     /**
      * Set the value of a parameter of a prepared query.
@@ -135,9 +127,6 @@ class MDB2_Statement_Common
 
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ function bindValueArray($values, $types = null)
 
     /**
      * Set the values of multiple a parameter of a prepared query in bulk.
@@ -178,9 +167,6 @@ class MDB2_Statement_Common
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function bindParam($parameter, &$value, $type = null)
-
     /**
      * Bind a variable to a parameter of a prepared query.
      *
@@ -218,9 +204,6 @@ class MDB2_Statement_Common
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function bindParamArray(&$values, $types = null)
-
     /**
      * Bind the variables of multiple a parameter of a prepared query in bulk.
      *
@@ -248,9 +231,6 @@ class MDB2_Statement_Common
 
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ function execute($values = null, $result_class = true, $result_wrap_class = false)
 
     /**
      * Execute a prepared query statement.
@@ -295,9 +275,6 @@ class MDB2_Statement_Common
 
         return $this->executeInternal($result_class, $result_wrap_class);
     }
-
-    // }}}
-    // {{{ function executeInternal($result_class = true, $result_wrap_class = false)
 
     /**
      * Execute a prepared query statement helper method.
@@ -352,9 +329,6 @@ class MDB2_Statement_Common
         return $result;
     }
 
-    // }}}
-    // {{{ function free()
-
     /**
      * Release resources allocated for the specified prepared query.
      *
@@ -384,6 +358,4 @@ class MDB2_Statement_Common
 
         return MDB2_OK;
     }
-
-    // }}}
 }

@@ -56,8 +56,6 @@
  */
 class MDB2_Error extends PEAR_Error
 {
-    // {{{ constructor: function MDB2_Error($code = MDB2_ERROR, $mode = PEAR_ERROR_RETURN, $level = E_USER_NOTICE, $debuginfo = null)
-
     /**
      * MDB2_Error constructor.
      *
@@ -89,6 +87,4 @@ class MDB2_Error extends PEAR_Error
             $debuginfo
         );
     }
-
-    // }}}
 }

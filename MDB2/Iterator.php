@@ -55,8 +55,6 @@
  */
 class MDB2_Iterator implements Iterator
 {
-    // {{{ Variables
-
     protected $fetchmode;
 
     /**
@@ -64,9 +62,6 @@ class MDB2_Iterator implements Iterator
      */
     protected $result;
     protected $row;
-
-    // }}}
-    // {{{ constructor
 
     /**
      * Constructor.
@@ -78,9 +73,6 @@ class MDB2_Iterator implements Iterator
         $this->result = $result;
         $this->fetchmode = $fetchmode;
     }
-
-    // }}}
-    // {{{ seek()
 
     /**
      * Seek forward to a specific row in a result set.
@@ -96,9 +88,6 @@ class MDB2_Iterator implements Iterator
         }
     }
 
-    // }}}
-    // {{{ next()
-
     /**
      * Fetch next row of data.
      */
@@ -106,9 +95,6 @@ class MDB2_Iterator implements Iterator
     {
         $this->row = null;
     }
-
-    // }}}
-    // {{{ current()
 
     /**
      * return a row of data.
@@ -126,9 +112,6 @@ class MDB2_Iterator implements Iterator
         return $this->row;
     }
 
-    // }}}
-    // {{{ valid()
-
     /**
      * Check if the end of the result set has been reached.
      *
@@ -138,9 +121,6 @@ class MDB2_Iterator implements Iterator
     {
         return (bool) $this->current();
     }
-
-    // }}}
-    // {{{ free()
 
     /**
      * Free the internal resources associated with result.
@@ -158,9 +138,6 @@ class MDB2_Iterator implements Iterator
         return false;
     }
 
-    // }}}
-    // {{{ key()
-
     /**
      * Returns the row number.
      *
@@ -175,16 +152,10 @@ class MDB2_Iterator implements Iterator
         return false;
     }
 
-    // }}}
-    // {{{ rewind()
-
     /**
      * Seek to the first row in a result set.
      */
     public function rewind() {}
-
-    // }}}
-    // {{{ destructor
 
     /**
      * Destructor.
@@ -193,6 +164,4 @@ class MDB2_Iterator implements Iterator
     {
         $this->free();
     }
-
-    // }}}
 }

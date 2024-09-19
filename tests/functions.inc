@@ -17,7 +17,7 @@
  *                   The "options" element must be an array of connection
  *                   options.
  */
-function build_schema($ci) {
+function build_schema($ci): void {
     $file = __DIR__ . '/schema.xml';
 
     if (is_object($ci)) {
@@ -42,19 +42,19 @@ function build_schema($ci) {
         $original_options = $ci['options'];
     }
 
-    $variables = array(
-        'name'   => $database,
-        'create' => true,
-    );
+    $variables = [
+      'name'   => $database,
+      'create' => true
+    ];
 
-    $options = array(
-        'log_line_break'   => '<br />',
-        'idxname_format'   => '%s',
-        'debug'            => true,
-        'quote_identifier' => true,
-        'force_defaults'   => false,
-        'portability'      => false
-    );
+    $options = [
+      'log_line_break'   => '<br />',
+      'idxname_format'   => '%s',
+      'debug'            => true,
+      'quote_identifier' => true,
+      'force_defaults'   => false,
+      'portability'      => false
+    ];
     $options = array_merge($options, $original_options);
 
     $err_base = "TEST SCHEMA BUILD ERROR FOR $phptype: ";
@@ -109,11 +109,9 @@ function mdb2_test_db_object_provider() {
 
     if (!isset($dbs)) {
         $dsns = unserialize(MDB2_TEST_SERIALIZED_DSNS);
-        $dbs = array();
+        $dbs = [];
         foreach ($dsns as $driver => $ci) {
-            $dbs[$driver] = array(
-                $ci,
-            );
+            $dbs[$driver] = [$ci];
 
             // Disable messages from other packages while building schema.
             $prior = error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);

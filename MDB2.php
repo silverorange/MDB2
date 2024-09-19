@@ -50,8 +50,6 @@
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 
-// {{{ Error constants
-
 /**
  * The method mapErrorCode in each MDB2_dbtype implementation maps
  * native error codes to one of these.
@@ -98,17 +96,11 @@ const MDB2_ERROR_INSUFFICIENT_DATA = -35;
 const MDB2_ERROR_NO_PERMISSION = -36;
 const MDB2_ERROR_DISCONNECT_FAILED = -37;
 
-// }}}
-// {{{ Verbose constants
-
 /**
  * These are just helper constants to more verbosely express parameters to prepare().
  */
 const MDB2_PREPARE_MANIP = false;
 const MDB2_PREPARE_RESULT = null;
-
-// }}}
-// {{{ Fetchmode constants
 
 /**
  * This is a special constant that tells MDB2 the user hasn't specified
@@ -138,9 +130,6 @@ const MDB2_FETCHMODE_OBJECT = 3;
  * is the column name, and the second level the row number.
  */
 const MDB2_FETCHMODE_FLIPPED = 4;
-
-// }}}
-// {{{ Portability mode constants
 
 /**
  * Portability: turn off all portability features.
@@ -215,9 +204,6 @@ const MDB2_PORTABILITY_FIX_ASSOC_FIELD_NAMES = 64;
  */
 const MDB2_PORTABILITY_ALL = 127;
 
-// }}}
-// {{{ Globals for class instance tracking
-
 // These are global variables that are used to track the various class instances
 
 $GLOBALS['_MDB2_databases'] = [];
@@ -233,8 +219,6 @@ $GLOBALS['_MDB2_dsninfo_default'] = [
     'database' => false,
     'mode'     => false,
 ];
-
-// }}}
 
 /**
  * The main 'MDB2' class is simply a container class with some static
@@ -268,8 +252,6 @@ $GLOBALS['_MDB2_dsninfo_default'] = [
  */
 class MDB2
 {
-    // {{{ function setOptions($db, $options)
-
     /**
      * set option array   in an exiting database object.
      *
@@ -294,9 +276,6 @@ class MDB2
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function classExists($classname)
-
     /**
      * Checks if a class exists without triggering __autoload.
      *
@@ -309,9 +288,6 @@ class MDB2
     {
         return class_exists($classname, false);
     }
-
-    // }}}
-    // {{{ function loadClass($class_name, $debug)
 
     /**
      * Loads a PEAR class.
@@ -333,9 +309,6 @@ class MDB2
 
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ function factory($dsn, $options = false)
 
     /**
      * Create a new MDB2 object for the specified database type.
@@ -380,9 +353,6 @@ class MDB2
         return $db;
     }
 
-    // }}}
-    // {{{ function connect($dsn, $options = false)
-
     /**
      * Create a new MDB2_Driver_* connection object and connect to the specified
      * database.
@@ -417,9 +387,6 @@ class MDB2
 
         return $db;
     }
-
-    // }}}
-    // {{{ function singleton($dsn = null, $options = false)
 
     /**
      * Returns a MDB2 connection with the requested DSN.
@@ -464,9 +431,6 @@ class MDB2
         return $db;
     }
 
-    // }}}
-    // {{{ function areEquals()
-
     /**
      * It looks like there's a memory leak in array_diff() in PHP 5.1.x,
      * so use this method instead.
@@ -492,9 +456,6 @@ class MDB2
         return true;
     }
 
-    // }}}
-    // {{{ function apiVersion()
-
     /**
      * Return the MDB2 API version.
      *
@@ -504,9 +465,6 @@ class MDB2
     {
         return '@package_version@';
     }
-
-    // }}}
-    // {{{ function raiseError($code = null, $mode = null, $options = null, $userinfo = null)
 
     /**
      * This method is used to communicate an error and invoke error
@@ -549,9 +507,6 @@ class MDB2
         return $pear->raiseError(null, $code, $mode, $options, $userinfo, 'MDB2_Error', true);
     }
 
-    // }}}
-    // {{{ function isError($data, $code = null)
-
     /**
      * Tell whether a value is a MDB2 error.
      *
@@ -580,9 +535,6 @@ class MDB2
         return false;
     }
 
-    // }}}
-    // {{{ function isConnection($value)
-
     /**
      * Tell whether a value is a MDB2 connection.
      *
@@ -596,9 +548,6 @@ class MDB2
         return $value instanceof MDB2_Driver_Common;
     }
 
-    // }}}
-    // {{{ function isResult($value)
-
     /**
      * Tell whether a value is a MDB2 result.
      *
@@ -610,9 +559,6 @@ class MDB2
     {
         return $value instanceof MDB2_Result;
     }
-
-    // }}}
-    // {{{ function isResultCommon($value)
 
     /**
      * Tell whether a value is a MDB2 result implementing the common interface.
@@ -626,9 +572,6 @@ class MDB2
         return $value instanceof MDB2_Result_Common;
     }
 
-    // }}}
-    // {{{ function isStatement($value)
-
     /**
      * Tell whether a value is a MDB2 statement interface.
      *
@@ -641,9 +584,6 @@ class MDB2
     {
         return $value instanceof MDB2_Statement_Common;
     }
-
-    // }}}
-    // {{{ function errorMessage($value = null)
 
     /**
      * Return a textual error message for a MDB2 error code.
@@ -716,9 +656,6 @@ class MDB2
 
         return $errorMessages[$value] ?? $errorMessages[MDB2_ERROR];
     }
-
-    // }}}
-    // {{{ function parseDSN($dsn)
 
     /**
      * Parse a data source name.
@@ -877,11 +814,7 @@ class MDB2
 
         return $parsed;
     }
-
-    // }}}
 }
-
-// {{{ function MDB2_closeOpenTransactions()
 
 /**
  * Close any open transactions form persistent connections.
@@ -898,9 +831,6 @@ function MDB2_closeOpenTransactions(): void
         }
     }
 }
-
-// }}}
-// {{{ function MDB2_defaultDebugOutput(&$db, $scope, $message, $is_manip = null)
 
 /**
  * default debug output handler.
@@ -927,5 +857,3 @@ function MDB2_defaultDebugOutput(&$db, $scope, $message, $context = [])
 
     return $message;
 }
-
-// }}}

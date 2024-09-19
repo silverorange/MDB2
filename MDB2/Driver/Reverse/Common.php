@@ -71,8 +71,6 @@ const MDB2_TABLEINFO_FULL = 3;
  */
 class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
 {
-    // {{{ splitTableSchema()
-
     /**
      * Split the "[owner|schema].table" notation into an array.
      *
@@ -89,9 +87,6 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
 
         return [null, $table];
     }
-
-    // }}}
-    // {{{ getTableFieldDefinition()
 
     /**
      * Get the structure of a field into an array.
@@ -119,9 +114,6 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ getTableIndexDefinition()
 
     /**
      * Get the structure of an index into an array.
@@ -158,9 +150,6 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ getTableConstraintDefinition()
 
     /**
      * Get the structure of an constraints into an array.
@@ -216,9 +205,6 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ getSequenceDefinition()
-
     /**
      * Get the structure of a sequence into an array.
      *
@@ -256,9 +242,6 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
 
         return $definition;
     }
-
-    // }}}
-    // {{{ getTriggerDefinition()
 
     /**
      * Get the structure of a trigger into an array.
@@ -301,9 +284,6 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ tableInfo()
 
     /**
      * Returns information about a table or a result set.
@@ -543,6 +523,4 @@ class MDB2_Driver_Reverse_Common extends MDB2_Module_Common
 
         return $res;
     }
-
-    // }}}
 }

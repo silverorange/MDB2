@@ -430,14 +430,10 @@ class Standard_BugsTest extends Standard_Abstract
         $data = $this->populateUserData(1);
         $this->db->setFetchMode(MDB2_FETCHMODE_ASSOC);
 
-        switch ($this->db->phptype) {
-            case 'mysqli':
-                $expect = 'mysqli_result';
-                break;
-
-            default:
-                $expect = 'resource';
-        }
+        $expect = match ($this->db->phptype) {
+            'mysqli' => 'mysqli_result',
+            default  => 'resource',
+        };
 
         // Regular behavior.
 
@@ -461,7 +457,7 @@ class Standard_BugsTest extends Standard_Abstract
         $this->assertInstanceOf('MDB2_Result_Common', $res);
 
         $res = $this->db->query('SELECT * FROM ' . $this->table_users, null, true, 'MDB2_BufferedIterator');
-        $this->assertEquals('MDB2_BufferedIterator', get_class($res));
+        $this->assertEquals('MDB2_BufferedIterator', $res::class);
 
         // Setting third parameter to false forces raw results to be returned.
 
@@ -491,10 +487,10 @@ class Standard_BugsTest extends Standard_Abstract
         $this->db->setOption('result_wrap_class', 'MDB2_Iterator');
 
         $res = $this->db->query('SELECT * FROM ' . $this->table_users);
-        $this->assertEquals('MDB2_Iterator', get_class($res));
+        $this->assertEquals('MDB2_Iterator', $res::class);
 
         $res = $this->db->query('SELECT * FROM ' . $this->table_users, null, true);
-        $this->assertEquals('MDB2_Iterator', get_class($res));
+        $this->assertEquals('MDB2_Iterator', $res::class);
 
         $res = $this->db->query('SELECT * FROM ' . $this->table_users, null, false);
         if ($expect == 'resource') {
@@ -504,13 +500,13 @@ class Standard_BugsTest extends Standard_Abstract
         }
 
         $res = $this->db->query('SELECT * FROM ' . $this->table_users, null, true, true);
-        $this->assertEquals('MDB2_Iterator', get_class($res));
+        $this->assertEquals('MDB2_Iterator', $res::class);
 
         $res = $this->db->query('SELECT * FROM ' . $this->table_users, null, true, false);
         $this->assertInstanceOf('MDB2_Result_Common', $res);
 
         $res = $this->db->query('SELECT * FROM ' . $this->table_users, null, true, 'MDB2_BufferedIterator');
-        $this->assertEquals('MDB2_BufferedIterator', get_class($res));
+        $this->assertEquals('MDB2_BufferedIterator', $res::class);
 
         // Setting third parameter to false forces raw results to be returned.
 

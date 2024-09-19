@@ -190,7 +190,7 @@ if ($mdb2_type == 'mysql') {
             'output_mode' => 'file',
             'output'      => $mdb2_name . '2.schema',
         ],
-        MDB2_SCHEMA_DUMP_STRUCTURE
+        MDB2_SCHEMA_DUMP_STRUCTURE,
     )) . '<br>';
     if ($schema->db->getOption('debug') === true) {
         echo $schema->db->getDebugOutput() . '<br>';

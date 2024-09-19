@@ -41,7 +41,7 @@ test($conn, 2, 2);
 test($conn, null, null);
 $conn->disconnect();
 
-function test(&$conn, $limit, $offset)
+function test(&$conn, $limit, $offset): void
 {
     $conn->setLimit($limit, $offset);
 

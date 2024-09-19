@@ -71,7 +71,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      * @var array
      */
     public $lobs = [];
-    // {{{ Variables
 
     protected $valid_default_values = [
         'text'      => '',
@@ -88,9 +87,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         'json'      => '{}',
         'jsonb'     => '{}',
     ];
-
-    // }}}
-    // {{{ getValidTypes()
 
     /**
      * Get the list of valid types.
@@ -122,9 +118,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return $types;
     }
-
-    // }}}
-    // {{{ checkResultTypes()
 
     /**
      * Define the list of types to be associated with the columns of a given
@@ -168,9 +161,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return $types;
     }
-
-    // }}}
-    // {{{ baseConvertResult()
 
     /**
      * General type conversion method.
@@ -266,9 +256,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ convertResult()
-
     /**
      * Convert a value to a RDBMS indipendent MDB2 type.
      *
@@ -299,9 +286,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->baseConvertResult($value, $type, $rtrim);
     }
 
-    // }}}
-    // {{{ convertResultRow()
-
     /**
      * Convert a result row.
      *
@@ -331,9 +315,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return $row;
     }
-
-    // }}}
-    // {{{ sortResultFieldTypes()
 
     /**
      * convert a result row.
@@ -377,9 +358,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $sorted_types;
     }
 
-    // }}}
-    // {{{ getDeclaration()
-
     /**
      * Obtain DBMS specific SQL code portion needed to declare
      * of the given type.
@@ -420,9 +398,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return $this->{"get{$type}Declaration"}($name, $field);
     }
-
-    // }}}
-    // {{{ getTypeDeclaration()
 
     /**
      * Obtain DBMS specific SQL code portion needed to declare an text type
@@ -502,9 +477,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return '';
     }
 
-    // }}}
-    // {{{ getDeclarationInternal()
-
     /**
      * Obtain DBMS specific SQL code portion needed to declare a generic type
      * field to be used in statements like CREATE TABLE.
@@ -548,9 +520,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return $name . ' ' . $this->getTypeDeclaration($field) . $declaration_options;
     }
-
-    // }}}
-    // {{{ getDeclarationOptions()
 
     /**
      * Obtain DBMS specific SQL code portion needed to declare a generic type
@@ -605,9 +574,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $charset . $default . $notnull . $collation;
     }
 
-    // }}}
-    // {{{ getCharsetFieldDeclaration()
-
     /**
      * Obtain DBMS specific SQL code portion needed to set the CHARACTER SET
      * of a field declaration to be used in statements like CREATE TABLE.
@@ -622,9 +588,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return '';
     }
 
-    // }}}
-    // {{{ getCollationFieldDeclaration()
-
     /**
      * Obtain DBMS specific SQL code portion needed to set the COLLATION
      * of a field declaration to be used in statements like CREATE TABLE.
@@ -638,9 +601,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return '';
     }
-
-    // }}}
-    // {{{ getIntegerDeclaration()
 
     /**
      * Obtain DBMS specific SQL code portion needed to declare an integer type
@@ -679,9 +639,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->getDeclarationInternal($name, $field);
     }
 
-    // }}}
-    // {{{ getTextDeclaration()
-
     /**
      * Obtain DBMS specific SQL code portion needed to declare an text type
      * field to be used in statements like CREATE TABLE.
@@ -710,9 +667,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return $this->getDeclarationInternal($name, $field);
     }
-
-    // }}}
-    // {{{ getCLOBDeclaration()
 
     /**
      * Obtain DBMS specific SQL code portion needed to declare an character
@@ -748,9 +702,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $name . ' ' . $this->getTypeDeclaration($field) . $notnull;
     }
 
-    // }}}
-    // {{{ getBLOBDeclaration()
-
     /**
      * Obtain DBMS specific SQL code portion needed to declare an binary large
      * object type field to be used in statements like CREATE TABLE.
@@ -785,9 +736,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $name . ' ' . $this->getTypeDeclaration($field) . $notnull;
     }
 
-    // }}}
-    // {{{ getBooleanDeclaration()
-
     /**
      * Obtain DBMS specific SQL code portion needed to declare a boolean type
      * field to be used in statements like CREATE TABLE.
@@ -811,9 +759,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return $this->getDeclarationInternal($name, $field);
     }
-
-    // }}}
-    // {{{ getDateDeclaration()
 
     /**
      * Obtain DBMS specific SQL code portion needed to declare a date type
@@ -839,9 +784,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->getDeclarationInternal($name, $field);
     }
 
-    // }}}
-    // {{{ getTimestampDeclaration()
-
     /**
      * Obtain DBMS specific SQL code portion needed to declare a timestamp
      * field to be used in statements like CREATE TABLE.
@@ -865,9 +807,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return $this->getDeclarationInternal($name, $field);
     }
-
-    // }}}
-    // {{{ getTimeDeclaration()
 
     /**
      * Obtain DBMS specific SQL code portion needed to declare a time
@@ -893,9 +832,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->getDeclarationInternal($name, $field);
     }
 
-    // }}}
-    // {{{ getFloatDeclaration()
-
     /**
      * Obtain DBMS specific SQL code portion needed to declare a float type
      * field to be used in statements like CREATE TABLE.
@@ -920,9 +856,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->getDeclarationInternal($name, $field);
     }
 
-    // }}}
-    // {{{ getDecimalDeclaration()
-
     /**
      * Obtain DBMS specific SQL code portion needed to declare a decimal type
      * field to be used in statements like CREATE TABLE.
@@ -946,9 +879,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return $this->getDeclarationInternal($name, $field);
     }
-
-    // }}}
-    // {{{ compareDefinition()
 
     /**
      * Obtain an array of changes that may need to applied.
@@ -1010,9 +940,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $change;
     }
 
-    // }}}
-    // {{{ compareIntegerDefinition()
-
     /**
      * Obtain an array of changes that may need to applied to an integer field.
      *
@@ -1037,9 +964,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return $change;
     }
-
-    // }}}
-    // {{{ compareTextDefinition()
 
     /**
      * Obtain an array of changes that may need to applied to an text field.
@@ -1066,9 +990,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $change;
     }
 
-    // }}}
-    // {{{ compareCLOBDefinition()
-
     /**
      * Obtain an array of changes that may need to applied to an CLOB field.
      *
@@ -1081,9 +1002,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return $this->compareTextDefinition($current, $previous);
     }
-
-    // }}}
-    // {{{ compareBLOBDefinition()
 
     /**
      * Obtain an array of changes that may need to applied to an BLOB field.
@@ -1098,9 +1016,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->compareTextDefinition($current, $previous);
     }
 
-    // }}}
-    // {{{ compareDateDefinition()
-
     /**
      * Obtain an array of changes that may need to applied to an date field.
      *
@@ -1113,9 +1028,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return [];
     }
-
-    // }}}
-    // {{{ compareTimeDefinition()
 
     /**
      * Obtain an array of changes that may need to applied to an time field.
@@ -1130,9 +1042,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return [];
     }
 
-    // }}}
-    // {{{ compareTimestampDefinition()
-
     /**
      * Obtain an array of changes that may need to applied to an timestamp field.
      *
@@ -1145,9 +1054,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return [];
     }
-
-    // }}}
-    // {{{ compareBooleanDefinition()
 
     /**
      * Obtain an array of changes that may need to applied to an boolean field.
@@ -1162,9 +1068,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return [];
     }
 
-    // }}}
-    // {{{ compareFloatDefinition()
-
     /**
      * Obtain an array of changes that may need to applied to an float field.
      *
@@ -1178,9 +1081,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return [];
     }
 
-    // }}}
-    // {{{ compareDecimalDefinition()
-
     /**
      * Obtain an array of changes that may need to applied to an decimal field.
      *
@@ -1193,9 +1093,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return [];
     }
-
-    // }}}
-    // {{{ quote()
 
     /**
      * Convert a text value into a DBMS specific format that is suitable to
@@ -1292,9 +1189,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $value;
     }
 
-    // }}}
-    // {{{ quoteInteger()
-
     /**
      * Convert a text value into a DBMS specific format that is suitable to
      * compose query statements.
@@ -1310,9 +1204,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return (int) $value;
     }
-
-    // }}}
-    // {{{ quoteText()
 
     /**
      * Convert a text value into a DBMS specific format that is suitable to
@@ -1343,9 +1234,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return "'" . $value . "'";
     }
-
-    // }}}
-    // {{{ readFile()
 
     /**
      * Convert a text value into a DBMS specific format that is suitable to
@@ -1386,9 +1274,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $value;
     }
 
-    // }}}
-    // {{{ quoteLOB()
-
     /**
      * Convert a text value into a DBMS specific format that is suitable to
      * compose query statements.
@@ -1416,9 +1301,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->quoteText($value, $quote, $escape_wildcards);
     }
 
-    // }}}
-    // {{{ quoteCLOB()
-
     /**
      * Convert a text value into a DBMS specific format that is suitable to
      * compose query statements.
@@ -1434,9 +1316,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return $this->quoteLOB($value, $quote, $escape_wildcards);
     }
-
-    // }}}
-    // {{{ quoteBLOB()
 
     /**
      * Convert a text value into a DBMS specific format that is suitable to
@@ -1454,9 +1333,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->quoteLOB($value, $quote, $escape_wildcards);
     }
 
-    // }}}
-    // {{{ quoteBoolean()
-
     /**
      * Convert a text value into a DBMS specific format that is suitable to
      * compose query statements.
@@ -1472,9 +1348,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return $value ? 1 : 0;
     }
-
-    // }}}
-    // {{{ quoteDate()
 
     /**
      * Convert a text value into a DBMS specific format that is suitable to
@@ -1504,9 +1377,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->quoteText($value, $quote, $escape_wildcards);
     }
 
-    // }}}
-    // {{{ quoteTimestamp()
-
     /**
      * Convert a text value into a DBMS specific format that is suitable to
      * compose query statements.
@@ -1534,9 +1404,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return $this->quoteText($value, $quote, $escape_wildcards);
     }
-
-    // }}}
-    // {{{ quoteTime()
 
     /**
      * Convert a text value into a DBMS specific format that is suitable to
@@ -1566,9 +1433,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->quoteText($value, $quote, $escape_wildcards);
     }
 
-    // }}}
-    // {{{ quoteFloat()
-
     /**
      * Convert a text value into a DBMS specific format that is suitable to
      * compose query statements.
@@ -1593,9 +1457,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return $value;
     }
-
-    // }}}
-    // {{{ quoteDecimal()
 
     /**
      * Convert a text value into a DBMS specific format that is suitable to
@@ -1633,9 +1494,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $value;
     }
 
-    // }}}
-    // {{{ quoteUUID()
-
     /**
      * Convert a UUID value into a DBMS specific format that is suitable to
      * compose query statements.
@@ -1651,9 +1509,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return $this->quoteText($value, $quote, $escape_wildcards);
     }
-
-    // }}}
-    // {{{ quoteJSON()
 
     /**
      * Convert a JSON value into a DBMS specific format that is suitable to
@@ -1696,9 +1551,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return "'" . $result . "'";
     }
 
-    // }}}
-    // {{{ quoteJSONB()
-
     /**
      * Convert a JSON value into a DBMS specific format that is suitable to
      * compose query statements.
@@ -1712,11 +1564,8 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     protected function quoteJSONB($value, $quote, $escape_wildcards)
     {
-        return $this->quoteJSON($value, $quote, $excape_wildcards);
+        return $this->quoteJSON($value, $quote, $escape_wildcards);
     }
-
-    // }}}
-    // {{{ writeLOBToFile()
 
     /**
      * retrieve LOB from the database.
@@ -1760,9 +1609,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ retrieveLOB()
-
     /**
      * retrieve LOB from the database.
      *
@@ -1779,9 +1625,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ readLOB()
 
     /**
      * Read data from large object input stream.
@@ -1800,9 +1643,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return substr($lob['value'], $lob['position'], $length);
     }
 
-    // }}}
-    // {{{ endOfLOB()
-
     /**
      * Determine whether it was reached the end of the large object and
      * therefore there is no more data to be read for the its input stream.
@@ -1815,9 +1655,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return $lob['endOfLOB'];
     }
-
-    // }}}
-    // {{{ destroyLOB()
 
     /**
      * Free any resources allocated during the lifetime of the large object
@@ -1838,9 +1675,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ destroyLOBInternal()
-
     /**
      * Free any resources allocated during the lifetime of the large object
      * handler object.
@@ -1851,9 +1685,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ implodeArray()
 
     /**
      * apply a type to all values of an array and return as a comma seperated string
@@ -1879,9 +1710,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return implode(', ', $return);
     }
-
-    // }}}
-    // {{{ matchPattern()
 
     /**
      * build a pattern matching string.
@@ -1970,9 +1798,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $match;
     }
 
-    // }}}
-    // {{{ patternEscapeString()
-
     /**
      * build string to define pattern escape character.
      *
@@ -1982,9 +1807,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
     {
         return '';
     }
-
-    // }}}
-    // {{{ mapNativeDatatype()
 
     /**
      * Maps a native array description of a field to a MDB2 datatype and length.
@@ -2012,9 +1834,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         return $this->mapNativeDatatypeInternal($field);
     }
 
-    // }}}
-    // {{{ mapNativeDatatypeInternal()
-
     /**
      * Maps a native array description of a field to a MDB2 datatype and length.
      *
@@ -2037,9 +1856,6 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ mapPrepareDatatype()
 
     /**
      * Maps an mdb2 datatype to mysqli prepare type.
@@ -2066,6 +1882,4 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
 
         return $type;
     }
-
-    // }}}
 }

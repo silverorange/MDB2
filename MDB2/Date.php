@@ -62,8 +62,6 @@
  */
 class MDB2_Date
 {
-    // {{{ mdbNow()
-
     /**
      * return the current datetime.
      *
@@ -73,9 +71,6 @@ class MDB2_Date
     {
         return date('Y-m-d H:i:s');
     }
-
-    // }}}
-    // {{{ mdbToday()
 
     /**
      * return the current date.
@@ -87,9 +82,6 @@ class MDB2_Date
         return date('Y-m-d');
     }
 
-    // }}}
-    // {{{ mdbTime()
-
     /**
      * return the current time.
      *
@@ -99,8 +91,6 @@ class MDB2_Date
     {
         return date('H:i:s');
     }
-    // }}}
-    // {{{ date2Mdbstamp()
 
     /**
      * convert a date into a MDB2 timestamp.
@@ -131,9 +121,6 @@ class MDB2_Date
         return MDB2_Date::unix2Mdbstamp(mktime($hour, $minute, $second, $month, $day, $year));
     }
 
-    // }}}
-    // {{{ unix2Mdbstamp()
-
     /**
      * convert a unix timestamp into a MDB2 timestamp.
      *
@@ -146,9 +133,6 @@ class MDB2_Date
     {
         return date('Y-m-d H:i:s', $unix_timestamp);
     }
-
-    // }}}
-    // {{{ mdbstamp2Unix()
 
     /**
      * convert a MDB2 timestamp into a unix timestamp.
@@ -164,9 +148,6 @@ class MDB2_Date
 
         return mktime($arr['hour'], $arr['minute'], $arr['second'], $arr['month'], $arr['day'], $arr['year']);
     }
-
-    // }}}
-    // {{{ mdbstamp2Date()
 
     /**
      * convert a MDB2 timestamp into an array containing all
@@ -184,6 +165,4 @@ class MDB2_Date
 
         return $arr;
     }
-
-    // }}}
 }

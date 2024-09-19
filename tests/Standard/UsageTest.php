@@ -1145,14 +1145,10 @@ class Standard_UsageTest extends Standard_Abstract
         }
 
         if ($this->db->supports('affected_rows')) {
-            switch ($this->db->phptype) {
-                case 'sqlite':
-                    $expect = 1;
-                    break;
-
-                default:
-                    $expect = 2;
-            }
+            $expect = match ($this->db->phptype) {
+                'sqlite' => 1,
+                default  => 2,
+            };
             $this->assertEquals($expect, $result, 'replacing a row returned incorrect result');
         }
 
@@ -1634,9 +1630,9 @@ class Standard_UsageTest extends Standard_Abstract
             } else {
                 if ($buffered) {
                     $this->assertTrue($result->valid(), 'The query result seem to have reached the end of result too soon' . $msgPost);
-                    $this->assertEquals('mdb2_bufferedresult_', mb_strtolower(mb_substr(get_class($result), 0, 20)), 'Error: not a buffered result');
+                    $this->assertEquals('mdb2_bufferedresult_', mb_strtolower(mb_substr($result::class, 0, 20)), 'Error: not a buffered result');
                 } else {
-                    $this->assertEquals('mdb2_result_', mb_strtolower(mb_substr(get_class($result), 0, 12)), 'Error: an unbuffered result was expected');
+                    $this->assertEquals('mdb2_result_', mb_strtolower(mb_substr($result::class, 0, 12)), 'Error: an unbuffered result was expected');
                 }
                 for ($i = 1; $i <= ($buffered ? 2 : 1); ++$i) {
                     $result->seek(0);
@@ -1873,19 +1869,11 @@ class Standard_UsageTest extends Standard_Abstract
         $quoted = $this->db->quote($character_data_file_tmp, 'clob');
         $this->assertEquals($expected, $quoted);
 
-        switch ($this->dsn['phptype']) {
-            case 'oci8':
-                $expected = 'EMPTY_BLOB()';
-                break;
-
-            case 'sqlsrv':
-                $expected = "'0x" . bin2hex($character_data) . "'";
-                break;
-
-            default:
-                $expected = "'" . $character_data . "'";
-                break;
-        }
+        $expected = match ($this->dsn['phptype']) {
+            'oci8'   => 'EMPTY_BLOB()',
+            'sqlsrv' => "'0x" . bin2hex($character_data) . "'",
+            default  => "'" . $character_data . "'",
+        };
         $quoted = $this->db->quote($character_data_file_tmp, 'blob');
         $this->assertEquals($expected, $quoted);
 

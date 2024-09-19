@@ -55,8 +55,6 @@
  */
 class MDB2_Module_Common
 {
-    // {{{ Variables (Properties)
-
     /**
      * contains the key to the global MDB2 instance array of the associated
      * MDB2 instance.
@@ -64,9 +62,6 @@ class MDB2_Module_Common
      * @var int
      */
     protected $db_index;
-
-    // }}}
-    // {{{ constructor: function __construct($db_index)
 
     /**
      * Constructor.
@@ -77,9 +72,6 @@ class MDB2_Module_Common
     {
         $this->db_index = $db_index;
     }
-
-    // }}}
-    // {{{ function getDBInstance()
 
     /**
      * Get the instance of MDB2 associated with the module instance.
@@ -101,6 +93,4 @@ class MDB2_Module_Common
 
         return $result;
     }
-
-    // }}}
 }

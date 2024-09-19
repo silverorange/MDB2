@@ -65,8 +65,6 @@
  */
 class MDB2_Driver_Manager_Common extends MDB2_Module_Common
 {
-    // {{{ protected splitTableSchema()
-
     /**
      * Split the "[owner|schema].table" notation into an array.
      *
@@ -83,9 +81,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
 
         return [null, $table];
     }
-
-    // }}}
-    // {{{ getFieldDeclarationList()
 
     /**
      * Get declaration of a number of field in bulk.
@@ -132,9 +127,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         return implode(', ', $query_fields);
     }
 
-    // }}}
-    // {{{ fixSequenceName()
-
     /**
      * Removes any formatting in an sequence name using the 'seqname_format' option.
      *
@@ -162,9 +154,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         return $sqn;
     }
 
-    // }}}
-    // {{{ fixIndexName()
-
     /**
      * Removes any formatting in an index name using the 'idxname_format' option.
      *
@@ -187,9 +176,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
 
         return $idx;
     }
-
-    // }}}
-    // {{{ createDatabase()
 
     /**
      * create a new database.
@@ -215,9 +201,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ alterDatabase()
-
     /**
      * alter an existing database.
      *
@@ -242,9 +225,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ dropDatabase()
-
     /**
      * drop an existing database.
      *
@@ -267,9 +247,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ getCreateTableQuery()
 
     /**
      * Create a basic SQL query for a new table creation.
@@ -325,9 +302,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         return $result;
     }
 
-    // }}}
-    // {{{ getTemporaryTableQuery()
-
     /**
      * A method to return the required SQL string that fits between CREATE ... TABLE
      * to create the table as a temporary table.
@@ -346,9 +320,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
     {
         return 'TEMPORARY';
     }
-
-    // }}}
-    // {{{ createTable()
 
     /**
      * create a new table.
@@ -400,9 +371,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ dropTable()
-
     /**
      * drop an existing table.
      *
@@ -425,9 +393,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
 
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ truncateTable()
 
     /**
      * Truncate an existing table (if the TRUNCATE TABLE syntax is not supported,
@@ -452,9 +417,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
 
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ vacuum()
 
     /**
      * Optimize (vacuum) all the tables in the db (or only the specified table)
@@ -484,9 +446,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ alterTable()
 
     /**
      * alter an existing table.
@@ -529,9 +488,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ listDatabases()
-
     /**
      * list all databases.
      *
@@ -553,9 +509,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ listUsers()
-
     /**
      * list all users.
      *
@@ -576,9 +529,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ listViews()
 
     /**
      * list all views in the current database.
@@ -606,9 +556,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ listTableViews()
-
     /**
      * list the views in the database that reference a given table.
      *
@@ -632,9 +579,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ listTableTriggers()
 
     /**
      * list all triggers in the database that reference a given table.
@@ -660,9 +604,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ listFunctions()
-
     /**
      * list all functions in the current database.
      *
@@ -683,9 +624,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ listTables()
 
     /**
      * list all tables in the current database.
@@ -713,9 +651,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ listTableFields()
-
     /**
      * list all fields in a table in the current database.
      *
@@ -738,9 +673,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ createIndex()
 
     /**
      * Get the stucture of a field into an array.
@@ -797,9 +729,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ dropIndex()
-
     /**
      * drop existing index.
      *
@@ -824,9 +753,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ listTableIndexes()
-
     /**
      * list all indexes in a table.
      *
@@ -850,9 +776,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ getAdvancedFKOptions()
-
     /**
      * Return the FOREIGN KEY query section dealing with non-standard options
      * as MATCH, INITIALLY DEFERRED, ON UPDATE, ...
@@ -865,9 +788,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
     {
         return '';
     }
-
-    // }}}
-    // {{{ createConstraint()
 
     /**
      * create a constraint on a table.
@@ -946,9 +866,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ dropConstraint()
-
     /**
      * drop existing constraint.
      *
@@ -975,9 +892,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ listTableConstraints()
-
     /**
      * list all constraints in a table.
      *
@@ -1000,9 +914,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ createSequence()
 
     /**
      * create sequence.
@@ -1028,9 +939,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ dropSequence()
-
     /**
      * drop existing sequence.
      *
@@ -1053,9 +961,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ listSequences()
 
     /**
      * list all sequences in the current database.
@@ -1082,6 +987,4 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
             __FUNCTION__
         );
     }
-
-    // }}}
 }

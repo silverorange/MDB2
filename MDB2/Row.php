@@ -55,8 +55,6 @@
  */
 class MDB2_Row
 {
-    // {{{ constructor: function __construct(&$row)
-
     /**
      * constructor.
      *
@@ -69,6 +67,4 @@ class MDB2_Row
             $this->{$key} = &$row[$key];
         }
     }
-
-    // }}}
 }

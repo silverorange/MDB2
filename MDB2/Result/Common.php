@@ -55,8 +55,6 @@
  */
 class MDB2_Result_Common extends MDB2_Result
 {
-    // {{{ Variables (Properties)
-
     public $db;
     public $result;
     public $rownum = -1;
@@ -67,9 +65,6 @@ class MDB2_Result_Common extends MDB2_Result
     public $offset_count = 0;
     public $limit;
     public $column_names;
-
-    // }}}
-    // {{{ constructor: function __construct($db, &$result, $limit = 0, $offset = 0)
 
     /**
      * Constructor.
@@ -86,9 +81,6 @@ class MDB2_Result_Common extends MDB2_Result
         $this->offset = $offset;
         $this->limit = max(0, $limit - 1);
     }
-
-    // }}}
-    // {{{ function setResultTypes($types)
 
     /**
      * Define the list of types to be associated with the columns of a given
@@ -131,9 +123,6 @@ class MDB2_Result_Common extends MDB2_Result
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function seek($rownum = 0)
-
     /**
      * Seek to a specific row in a result set.
      *
@@ -161,9 +150,6 @@ class MDB2_Result_Common extends MDB2_Result
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
-
     /**
      * Fetch and return a row of data.
      *
@@ -184,9 +170,6 @@ class MDB2_Result_Common extends MDB2_Result
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ function fetchOne($colnum = 0)
 
     /**
      * fetch single column from the next row from a result set.
@@ -217,9 +200,6 @@ class MDB2_Result_Common extends MDB2_Result
 
         return $row[$colnum];
     }
-
-    // }}}
-    // {{{ function fetchCol($colnum = 0)
 
     /**
      * Fetch and return a column from the current row pointer position.
@@ -254,9 +234,6 @@ class MDB2_Result_Common extends MDB2_Result
 
         return $column;
     }
-
-    // }}}
-    // {{{ function fetchAll($fetchmode = MDB2_FETCHMODE_DEFAULT, $rekey = false, $force_array = false, $group = false)
 
     /**
      * Fetch and return all rows from the current row pointer position.
@@ -357,9 +334,6 @@ class MDB2_Result_Common extends MDB2_Result
         return $all;
     }
 
-    // }}}
-    // {{{ function rowCount()
-
     /**
      * Returns the actual row number that was last fetched (count from 0).
      *
@@ -369,9 +343,6 @@ class MDB2_Result_Common extends MDB2_Result
     {
         return $this->rownum + 1;
     }
-
-    // }}}
-    // {{{ function numRows()
 
     /**
      * Returns the number of rows in a result object.
@@ -389,9 +360,6 @@ class MDB2_Result_Common extends MDB2_Result
         );
     }
 
-    // }}}
-    // {{{ function nextResult()
-
     /**
      * Move the internal result pointer to the next available result.
      *
@@ -407,9 +375,6 @@ class MDB2_Result_Common extends MDB2_Result
             __FUNCTION__
         );
     }
-
-    // }}}
-    // {{{ function getColumnNames()
 
     /**
      * Retrieve the names of columns returned by the DBMS in a query result or
@@ -440,9 +405,6 @@ class MDB2_Result_Common extends MDB2_Result
         return $this->column_names;
     }
 
-    // }}}
-    // {{{ function getColumnNamesInternal()
-
     /**
      * Retrieve the names of columns returned by the DBMS in a query result.
      *
@@ -462,9 +424,6 @@ class MDB2_Result_Common extends MDB2_Result
         );
     }
 
-    // }}}
-    // {{{ function numCols()
-
     /**
      * Count the number of columns returned by the DBMS in a query result.
      *
@@ -482,9 +441,6 @@ class MDB2_Result_Common extends MDB2_Result
         );
     }
 
-    // }}}
-    // {{{ function getResource()
-
     /**
      * return the resource associated with the result object.
      *
@@ -494,9 +450,6 @@ class MDB2_Result_Common extends MDB2_Result
     {
         return $this->result;
     }
-
-    // }}}
-    // {{{ function bindColumn($column, &$value, $type = null)
 
     /**
      * Set bind variable to a column.
@@ -531,9 +484,6 @@ class MDB2_Result_Common extends MDB2_Result
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function assignBindColumns($row)
-
     /**
      * Bind a variable to a value in the result row.
      *
@@ -554,9 +504,6 @@ class MDB2_Result_Common extends MDB2_Result
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ function free()
-
     /**
      * Free the internal resources associated with result.
      *
@@ -568,6 +515,4 @@ class MDB2_Result_Common extends MDB2_Result
 
         return MDB2_OK;
     }
-
-    // }}}
 }

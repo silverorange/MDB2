@@ -68,8 +68,6 @@ const MDB2_AUTOQUERY_SELECT = 4;
  */
 class MDB2_Extended extends MDB2_Module_Common
 {
-    // {{{ autoPrepare()
-
     /**
      * Generate an insert, update or delete query and call prepare() on it.
      *
@@ -121,9 +119,6 @@ class MDB2_Extended extends MDB2_Module_Common
 
         return $db->prepare($query, $types, $result_types, $lobs);
     }
-
-    // }}}
-    // {{{ autoExecute()
 
     /**
      * Generate an insert, update or delete query and call prepare() and execute() on it.
@@ -199,9 +194,6 @@ class MDB2_Extended extends MDB2_Module_Common
 
         return $result;
     }
-
-    // }}}
-    // {{{ buildManipSQL()
 
     /**
      * Make automaticaly an sql query for prepare().
@@ -305,9 +297,6 @@ class MDB2_Extended extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ limitQuery()
-
     /**
      * Generates a limited query.
      *
@@ -347,9 +336,6 @@ class MDB2_Extended extends MDB2_Module_Common
         return $db->query($query, $types, $result_class, $result_wrap_class);
     }
 
-    // }}}
-    // {{{ execParam()
-
     /**
      * Execute a parameterized DML statement.
      *
@@ -388,9 +374,6 @@ class MDB2_Extended extends MDB2_Module_Common
 
         return $result;
     }
-
-    // }}}
-    // {{{ getOne()
 
     /**
      * Fetch the first column of the first row of data returned from a query.
@@ -444,9 +427,6 @@ class MDB2_Extended extends MDB2_Module_Common
         return $one;
     }
 
-    // }}}
-    // {{{ getRow()
-
     /**
      * Fetch the first row of data returned from a query.  Takes care
      * of doing the query and freeing the results when finished.
@@ -497,9 +477,6 @@ class MDB2_Extended extends MDB2_Module_Common
 
         return $row;
     }
-
-    // }}}
-    // {{{ getCol()
 
     /**
      * Fetch a single column from a result set and return it as an
@@ -552,9 +529,6 @@ class MDB2_Extended extends MDB2_Module_Common
 
         return $col;
     }
-
-    // }}}
-    // {{{ getAll()
 
     /**
      * Fetch all the rows returned from a query.
@@ -618,9 +592,6 @@ class MDB2_Extended extends MDB2_Module_Common
 
         return $all;
     }
-
-    // }}}
-    // {{{ getAssoc()
 
     /**
      * Fetch the entire result set of a query and return it as an
@@ -734,9 +705,6 @@ class MDB2_Extended extends MDB2_Module_Common
         return $all;
     }
 
-    // }}}
-    // {{{ executeMultiple()
-
     /**
      * This function does several execute() calls on the same statement handle.
      * $params must be an array indexed numerically from 0, one execute call is
@@ -768,9 +736,6 @@ class MDB2_Extended extends MDB2_Module_Common
 
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ getBeforeID()
 
     /**
      * Returns the next free id of a sequence if the RDBMS
@@ -810,9 +775,6 @@ class MDB2_Extended extends MDB2_Module_Common
         return 'NULL';
     }
 
-    // }}}
-    // {{{ getAfterID()
-
     /**
      * Returns the autoincrement ID if supported or $id.
      *
@@ -838,6 +800,4 @@ class MDB2_Extended extends MDB2_Module_Common
 
         return $db->lastInsertID($table, $field);
     }
-
-    // }}}
 }

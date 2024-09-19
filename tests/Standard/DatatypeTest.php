@@ -530,7 +530,7 @@ class Standard_DatatypeTest extends Standard_Abstract
             'id'        => 1,
             'datefield' => date('Y-m-d'),
         ];
-        $this->insertValues($data, 'date');
+        $this->insertValues($data);
         $this->selectAndCheck($data);
 
         if (!$emulate_prepared && !$this->db->getOption('emulate_prepared')) {
@@ -560,7 +560,7 @@ class Standard_DatatypeTest extends Standard_Abstract
             'id'        => 1,
             'timefield' => date('H:i:s'),
         ];
-        $this->insertValues($data, 'time');
+        $this->insertValues($data);
         $this->selectAndCheck($data);
 
         if (!$emulate_prepared && !$this->db->getOption('emulate_prepared')) {
@@ -590,7 +590,7 @@ class Standard_DatatypeTest extends Standard_Abstract
             'id'             => 1,
             'timestampfield' => date('Y-m-d H:i:s'),
         ];
-        $this->insertValues($data, 'timestamp');
+        $this->insertValues($data);
         $this->selectAndCheck($data);
 
         if (!$emulate_prepared && !$this->db->getOption('emulate_prepared')) {
@@ -621,7 +621,7 @@ class Standard_DatatypeTest extends Standard_Abstract
             '""',
             '\\\\',
             "\\'\\'",
-            '\\"\\"',
+            '\"\"',
         ];
 
         $this->clearTables();
@@ -656,16 +656,10 @@ class Standard_DatatypeTest extends Standard_Abstract
     {
         $this->manualSetUp($ci);
 
-        switch ($this->db->phptype) {
-            case 'sqlite':
-                // LIKE and GLOB are not case sensitive for ASCII.
-                // http://www.sqlite.org/lang_expr.html#like
-                $case_sensitive_expect = 3;
-                break;
-
-            default:
-                $case_sensitive_expect = 2;
-        }
+        $case_sensitive_expect = match ($this->db->phptype) {
+            'sqlite' => 3,
+            default  => 2,
+        };
 
         $test_strings = [
             'Foo',

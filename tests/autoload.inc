@@ -8,7 +8,7 @@
  * @author Daniel Convissor <danielc@php.net>
  */
 
-$dirs = array();
+$dirs = [];
 
 // Determine this directory.
 $dirs['tests'] = realpath(__DIR__);
@@ -41,7 +41,7 @@ try {
 // Determine if and where MDB_Schema is installed.
 try {
     $fi = new SplFileObject('MDB2/Schema.php', 'r', true);
-    $dirs['mdb2_schema'] = dirname(dirname($fi->getRealPath()));
+    $dirs['mdb2_schema'] = dirname($fi->getRealPath(), 2);
     unset($fi);
 } catch (Exception $e) {
     die("skip Run 'pear install MDB2_Schema-beta' then retry.\n");
@@ -55,7 +55,7 @@ set_include_path(implode(PATH_SEPARATOR, $dirs)
 /**
  * Automatically includes files for new classes
  */
-function mdb2_test_autoload($class) {
+function mdb2_test_autoload($class): void {
 	$class_file = str_replace('_', '/', $class) . '.php';
     try {
         $fi = new SplFileObject($class_file, 'r', true);
