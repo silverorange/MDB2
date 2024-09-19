@@ -11,22 +11,39 @@
       "email": "mike@silverorange.com"
     }
   ],
-  "require": {
-    "php": ">=5.3.0",
-    "ext-mbstring": "*",
-    "pear/pear-core-minimal": "^1.9.0"
-  },
-  "require-dev": {
-    "silverorange/coding-standard": "^1.0.0"
-  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.silverorange.com",
+      "only": [
+        "silverorange/*"
+      ]
+    }
+  ],
   "autoload": {
     "psr-0": {
       "MDB2": ""
     }
   },
+  "require": {
+    "php": ">=8.2",
+    "ext-mbstring": "*",
+    "pear/pear-core-minimal": "^1.9.0"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.64",
+    "phpstan/phpstan": "^1.12",
+    "rector/rector": "^1.2",
+    "silverorange/php-coding-tools": "^1.4"
+  },
   "scripts": {
-    "lint": "./vendor/bin/phpcs",
-    "post-install-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src",
-    "post-update-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src"
+    "phpcs": "./vendor/bin/php-cs-fixer check -v",
+    "phpcs:fix": "./vendor/bin/php-cs-fixer fix -v",
+    "phpstan": "./vendor/bin/phpstan analyze",
+    "rector": "./vendor/bin/rector --dry-run",
+    "rector:fix": "./vendor/bin/rector"
+  },
+  "config": {
+    "sort-packages": true
   }
 }
