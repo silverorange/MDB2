@@ -16,6 +16,10 @@ $config = new Php82();
 // Set up the directories you want to process
 $finder = (new Finder())
     ->in(__DIR__)
+    ->name([
+        '/\.php$/',
+        '/\.inc$/',
+    ])
     ->exclude([
         'node_modules',
     ]);

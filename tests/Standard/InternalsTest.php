@@ -576,7 +576,7 @@ class Standard_InternalsTest extends Standard_Abstract
         $dsn_set = 'mydbms://myname:mypassword@localhost';
         $result = $this->db->setDSN($dsn_set);
         $dsn_get = $this->db->getDSN();
-        $dsn_rex = '/(([\\w]+)\\(mydbms\\):\\/\\/myname:mypassword@localhost\\/)/';
+        $dsn_rex = '/(([\w]+)\(mydbms\):\/\/myname:mypassword@localhost\/)/';
         // preg_match($dsn_rex, $dsn_get, $matches);
         $this->assertRegExp($dsn_rex, $dsn_get, 'testGetDSN');
         $dsn_rex = "/{$this->dsn['phptype']}[\\w\\W]+/";
@@ -585,7 +585,7 @@ class Standard_InternalsTest extends Standard_Abstract
         $dsn_set = 'mydbms://myname:mypassword@localhost';
         $result = $this->db->setDSN($dsn_set);
         $dsn_get = $this->db->getDSN('string', true);
-        $dsn_rex = '/(([\\w]+)\\(mydbms\\):\\/\\/myname:1@localhost\\/)/';
+        $dsn_rex = '/(([\w]+)\(mydbms\):\/\/myname:1@localhost\/)/';
         $this->assertRegExp($dsn_rex, $dsn_get, 'testGetDSN');
         $dsn_rex = "/{$this->dsn['phptype']}[\\w\\W]+/";
         $this->assertRegExp($dsn_rex, $dsn_get, 'testGetDSN');
