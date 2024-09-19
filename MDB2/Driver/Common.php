@@ -374,6 +374,9 @@ class MDB2_Driver_Common implements Stringable
      */
     public $fetchmode = MDB2_FETCHMODE_ORDERED;
 
+    public $loaded_version_modules = [];
+    public $_default_error_options = [];
+
     /**
      * comparision wildcards.
      *
@@ -406,9 +409,6 @@ class MDB2_Driver_Common implements Stringable
      * @var PEAR
      */
     protected $pear;
-
-    public $loaded_version_modules = [];
-    public $_default_error_options = [];
 
     /**
      * Constructor.

@@ -137,6 +137,7 @@ class MDB2_LOB
 
             return $data;
         }
+
         return null;
     }
 
@@ -167,6 +168,7 @@ class MDB2_LOB
 
             return $db->datatype->lobs[$this->lob_index]['position'];
         }
+
         return null;
     }
 

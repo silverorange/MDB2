@@ -155,8 +155,7 @@ class MDB2_Iterator implements Iterator
     /**
      * Seek to the first row in a result set.
      */
-    public function rewind(): void
-    {}
+    public function rewind(): void {}
 
     /**
      * Destructor.
