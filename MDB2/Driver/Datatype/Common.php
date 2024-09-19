@@ -72,6 +72,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
      */
     public $lobs = [];
 
+    public $function;
     protected $valid_default_values = [
         'text'      => '',
         'boolean'   => true,

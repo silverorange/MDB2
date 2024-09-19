@@ -158,7 +158,7 @@ class MDB2_Result_Common extends MDB2_Result
      * @param mixed      $fetchmode
      * @param mixed|null $rownum
      *
-     * @return int data array on success, a MDB2 error on failure
+     * @return array data array on success, a MDB2 error on failure
      */
     public function fetchRow($fetchmode = MDB2_FETCHMODE_DEFAULT, $rownum = null)
     {

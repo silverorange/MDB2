@@ -57,7 +57,9 @@ class MDB2_Statement_Common
 {
     public $db;
     public $statement;
+    public $positions;
     public $query;
+    public $last_query;
     public $result_types;
     public $types;
     public $values = [];

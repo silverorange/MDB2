@@ -60,7 +60,7 @@ class MDB2_BufferedIterator extends MDB2_Iterator implements SeekableIterator
      *
      * @return bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
      */
-    public function valid()
+    public function valid(): bool
     {
         if ($this->result) {
             return $this->result->valid();
@@ -86,7 +86,7 @@ class MDB2_BufferedIterator extends MDB2_Iterator implements SeekableIterator
     /**
      * Seek to the first row in a result set.
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->seek(0);
     }

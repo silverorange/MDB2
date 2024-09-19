@@ -91,7 +91,7 @@ class MDB2_Iterator implements Iterator
     /**
      * Fetch next row of data.
      */
-    public function next()
+    public function next(): void
     {
         $this->row = null;
     }
@@ -99,7 +99,7 @@ class MDB2_Iterator implements Iterator
     /**
      * return a row of data.
      */
-    public function current()
+    public function current(): mixed
     {
         if (null === $this->row) {
             $row = $this->result->fetchRow($this->fetchmode);
@@ -117,7 +117,7 @@ class MDB2_Iterator implements Iterator
      *
      * @return bool true/false, false is also returned on failure
      */
-    public function valid()
+    public function valid(): bool
     {
         return (bool) $this->current();
     }
@@ -143,7 +143,7 @@ class MDB2_Iterator implements Iterator
      *
      * @return bool|int|MDB2_Error true on success, false|MDB2_Error if result is invalid
      */
-    public function key()
+    public function key(): mixed
     {
         if ($this->result) {
             return $this->result->rowCount();
@@ -155,7 +155,8 @@ class MDB2_Iterator implements Iterator
     /**
      * Seek to the first row in a result set.
      */
-    public function rewind() {}
+    public function rewind(): void
+    {}
 
     /**
      * Destructor.

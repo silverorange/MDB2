@@ -407,6 +407,9 @@ class MDB2_Driver_Common implements Stringable
      */
     protected $pear;
 
+    public $loaded_version_modules = [];
+    public $_default_error_options = [];
+
     /**
      * Constructor.
      */

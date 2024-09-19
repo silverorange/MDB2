@@ -119,7 +119,7 @@ class MDB2_LOB
      * @param int number of bytes to read
      * @param mixed $count
      *
-     * @return string
+     * @return ?string
      */
     // @codingStandardsIgnoreLine
     public function stream_read($count)
@@ -137,6 +137,7 @@ class MDB2_LOB
 
             return $data;
         }
+        return null;
     }
 
     /**
@@ -156,7 +157,7 @@ class MDB2_LOB
     /**
      * return the current position.
      *
-     * @return int current position
+     * @return ?int current position
      */
     // @codingStandardsIgnoreLine
     public function stream_tell()
@@ -166,6 +167,7 @@ class MDB2_LOB
 
             return $db->datatype->lobs[$this->lob_index]['position'];
         }
+        return null;
     }
 
     /**
