@@ -1641,7 +1641,7 @@ class MDB2_Driver_Common
             $query = $result;
         }
 
-        return MDB2_Driver_Common::raiseError(
+        return $this->raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
@@ -1665,7 +1665,7 @@ class MDB2_Driver_Common
      */
     protected function affectedRows($connection, $result = null)
     {
-        return MDB2_Driver_Common::raiseError(
+        return $this->raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
@@ -1799,7 +1799,7 @@ class MDB2_Driver_Common
         if ($result_class) {
             $class_name = sprintf($result_class, $this->phptype);
             if (!class_exists($class_name)) {
-                return MDB2_Driver_Common::raiseError(
+                return $this->raiseError(
                     MDB2_ERROR_NOT_FOUND,
                     null,
                     null,
@@ -1809,7 +1809,7 @@ class MDB2_Driver_Common
             }
             $result = new $class_name($this, $result_resource, $limit, $offset);
             if (!MDB2::isResultCommon($result)) {
-                return MDB2_Driver_Common::raiseError(
+                return $this->raiseError(
                     MDB2_ERROR_NOT_FOUND,
                     null,
                     null,
@@ -1840,7 +1840,7 @@ class MDB2_Driver_Common
             }
             if ($result_wrap_class) {
                 if (!class_exists($result_wrap_class)) {
-                    return MDB2_Driver_Common::raiseError(
+                    return $this->raiseError(
                         MDB2_ERROR_NOT_FOUND,
                         null,
                         null,
@@ -1870,7 +1870,7 @@ class MDB2_Driver_Common
      */
     public function getServerVersion($native = false)
     {
-        return MDB2_Driver_Common::raiseError(
+        return $this->raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
@@ -1895,7 +1895,7 @@ class MDB2_Driver_Common
     public function setLimit($limit, $offset = null)
     {
         if (!$this->supports('limit_queries')) {
-            return MDB2_Driver_Common::raiseError(
+            return $this->raiseError(
                 MDB2_ERROR_UNSUPPORTED,
                 null,
                 null,
@@ -1905,7 +1905,7 @@ class MDB2_Driver_Common
         }
         $limit = (int) $limit;
         if ($limit < 0) {
-            return MDB2_Driver_Common::raiseError(
+            return $this->raiseError(
                 MDB2_ERROR_SYNTAX,
                 null,
                 null,
@@ -1917,7 +1917,7 @@ class MDB2_Driver_Common
         if (null !== $offset) {
             $offset = (int) $offset;
             if ($offset < 0) {
-                return MDB2_Driver_Common::raiseError(
+                return $this->raiseError(
                     MDB2_ERROR_SYNTAX,
                     null,
                     null,
@@ -1953,7 +1953,7 @@ class MDB2_Driver_Common
         }
 
         if (!$this->supports('sub_selects')) {
-            return MDB2_Driver_Common::raiseError(
+            return $this->raiseError(
                 MDB2_ERROR_UNSUPPORTED,
                 null,
                 null,
@@ -2046,7 +2046,7 @@ class MDB2_Driver_Common
     public function replace($table, $fields)
     {
         if (!$this->supports('replace')) {
-            return MDB2_Driver_Common::raiseError(
+            return $this->raiseError(
                 MDB2_ERROR_UNSUPPORTED,
                 null,
                 null,
@@ -2067,7 +2067,7 @@ class MDB2_Driver_Common
             $values[$name] = $value;
             if (isset($fields[$name]['key']) && $fields[$name]['key']) {
                 if ($value === 'NULL') {
-                    return MDB2_Driver_Common::raiseError(
+                    return $this->raiseError(
                         MDB2_ERROR_CANNOT_REPLACE,
                         null,
                         null,
@@ -2079,7 +2079,7 @@ class MDB2_Driver_Common
             }
         }
         if (empty($condition)) {
-            return MDB2_Driver_Common::raiseError(
+            return $this->raiseError(
                 MDB2_ERROR_CANNOT_REPLACE,
                 null,
                 null,
@@ -2224,7 +2224,7 @@ class MDB2_Driver_Common
                     $regexp = '/^.{' . ($position + 1) . '}(' . $this->options['bindname_format'] . ').*$/s';
                     $parameter = preg_replace($regexp, '\1', $query);
                     if ($parameter === '') {
-                        return MDB2_Driver_Common::raiseError(
+                        return $this->raiseError(
                             MDB2_ERROR_SYNTAX,
                             null,
                             null,
@@ -2286,7 +2286,7 @@ class MDB2_Driver_Common
                             if ($ignore['end'] === "\n") {
                                 $end_quote = strlen($query) - 1;
                             } else {
-                                return MDB2_Driver_Common::raiseError(
+                                return $this->raiseError(
                                     MDB2_ERROR_SYNTAX,
                                     null,
                                     null,
@@ -2409,7 +2409,7 @@ class MDB2_Driver_Common
             return $this->supported[$feature];
         }
 
-        return MDB2_Driver_Common::raiseError(
+        return $this->raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
@@ -2471,7 +2471,7 @@ class MDB2_Driver_Common
      */
     public function nextID($seq_name, $ondemand = true)
     {
-        return MDB2_Driver_Common::raiseError(
+        return $this->raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
@@ -2496,7 +2496,7 @@ class MDB2_Driver_Common
      */
     public function lastInsertID($table = null, $field = null)
     {
-        return MDB2_Driver_Common::raiseError(
+        return $this->raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
