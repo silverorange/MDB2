@@ -77,7 +77,7 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
     public function splitTableSchema($table)
     {
         $ret = [];
-        if (strpos($table, '.') !== false) {
+        if (str_contains($table, '.')) {
             return explode('.', $table);
         }
 

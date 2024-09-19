@@ -115,7 +115,7 @@ class MDB2_Statement_Common
     public function bindValue($parameter, $value, $type = null)
     {
         if (!is_numeric($parameter)) {
-            if (strpos($parameter, ':') === 0) {
+            if (str_starts_with($parameter, ':')) {
                 $parameter = substr($parameter, 1);
             }
         }
@@ -197,7 +197,7 @@ class MDB2_Statement_Common
     public function bindParam($parameter, &$value, $type = null)
     {
         if (!is_numeric($parameter)) {
-            if (strpos($parameter, ':') === 0) {
+            if (str_starts_with($parameter, ':')) {
                 $parameter = substr($parameter, 1);
             }
         }

@@ -122,17 +122,11 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      */
     public function now($type = 'timestamp')
     {
-        switch ($type) {
-            case 'time':
-                return 'CURRENT_TIME';
-
-            case 'date':
-                return 'CURRENT_DATE';
-
-            case 'timestamp':
-            default:
-                return 'CURRENT_TIMESTAMP';
-        }
+        return match ($type) {
+            'time' => 'CURRENT_TIME',
+            'date' => 'CURRENT_DATE',
+            default => 'CURRENT_TIMESTAMP',
+        };
     }
 
     // }}}

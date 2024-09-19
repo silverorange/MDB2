@@ -811,15 +811,15 @@ class MDB2
         if (preg_match('|^([^(]+)\((.*?)\)/?(.*?)$|', $dsn, $match)) {
             // $dsn => proto(proto_opts)/database
             $proto = $match[1];
-            $proto_opts = $match[2] ? $match[2] : false;
+            $proto_opts = $match[2] ?: false;
             $dsn = $match[3];
         } else {
             // $dsn => protocol+hostspec/database (old format)
-            if (strpos($dsn, '+') !== false) {
+            if (str_contains($dsn, '+')) {
                 [$proto, $dsn] = explode('+', $dsn, 2);
             }
-            if (strpos($dsn, '//') === 0
-                && strpos($dsn, '/', 2) !== false
+            if (str_starts_with($dsn, '//')
+                && str_contains(substr($dsn, 2), '/')
                 && $parsed['phptype'] == 'oci8'
             ) {
                 // oracle's "Easy Connect" syntax:
@@ -829,7 +829,7 @@ class MDB2
                 $pos = strrpos($proto_opts, '/');
                 $dsn = substr($proto_opts, $pos + 1);
                 $proto_opts = substr($proto_opts, 0, $pos);
-            } elseif (strpos($dsn, '/') !== false) {
+            } elseif (str_contains($dsn, '/')) {
                 [$proto_opts, $dsn] = explode('/', $dsn, 2);
             } else {
                 $proto_opts = $dsn;
@@ -840,7 +840,7 @@ class MDB2
         // process the different protocol options
         $parsed['protocol'] = (!empty($proto)) ? $proto : 'tcp';
         $proto_opts = rawurldecode($proto_opts);
-        if (strpos($proto_opts, ':') !== false) {
+        if (str_contains($proto_opts, ':')) {
             [$proto_opts, $parsed['port']] = explode(':', $proto_opts);
         }
         if ($parsed['protocol'] == 'tcp') {
@@ -859,7 +859,7 @@ class MDB2
                 // /database?param1=value1&param2=value2
                 $parsed['database'] = rawurldecode(substr($dsn, 0, $pos));
                 $dsn = substr($dsn, $pos + 1);
-                if (strpos($dsn, '&') !== false) {
+                if (str_contains($dsn, '&')) {
                     $opts = explode('&', $dsn);
                 } else {
                     // database?param1=value1
@@ -886,7 +886,7 @@ class MDB2
 /**
  * Close any open transactions form persistent connections.
  */
-function MDB2_closeOpenTransactions()
+function MDB2_closeOpenTransactions(): void
 {
     reset($GLOBALS['_MDB2_databases']);
     while (next($GLOBALS['_MDB2_databases'])) {

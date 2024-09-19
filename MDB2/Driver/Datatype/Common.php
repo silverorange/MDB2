@@ -223,8 +223,7 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
                     'value'     => null,
                     'loaded'    => false,
                 ];
-                end($this->lobs);
-                $lob_index = key($this->lobs);
+                $lob_index = array_key_last($this->lobs);
                 $this->lobs[$lob_index]['lob_index'] = $lob_index;
 
                 return fopen('MDB2LOB://' . $lob_index . '@' . $this->db_index, 'r+');

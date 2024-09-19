@@ -53,7 +53,7 @@
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
-class MDB2_Driver_Common
+class MDB2_Driver_Common implements \Stringable
 {
     // {{{ Variables (Properties)
 
@@ -417,8 +417,7 @@ class MDB2_Driver_Common
      */
     public function __construct()
     {
-        end($GLOBALS['_MDB2_databases']);
-        $db_index = key($GLOBALS['_MDB2_databases']) + 1;
+        $db_index = array_key_last($GLOBALS['_MDB2_databases']) + 1;
         $GLOBALS['_MDB2_databases'][$db_index] = &$this;
         $this->db_index = $db_index;
         $this->pear = new PEAR();
@@ -458,9 +457,9 @@ class MDB2_Driver_Common
      *
      * @return string representation of the object
      */
-    public function __toString()
+    public function __toString(): string
     {
-        $info = get_class($this);
+        $info = static::class;
         $info .= ': (phptype = ' . $this->phptype . ', dbsyntax = ' . $this->dbsyntax . ')';
         if ($this->connection) {
             $info .= ' [connected]';
@@ -1078,7 +1077,7 @@ class MDB2_Driver_Common
         if (null !== $module) {
             return call_user_func_array([&$this->modules[$module], $method], $params);
         }
-        trigger_error(sprintf('Call to undefined function: %s::%s().', get_class($this), $method), E_USER_ERROR);
+        trigger_error(sprintf('Call to undefined function: %s::%s().', static::class, $method), E_USER_ERROR);
     }
 
     // }}}
@@ -1319,7 +1318,7 @@ class MDB2_Driver_Common
     public function failNestedTransaction($error = null, $immediately = false)
     {
         if (null !== $error) {
-            $error = $this->has_transaction_error ? $this->has_transaction_error : true;
+            $error = $this->has_transaction_error ?: true;
         } elseif (!$error) {
             $error = true;
         }
@@ -1447,7 +1446,7 @@ class MDB2_Driver_Common
      */
     public function setDatabase($name)
     {
-        $previous_database_name = (isset($this->database_name)) ? $this->database_name : '';
+        $previous_database_name = $this->database_name ?? '';
         $this->database_name = $name;
         if (!empty($this->connected_database_name) && ($this->connected_database_name != $this->database_name)) {
             $this->disconnect(false);
@@ -2179,8 +2178,8 @@ class MDB2_Driver_Common
         $positions = [];
         $position = 0;
         while ($position < strlen($query)) {
-            $q_position = strpos($query, $question, $position);
-            $c_position = strpos($query, $colon, $position);
+            $q_position = strpos($query, (string) $question, $position);
+            $c_position = strpos($query, (string) $colon, $position);
             if ($q_position && $c_position) {
                 $p_position = min($q_position, $c_position);
             } elseif ($q_position) {
@@ -2279,10 +2278,10 @@ class MDB2_Driver_Common
 
         foreach ($ignores as $ignore) {
             if (!empty($ignore['start'])) {
-                if (is_int($start_quote = strpos($query, $ignore['start'], $position)) && $start_quote < $p_position) {
+                if (is_int($start_quote = strpos($query, (string) $ignore['start'], $position)) && $start_quote < $p_position) {
                     $end_quote = $start_quote;
                     do {
-                        if (!is_int($end_quote = strpos($query, $ignore['end'], $end_quote + 1))) {
+                        if (!is_int($end_quote = strpos($query, (string) $ignore['end'], $end_quote + 1))) {
                             if ($ignore['end'] === "\n") {
                                 $end_quote = strlen($query) - 1;
                             } else {
