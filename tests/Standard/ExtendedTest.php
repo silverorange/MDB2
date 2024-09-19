@@ -200,10 +200,14 @@ class Standard_ExtendedTest extends Standard_Abstract
             $this->fail('Error executing getAssoc(): ' . $values->getMessage());
         } else {
             $this->assertEquals(2, count($values), 'Error: incorrect number of returned rows');
-            [$id, $value] = each($values);
+            $id = key($values);
+            $value = current($values);
+            next($values);
             $this->assertEquals($data['user_id'], $id, 'Unexpected returned value');
             $this->assertEquals($data['user_name'], $value['user_name'], 'Unexpected returned value');
-            [$id, $value] = each($values);
+            $id = key($values);
+            $value = current($values);
+            next($values);
             $this->assertEquals($data2['user_id'], $id, 'Unexpected returned value');
             $this->assertEquals($data2['user_name'], $value['user_name'], 'Unexpected returned value');
         }
@@ -216,10 +220,14 @@ class Standard_ExtendedTest extends Standard_Abstract
         } else {
             // @todo: check if MDB2_FETCHMODE_ASSOC is behaving correctly in this case
             $this->assertEquals(2, count($values), 'Error: incorrect number of returned rows');
-            [$id, $value] = each($values);
+            $id = key($values);
+            $value = current($values);
+            next($values);
             $this->assertEquals($data['user_id'], $id, 'Unexpected returned value');
             $this->assertEquals($data['user_name'], $value[0], 'Unexpected returned value');
-            [$id, $value] = each($values);
+            $id = key($values);
+            $value = current($values);
+            next($values);
             $this->assertEquals($data2['user_id'], $id, 'Unexpected returned value');
             $this->assertEquals($data2['user_name'], $value[0], 'Unexpected returned value');
         }
