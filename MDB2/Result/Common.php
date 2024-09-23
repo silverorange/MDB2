@@ -380,9 +380,8 @@ class MDB2_Result_Common extends MDB2_Result
      * Retrieve the names of columns returned by the DBMS in a query result or
      * from the cache.
      *
-     * @param   bool    if set to true the values are the column names,
-     *                  otherwise the names of the columns are the keys
-     * @param mixed $flip
+     * @param bool $flip if set to true the values are the column names,
+     *                   otherwise the names of the columns are the keys
      *
      * @return mixed Array variable that holds the names of columns or an
      *               MDB2 error on failure.
