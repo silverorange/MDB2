@@ -42,39 +42,35 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  */
 
 /**
- * PHP5 buffered Iterator
+ * PHP5 buffered Iterator.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_BufferedIterator extends MDB2_Iterator implements SeekableIterator
 {
-    // {{{ valid()
-
     /**
-     * Check if the end of the result set has been reached
+     * Check if the end of the result set has been reached.
      *
      * @return bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
      */
-    public function valid()
+    public function valid(): bool
     {
         if ($this->result) {
             return $this->result->valid();
         }
+
         return false;
     }
 
-    // }}}
-    // {{{ count()
-
     /**
-     * Returns the number of rows in a result object
+     * Returns the number of rows in a result object.
      *
      * @return int|MDB2_Error number of rows, false|MDB2_Error if result is invalid
      */
@@ -83,23 +79,15 @@ class MDB2_BufferedIterator extends MDB2_Iterator implements SeekableIterator
         if ($this->result) {
             return $this->result->numRows();
         }
+
         return false;
     }
 
-    // }}}
-    // {{{ rewind()
-
     /**
-     * Seek to the first row in a result set
-     *
-     * @return void
+     * Seek to the first row in a result set.
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->seek(0);
     }
-
-    // }}}
 }
-
-?>

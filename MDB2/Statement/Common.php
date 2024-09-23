@@ -42,36 +42,43 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  */
 
 /**
- * The common statement class for MDB2 statement objects
+ * The common statement class for MDB2 statement objects.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Statement_Common
 {
-    // {{{ Variables (Properties)
-
     public $db;
     public $statement;
+    public $positions;
     public $query;
+    public $last_query;
     public $result_types;
     public $types;
-    public $values = array();
+    public $values = [];
     public $limit;
     public $offset;
     public $is_manip;
 
-    // }}}
-    // {{{ constructor: function __construct($db, $statement, $positions, $query, $types, $result_types, $is_manip = false, $limit = null, $offset = null)
-
     /**
-     * Constructor
+     * Constructor.
+     *
+     * @param mixed      $db
+     * @param mixed      $statement
+     * @param mixed      $positions
+     * @param mixed      $query
+     * @param mixed      $types
+     * @param mixed      $result_types
+     * @param mixed      $is_manip
+     * @param mixed|null $limit
+     * @param mixed|null $offset
      */
     public function __construct($db, $statement, $positions, $query, $types, $result_types, $is_manip = false, $limit = null, $offset = null)
     {
@@ -79,15 +86,12 @@ class MDB2_Statement_Common
         $this->statement = $statement;
         $this->positions = $positions;
         $this->query = $query;
-        $this->types = (array)$types;
-        $this->result_types = (array)$result_types;
+        $this->types = (array) $types;
+        $this->result_types = (array) $result_types;
         $this->limit = $limit;
         $this->is_manip = $is_manip;
         $this->offset = $offset;
     }
-
-    // }}}
-    // {{{ function bindValue($parameter, &$value, $type = null)
 
     /**
      * Set the value of a parameter of a prepared query.
@@ -97,13 +101,15 @@ class MDB2_Statement_Common
      * @param   mixed   value that is meant to be assigned to specified
      *       parameter. The type of the value depends on the $type argument.
      * @param   string  specifies the type of the field
+     * @param mixed $parameter
+     * @param mixed $value
      *
-     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
     public function bindValue($parameter, $value, $type = null)
     {
         if (!is_numeric($parameter)) {
-            if (strpos($parameter, ':') === 0) {
+            if (str_starts_with($parameter, ':')) {
                 $parameter = substr($parameter, 1);
             }
         }
@@ -112,7 +118,7 @@ class MDB2_Statement_Common
                 MDB2_ERROR_NOT_FOUND,
                 null,
                 null,
-                'Unable to bind to missing placeholder: '.$parameter,
+                'Unable to bind to missing placeholder: ' . $parameter,
                 __FUNCTION__
             );
         }
@@ -120,21 +126,21 @@ class MDB2_Statement_Common
         if (null !== $type) {
             $this->types[$parameter] = $type;
         }
+
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ function bindValueArray($values, $types = null)
 
     /**
      * Set the values of multiple a parameter of a prepared query in bulk.
      *
      * @param   array   specifies all necessary information
      *       for bindValue() the array elements must use keys corresponding to
-     *       the number of the position of the parameter.
+     *       the number of the position of the parameter
      * @param   array   specifies the types of the fields
+     * @param mixed      $values
+     * @param mixed|null $types
      *
-     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      *
      * @see     bindParam()
      */
@@ -148,21 +154,20 @@ class MDB2_Statement_Common
             $err = $this->bindValue($parameter, $values[$parameter], $types[$key]);
             if (MDB2::isError($err)) {
                 if ($err->getCode() == MDB2_ERROR_NOT_FOUND) {
-                    //ignore (extra value for missing placeholder)
+                    // ignore (extra value for missing placeholder)
                     continue;
                 }
                 $this->db->popExpect();
                 $this->db->popErrorHandling();
+
                 return $err;
             }
         }
         $this->db->popExpect();
         $this->db->popErrorHandling();
+
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ function bindParam($parameter, &$value, $type = null)
 
     /**
      * Bind a variable to a parameter of a prepared query.
@@ -172,13 +177,15 @@ class MDB2_Statement_Common
      * @param   mixed   variable that is meant to be bound to specified
      *       parameter. The type of the value depends on the $type argument.
      * @param   string  specifies the type of the field
+     * @param mixed $parameter
+     * @param mixed $value
      *
-     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
     public function bindParam($parameter, &$value, $type = null)
     {
         if (!is_numeric($parameter)) {
-            if (strpos($parameter, ':') === 0) {
+            if (str_starts_with($parameter, ':')) {
                 $parameter = substr($parameter, 1);
             }
         }
@@ -187,29 +194,29 @@ class MDB2_Statement_Common
                 MDB2_ERROR_NOT_FOUND,
                 null,
                 null,
-                'Unable to bind to missing placeholder: '.$parameter,
+                'Unable to bind to missing placeholder: ' . $parameter,
                 __FUNCTION__
             );
         }
-        $this->values[$parameter] =& $value;
+        $this->values[$parameter] = &$value;
         if (null !== $type) {
             $this->types[$parameter] = $type;
         }
+
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ function bindParamArray(&$values, $types = null)
 
     /**
      * Bind the variables of multiple a parameter of a prepared query in bulk.
      *
      * @param   array   specifies all necessary information
      *       for bindParam() the array elements must use keys corresponding to
-     *       the number of the position of the parameter.
+     *       the number of the position of the parameter
      * @param   array   specifies the types of the fields
+     * @param mixed      $values
+     * @param mixed|null $types
      *
-     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      *
      * @see     bindParam()
      */
@@ -223,20 +230,21 @@ class MDB2_Statement_Common
                 return $err;
             }
         }
+
         return MDB2_OK;
     }
-
-    // }}}
-    // {{{ function execute($values = null, $result_class = true, $result_wrap_class = false)
 
     /**
      * Execute a prepared query statement.
      *
      * @param array specifies all necessary information
      *              for bindParam() the array elements must use keys corresponding
-     *              to the number of the position of the parameter.
+     *              to the number of the position of the parameter
      * @param mixed specifies which result class to use
      * @param mixed specifies which class to wrap results in
+     * @param mixed|null $values
+     * @param mixed      $result_class
+     * @param mixed      $result_wrap_class
      *
      * @return mixed MDB2_Result or integer (affected rows) on success,
      *               a MDB2 error on failure
@@ -253,7 +261,7 @@ class MDB2_Statement_Common
             );
         }
 
-        $values = (array)$values;
+        $values = (array) $values;
         if (!empty($values)) {
             $err = $this->bindValueArray($values);
             if (MDB2::isError($err)) {
@@ -266,18 +274,17 @@ class MDB2_Statement_Common
                 );
             }
         }
-        $result = $this->executeInternal($result_class, $result_wrap_class);
-        return $result;
-    }
 
-    // }}}
-    // {{{ function executeInternal($result_class = true, $result_wrap_class = false)
+        return $this->executeInternal($result_class, $result_wrap_class);
+    }
 
     /**
      * Execute a prepared query statement helper method.
      *
      * @param   mixed   specifies which result class to use
      * @param   mixed   specifies which class to wrap results in
+     * @param mixed $result_class
+     * @param mixed $result_wrap_class
      *
      * @return mixed MDB2_Result or integer (affected rows) on success,
      *               a MDB2 error on failure
@@ -293,12 +300,12 @@ class MDB2_Statement_Common
                     MDB2_ERROR_NOT_FOUND,
                     null,
                     null,
-                    'Unable to bind to missing placeholder: '.$parameter,
+                    'Unable to bind to missing placeholder: ' . $parameter,
                     __FUNCTION__
                 );
             }
             $value = $this->values[$parameter];
-            $query.= substr($this->query, $last_position, $current_position - $last_position);
+            $query .= substr($this->query, $last_position, $current_position - $last_position);
             if (!isset($value)) {
                 $value_quoted = 'NULL';
             } else {
@@ -308,10 +315,10 @@ class MDB2_Statement_Common
                     return $value_quoted;
                 }
             }
-            $query.= $value_quoted;
+            $query .= $value_quoted;
             $last_position = $current_position + 1;
         }
-        $query.= substr($this->query, $last_position);
+        $query .= substr($this->query, $last_position);
 
         $this->db->offset = $this->offset;
         $this->db->limit = $this->limit;
@@ -320,16 +327,14 @@ class MDB2_Statement_Common
         } else {
             $result = $this->db->query($query, $this->result_types, $result_class, $result_wrap_class);
         }
+
         return $result;
     }
-
-    // }}}
-    // {{{ function free()
 
     /**
      * Release resources allocated for the specified prepared query.
      *
-     * @return  mixed   MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
      */
     public function free()
     {
@@ -355,8 +360,4 @@ class MDB2_Statement_Common
 
         return MDB2_OK;
     }
-
-    // }}}
 }
-
-?>

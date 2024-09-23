@@ -1,10 +1,10 @@
 <?php
 
 /**
- * A manual test for the querysim driver
+ * A manual test for the querysim driver.
  *
- * @package MDB2
  * @category Database
+ *
  * @author Lukas Smith <lsmith@php.net>
  */
 
@@ -17,7 +17,7 @@ $dsn = 'querysim';
 $conn = MDB2::factory($dsn);
 
 if (MDB2::isError($conn)) {
-    die ('Cannot connect: '.$conn->getMessage()."\n<br />\n<pre>".$conn->getUserInfo()."\n</pre>\n<br />");
+    exit('Cannot connect: ' . $conn->getMessage() . "\n<br />\n<pre>" . $conn->getUserInfo() . "\n</pre>\n<br />");
 }
 
 test($conn, null, null);
@@ -27,11 +27,11 @@ test($conn, 2, 2);
 test($conn, null, null);
 $conn->disconnect();
 
-$dsn = "querysim:///querysim.csv";
-$conn = MDB2::factory($dsn, array('persistent'=> true, 'dataDelim'=>','));
+$dsn = 'querysim:///querysim.csv';
+$conn = MDB2::factory($dsn, ['persistent' => true, 'dataDelim' => ',']);
 
 if (MDB2::isError($conn)) {
-    die ('Cannot connect: '.$conn->getMessage()."\n<br />\n<pre>".$conn->getUserInfo()."\n</pre>\n<br />");
+    exit('Cannot connect: ' . $conn->getMessage() . "\n<br />\n<pre>" . $conn->getUserInfo() . "\n</pre>\n<br />");
 }
 
 test($conn, null, null);
@@ -41,7 +41,7 @@ test($conn, 2, 2);
 test($conn, null, null);
 $conn->disconnect();
 
-function test(&$conn, $limit, $offset)
+function test(&$conn, $limit, $offset): void
 {
     $conn->setLimit($limit, $offset);
 
@@ -53,15 +53,15 @@ function test(&$conn, $limit, $offset)
     ');
 
     if (MDB2::isError($user)) {
-        die ('Database Error: '.$user->getMessage()."\n<br />\n<pre>".$user->getUserInfo()."\n</pre>\n<br />");
+        exit('Database Error: ' . $user->getMessage() . "\n<br />\n<pre>" . $user->getUserInfo() . "\n</pre>\n<br />");
     }
 
     printf("Result contains %d rows and %d columns (using limit: %d and offset: %d)\n<br /><br />\n", $user->numRows(), $user->numCols(), $limit, $offset);
 
-    //Note that you may return ordered or associative results, as well as specific single rows
+    // Note that you may return ordered or associative results, as well as specific single rows
     while (is_array($row = $user->fetchRow(MDB2_FETCHMODE_ASSOC))) {
         printf("%d, %s %s, %s\n<br />\n", $row['userid'], $row['firstname'], $row['lastname'], $row['usergroups']);
-    }//end while
+    }// end while
 
     $user->free();
 }

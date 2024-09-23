@@ -1,45 +1,43 @@
 <pre>
 <?php
 
-/**************************************/
-/* a nice php5 only show case of MDB2 */
-/**************************************/
+// a nice php5 only show case of MDB2
 
 // the database needs to be created manually beforehand
-$dsn = array(
+$dsn = [
     'phptype'  => 'pgsql',
     'username' => 'postgres',
-#    'phptype'  => 'mysql',
-#    'username' => 'root',
+    //    'phptype'  => 'mysql',
+    //    'username' => 'root',
     'password' => 'test',
     'hostspec' => 'localhost',
     'database' => 'driver_test',
-);
-#$dsn = 'sqlite:///:memory:';
+];
+// $dsn = 'sqlite:///:memory:';
 
 // create MDB2 instance
 $mdb2 = MDB2::factory($dsn);
 if (MDB2::isError($mdb2)) {
-    die($mdb2->getMessage());
+    exit($mdb2->getMessage());
 }
 
 // set the default fetchmode
 $mdb2->setFetchMode(MDB2_FETCHMODE_ASSOC);
 
-$fields = array(
-    'id' => array(
-        'type'     => 'integer',
-        'unsigned' => true,
-        'autoincrement'  => true,
-    ),
-    'somename' => array(
-        'type'     => 'text',
-        'length'   => 12,
-    ),
-    'somedate'  => array(
-        'type'     => 'date',
-    ),
-);
+$fields = [
+    'id' => [
+        'type'          => 'integer',
+        'unsigned'      => true,
+        'autoincrement' => true,
+    ],
+    'somename' => [
+        'type'   => 'text',
+        'length' => 12,
+    ],
+    'somedate' => [
+        'type' => 'date',
+    ],
+];
 $table = 'sometable';
 
 // create a table
@@ -48,26 +46,26 @@ $table = 'sometable';
 // - redirect the method call to the manager module: $mdb2->manager->createTable('sometable', $fields);
 $mdb2->mgCreateTable($table, $fields);
 
-$query = "INSERT INTO $table (somename, somedate) VALUES (:name, :date)";
+$query = "INSERT INTO {$table} (somename, somedate) VALUES (:name, :date)";
 // parameters:
 // 1) the query (notice we are using named parameters, but we could also use ? instead
 // 2) types of the placeholders (either keyed numerically in order or by name)
 // 3) MDB2_PREPARE_MANIP denotes a DML statement
-$stmt = $mdb2->prepare($query, array('text', 'date'), MDB2_PREPARE_MANIP);
+$stmt = $mdb2->prepare($query, ['text', 'date'], MDB2_PREPARE_MANIP);
 if (MDB2::isError($stmt)) {
-    die($stmt->getMessage());
+    exit($stmt->getMessage());
 }
 
-$stmt->execute(array('name' => 'hello', 'date' => MDB2_Date::mdbToday()));
+$stmt->execute(['name' => 'hello', 'date' => MDB2_Date::mdbToday()]);
 // get the last inserted id
 echo 'last insert id: ';
 var_dump($mdb2->lastInsertId($table, 'id'));
-$stmt->execute(array('name' => 'world', 'date' => '2005-11-11'));
+$stmt->execute(['name' => 'world', 'date' => '2005-11-11']);
 // get the last inserted id
 echo 'last insert id: ';
 var_dump($mdb2->lastInsertId($table, 'id'));
 
-$query = 'SELECT * FROM '.$table;
+$query = 'SELECT * FROM ' . $table;
 // parameters:
 // 1) the query
 // 2) true means MDB2 tries to determine the result set type automatically

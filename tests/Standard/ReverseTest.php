@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -45,36 +46,42 @@
 
 require_once dirname(__DIR__) . '/autoload.inc';
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class Standard_ReverseTest extends Standard_Abstract
 {
-    //test table name (it is dynamically created/dropped)
-    public $table       = 'testtable';
-    public $fields      = array();
-    public $indices     = array();
-    public $constraints = array();
+    // test table name (it is dynamically created/dropped)
+    public $table = 'testtable';
+    public $fields = [];
+    public $indices = [];
+    public $constraints = [];
 
-    public $table2      = 'testtable2';
-    public $fields2      = array();
-    public $indices2     = array();
-    public $constraints2 = array();
+    public $table2 = 'testtable2';
+    public $fields2 = [];
+    public $indices2 = [];
+    public $constraints2 = [];
 
     /**
-     * The non-standard helper
+     * The non-standard helper.
+     *
      * @var Nonstandard_Base
      */
     protected $nonstd;
-
 
     /**
      * Can not use setUp() because we are using a dataProvider to get multiple
      * MDB2 objects per test.
      *
-     * @param array $ci  an associative array with two elements.  The "dsn"
-     *                   element must contain an array of DSN information.
-     *                   The "options" element must be an array of connection
-     *                   options.
+     * @param array $ci an associative array with two elements.  The "dsn"
+     *                  element must contain an array of DSN information.
+     *                  The "options" element must be an array of connection
+     *                  options.
      */
-    protected function manualSetUp($ci) {
+    protected function manualSetUp($ci)
+    {
         parent::manualSetUp($ci);
 
         $this->nonstd = Nonstandard_Base::factory($this->db, $this);
@@ -82,49 +89,49 @@ class Standard_ReverseTest extends Standard_Abstract
         $this->db->loadModule('Reverse', null, true);
         $this->db->loadModule('Manager', null, true);
 
-        //Table structure
-        $this->fields = array(
-            'id' => array(  //PK
+        // Table structure
+        $this->fields = [
+            'id' => [  // PK
                 'type'     => 'integer',
                 'unsigned' => 1,
                 'notnull'  => 1,
                 'default'  => 0,
-                'length'  => 4,
-            ),
-            'id2' => array( //UNIQUE_MULTIFIELD(1/2)
+                'length'   => 4,
+            ],
+            'id2' => [ // UNIQUE_MULTIFIELD(1/2)
                 'type'     => 'integer',
                 'unsigned' => 1,
                 'notnull'  => 1,
                 'default'  => 0,
-            ),
-            'id3' => array( //UNIQUE_MULTIFIELD(2/2)
+            ],
+            'id3' => [ // UNIQUE_MULTIFIELD(2/2)
                 'type'     => 'integer',
                 'unsigned' => 1,
                 'notnull'  => 1,
                 'default'  => 0,
-            ),
-            'id4' => array( //UNIQUE
+            ],
+            'id4' => [ // UNIQUE
                 'type'     => 'integer',
                 'unsigned' => 1,
                 'notnull'  => 1,
                 'default'  => 0,
-            ),
-            'somename' => array( //NORMAL INDEX
+            ],
+            'somename' => [ // NORMAL INDEX
                 'type'   => 'text',
                 'length' => 12,
-            ),
-            'somedescription' => array( //INDEX_MULTIFIELD(1/2)
+            ],
+            'somedescription' => [ // INDEX_MULTIFIELD(1/2)
                 'type'   => 'text',
                 'length' => 12,
-            ),
-            'sex' => array( //INDEX_MULTIFIELD(2/2)
-                'type' => 'text',
-                'length' => 1,
+            ],
+            'sex' => [ // INDEX_MULTIFIELD(2/2)
+                'type'    => 'text',
+                'length'  => 1,
                 'default' => 'M',
-            ),
-        );
+            ],
+        ];
 
-        $options = array();
+        $options = [];
         if ('mysql' === mb_substr($this->db->phptype, 0, 5)) {
             $options['type'] = 'innodb';
         }
@@ -133,34 +140,35 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->db->manager->createTable($this->table, $this->fields, $options);
         }
 
-        //Table2 structure
-        $this->fields2 = array(
-            'ext_id' => array(  //SINGLE_FK
+        // Table2 structure
+        $this->fields2 = [
+            'ext_id' => [  // SINGLE_FK
                 'type'     => 'integer',
                 'unsigned' => 1,
                 'notnull'  => 1,
                 'default'  => 0,
-            ),
-            'ext_id2' => array( //MULTI_FK(1/2)
+            ],
+            'ext_id2' => [ // MULTI_FK(1/2)
                 'type'     => 'integer',
                 'unsigned' => 1,
                 'notnull'  => 1,
                 'default'  => 0,
-            ),
-            'ext_id3' => array( //MULTI_FK(2/2)
+            ],
+            'ext_id3' => [ // MULTI_FK(2/2)
                 'type'     => 'integer',
                 'unsigned' => 1,
                 'notnull'  => 1,
                 'default'  => 0,
-            ),
-        );
+            ],
+        ];
 
         if (!$this->tableExists($this->table2)) {
             $this->db->manager->createTable($this->table2, $this->fields2, $options);
         }
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         if (!$this->db || MDB2::isError($this->db)) {
             return;
         }
@@ -175,150 +183,151 @@ class Standard_ReverseTest extends Standard_Abstract
 
     public function setUpIndices()
     {
-        //Indices definition
-        $this->indices = array(
-            'sometestindex' => array(
-                'fields' => array(
-                    'somename' => array(
+        // Indices definition
+        $this->indices = [
+            'sometestindex' => [
+                'fields' => [
+                    'somename' => [
                         'sorting' => 'ascending',
-                    ),
-                ),
+                    ],
+                ],
                 'unique' => false,
-            ),
-            'multipletestindex' => array(
-                'fields' => array(
-                    'somedescription' => array(
+            ],
+            'multipletestindex' => [
+                'fields' => [
+                    'somedescription' => [
                         'sorting' => 'ascending',
-                    ),
-                    'sex' => array(
+                    ],
+                    'sex' => [
                         'sorting' => 'ascending',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
         foreach ($this->indices as $index_name => $index) {
             $result = $this->db->manager->createIndex($this->table, $index_name, $index);
-            $this->assertFalse(MDB2::isError($result), 'Error creating index: '.$index_name);
+            $this->assertFalse(MDB2::isError($result), 'Error creating index: ' . $index_name);
             if (MDB2::isError($result)) {
                 break;
             }
         }
+
         return MDB2::isError($result);
     }
 
     public function setUpConstraints()
     {
-        //Constraints definition
-        $this->constraints = array(
-            'pkfield' => array(
-                'fields' => array(
-                    'id' => array(
+        // Constraints definition
+        $this->constraints = [
+            'pkfield' => [
+                'fields' => [
+                    'id' => [
                         'sorting' => 'ascending',
-                    ),
-                ),
+                    ],
+                ],
                 'primary' => true,
-            ),
-            'multipleunique' => array(
-                'fields' => array(
-                    'id2' => array(
+            ],
+            'multipleunique' => [
+                'fields' => [
+                    'id2' => [
                         'sorting' => 'ascending',
-                    ),
-                    'id3' => array(
+                    ],
+                    'id3' => [
                         'sorting' => 'ascending',
-                    ),
-                ),
+                    ],
+                ],
                 'unique' => true,
-            ),
-            'singleunique' => array(
-                'fields' => array(
-                    'id4' => array(
+            ],
+            'singleunique' => [
+                'fields' => [
+                    'id4' => [
                         'sorting' => 'ascending',
-                    ),
-                ),
+                    ],
+                ],
                 'unique' => true,
-            ),
-        );
+            ],
+        ];
         $failed1 = false;
         foreach ($this->constraints as $constraint_name => $constraint) {
-            //$this->db->manager->dropConstraint($this->table, $constraint_name);
+            // $this->db->manager->dropConstraint($this->table, $constraint_name);
             $result = $this->db->manager->createConstraint($this->table, $constraint_name, $constraint);
-            //$this->assertFalse(MDB2::isError($result), 'Error creating constraint: '.$constraint_name);
+            // $this->assertFalse(MDB2::isError($result), 'Error creating constraint: '.$constraint_name);
             if (MDB2::isError($result)) {
-                $this->fail('Error creating constraint "'.$constraint_name.'": '.$result->getUserInfo(). ' :: '.$result->getUserInfo());
+                $this->fail('Error creating constraint "' . $constraint_name . '": ' . $result->getUserInfo() . ' :: ' . $result->getUserInfo());
                 $failed1 = true;
                 break;
             }
         }
 
-        $this->fk_constraint1_name = $this->table2.'_fk_'.$this->table.'_id';
-        //$this->fk_constraint2_name = $this->table2.'_fk_'.$this->table.'_id2_id3';
-        $this->fk_constraint2_name = $this->table2.'_fk_'.$this->table.'_2f';
-        $this->constraints2 = array(
-            $this->fk_constraint1_name => array(
+        $this->fk_constraint1_name = $this->table2 . '_fk_' . $this->table . '_id';
+        // $this->fk_constraint2_name = $this->table2.'_fk_'.$this->table.'_id2_id3';
+        $this->fk_constraint2_name = $this->table2 . '_fk_' . $this->table . '_2f';
+        $this->constraints2 = [
+            $this->fk_constraint1_name => [
                 'primary' => false,
                 'unique'  => false,
                 'foreign' => true,
                 'check'   => false,
-                'fields' => array(
-                    'ext_id' => array(
-                        'position' => 1,
-                        'sorting' => 'ascending',
-                    ),
-                ),
-                'references' => array(
-                    'table'  => $this->table,
-                    'fields' => array(
-                        'id' => array(
-                            'position' => 1,
-                        ),
-                    ),
-                ),
-                'onupdate' => 'CASCADE',
-                'ondelete' => 'CASCADE',
-                'match'    => 'FULL',
-                'deferrable'        => false,
-                'initiallydeferred' => false,
-            ),
-            $this->fk_constraint2_name => array(
-                'primary' => false,
-                'unique'  => false,
-                'foreign' => true,
-                'check'   => false,
-                'fields' => array(
-                    'ext_id2' => array(
+                'fields'  => [
+                    'ext_id' => [
                         'position' => 1,
                         'sorting'  => 'ascending',
-                    ),
-                    'ext_id3' => array(
+                    ],
+                ],
+                'references' => [
+                    'table'  => $this->table,
+                    'fields' => [
+                        'id' => [
+                            'position' => 1,
+                        ],
+                    ],
+                ],
+                'onupdate'          => 'CASCADE',
+                'ondelete'          => 'CASCADE',
+                'match'             => 'FULL',
+                'deferrable'        => false,
+                'initiallydeferred' => false,
+            ],
+            $this->fk_constraint2_name => [
+                'primary' => false,
+                'unique'  => false,
+                'foreign' => true,
+                'check'   => false,
+                'fields'  => [
+                    'ext_id2' => [
+                        'position' => 1,
+                        'sorting'  => 'ascending',
+                    ],
+                    'ext_id3' => [
                         'position' => 2,
                         'sorting'  => 'ascending',
-                    ),
-                ),
-                'references' => array(
+                    ],
+                ],
+                'references' => [
                     'table'  => $this->table,
-                    'fields' => array(
-                        'id2' => array(
+                    'fields' => [
+                        'id2' => [
                             'position' => 1,
-                        ),
-                        'id3' => array(
+                        ],
+                        'id3' => [
                             'position' => 2,
-                        ),
-                    ),
-                ),
-                'onupdate' => 'NO ACTION',
-                'ondelete' => 'NO ACTION',
-                'match'    => 'FULL',
+                        ],
+                    ],
+                ],
+                'onupdate'          => 'NO ACTION',
+                'ondelete'          => 'NO ACTION',
+                'match'             => 'FULL',
                 'deferrable'        => false,
                 'initiallydeferred' => false,
-            ),
-        );
+            ],
+        ];
         $failed2 = false;
         foreach ($this->constraints2 as $constraint_name => $constraint) {
-            //$this->db->manager->dropConstraint($this->table, $constraint_name);
+            // $this->db->manager->dropConstraint($this->table, $constraint_name);
             $result = $this->db->manager->createConstraint($this->table2, $constraint_name, $constraint);
-            //$this->assertFalse(MDB2::isError($result), 'Error creating constraint: '.$constraint_name);
+            // $this->assertFalse(MDB2::isError($result), 'Error creating constraint: '.$constraint_name);
             if (MDB2::isError($result)) {
-                $this->fail('Error creating constraint "'.$constraint_name.'": '.$result->getUserInfo(). ' :: '.$result->getUserInfo());
+                $this->fail('Error creating constraint "' . $constraint_name . '": ' . $result->getUserInfo() . ' :: ' . $result->getUserInfo());
                 $failed2 = true;
                 break;
             }
@@ -328,10 +337,14 @@ class Standard_ReverseTest extends Standard_Abstract
     }
 
     /**
-     * Test tableInfo('table_name')
+     * Test tableInfo('table_name').
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testTableInfo($ci) {
+    public function testTableInfo($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->reverse, 'tableInfo')) {
@@ -340,15 +353,15 @@ class Standard_ReverseTest extends Standard_Abstract
 
         $table_info = $this->db->reverse->tableInfo($this->table);
         if (MDB2::isError($table_info)) {
-            $this->fail('Error getting tableInfo(): '.$table_info->getUserInfo());
+            $this->fail('Error getting tableInfo(): ' . $table_info->getUserInfo());
         } else {
             $this->assertEquals(count($this->fields), count($table_info), 'The number of fields retrieved is different from the expected one');
             foreach ($table_info as $field_info) {
                 $this->assertEquals($this->table, $field_info['table'], 'the table name is not correct');
                 if (!array_key_exists(mb_strtolower($field_info['name']), $this->fields)) {
-                    $this->fail('Field names do not match ('.$field_info['name'].' is unknown)');
+                    $this->fail('Field names do not match (' . $field_info['name'] . ' is unknown)');
                 }
-                //expand test, for instance adding a check on types...
+                // expand test, for instance adding a check on types...
             }
         }
 
@@ -356,42 +369,46 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->markTestSkipped('Introspection not supported.');
         }
 
-        $result = $this->db->query('SELECT * FROM '.$this->table);
+        $result = $this->db->query('SELECT * FROM ' . $this->table);
         $table_info = $this->db->reverse->tableInfo($result);
         if (MDB2::isError($table_info)) {
-            $this->fail('Error getting tableInfo(): '.$table_info->getUserInfo());
+            $this->fail('Error getting tableInfo(): ' . $table_info->getUserInfo());
         } else {
             $this->assertEquals(count($this->fields), count($table_info), 'The number of fields retrieved is different from the expected one');
             foreach ($table_info as $field_info) {
-                //not all the drivers are capable of returning the table name,
-                //and may return an empty value
+                // not all the drivers are capable of returning the table name,
+                // and may return an empty value
                 if (!empty($field_info['table'])) {
                     $this->assertEquals($this->table, $field_info['table'], 'the table name is not correct');
                 }
                 if (!array_key_exists(mb_strtolower($field_info['name']), $this->fields)) {
-                    $this->fail('Field names do not match ('.$field_info['name'].' is unknown)');
+                    $this->fail('Field names do not match (' . $field_info['name'] . ' is unknown)');
                 }
-                //expand test, for instance adding a check on types...
+                // expand test, for instance adding a check on types...
             }
         }
         $result->free();
     }
 
     /**
-     * Test getTableFieldDefinition($table, $field_name)
+     * Test getTableFieldDefinition($table, $field_name).
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testGetTableFieldDefinition($ci) {
+    public function testGetTableFieldDefinition($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->reverse, 'getTableFieldDefinition')) {
             $this->markTestSkipped('Driver lacks getTableFieldDefinition.');
         }
 
-        //test integer not null
+        // test integer not null
         $field_info = $this->db->reverse->getTableFieldDefinition($this->table, 'id');
         if (MDB2::isError($field_info)) {
-            $this->fail('Error in getTableFieldDefinition(): '.$field_info->getUserInfo());
+            $this->fail('Error in getTableFieldDefinition(): ' . $field_info->getUserInfo());
         } else {
             $field_info = array_shift($field_info);
             $this->assertEquals('integer', $field_info['type'], 'The field type is different from the expected one');
@@ -401,20 +418,20 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->assertEquals('0', $field_info['default'], 'The field default value is different from the expected one');
         }
 
-        //test blob
+        // test blob
         $field_info = $this->db->reverse->getTableFieldDefinition($this->table_files, 'picture');
         if (MDB2::isError($field_info)) {
-            $this->fail('Error in getTableFieldDefinition(): '.$field_info->getUserInfo());
+            $this->fail('Error in getTableFieldDefinition(): ' . $field_info->getUserInfo());
         } else {
             $field_info = array_shift($field_info);
             $this->assertEquals($field_info['type'], 'blob', 'The field type is different from the expected one');
             $this->assertFalse($field_info['notnull'], 'The field cannot be null unlike it was expected');
         }
 
-        //test varchar(100) not null
+        // test varchar(100) not null
         $field_info = $this->db->reverse->getTableFieldDefinition($this->table_users, 'user_name');
         if (MDB2::isError($field_info)) {
-            $this->fail('Error in getTableFieldDefinition(): '.$field_info->getUserInfo());
+            $this->fail('Error in getTableFieldDefinition(): ' . $field_info->getUserInfo());
         } else {
             $field_info = array_shift($field_info);
             $this->assertEquals('text', $field_info['type'], 'The field type is different from the expected one');
@@ -424,10 +441,10 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->assertFalse($field_info['fixed'], 'The field fixed value is different from the expected one');
         }
 
-        //test decimal
+        // test decimal
         $field_info = $this->db->reverse->getTableFieldDefinition($this->table_users, 'quota');
         if (MDB2::isError($field_info)) {
-            $this->fail('Error in getTableFieldDefinition(): '.$field_info->getUserInfo());
+            $this->fail('Error in getTableFieldDefinition(): ' . $field_info->getUserInfo());
         } else {
             $field_info = array_shift($field_info);
             $this->assertEquals('decimal', $field_info['type'], 'The field type is different from the expected one');
@@ -437,7 +454,7 @@ class Standard_ReverseTest extends Standard_Abstract
 
         $field_info = $this->db->reverse->getTableFieldDefinition($this->table_users, 'user_name');
         if (MDB2::isError($field_info)) {
-            $this->fail('Error in getTableFieldDefinition(): '.$field_info->getUserInfo());
+            $this->fail('Error in getTableFieldDefinition(): ' . $field_info->getUserInfo());
         } else {
             $field_info = array_shift($field_info);
             $this->assertEquals('text', $field_info['type'], 'The field type is different from the expected one');
@@ -449,10 +466,14 @@ class Standard_ReverseTest extends Standard_Abstract
     }
 
     /**
-     * Test getTableIndexDefinition($table, $index_name)
+     * Test getTableIndexDefinition($table, $index_name).
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testGetTableIndexDefinition($ci) {
+    public function testGetTableIndexDefinition($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->reverse, 'getTableIndexDefinition')) {
@@ -461,7 +482,7 @@ class Standard_ReverseTest extends Standard_Abstract
 
         $this->setUpIndices();
 
-        //test index names
+        // test index names
         foreach ($this->indices as $index_name => $index) {
             $index_info = $this->db->reverse->getTableIndexDefinition($this->table, $index_name);
             if (MDB2::isError($index_info)) {
@@ -472,11 +493,11 @@ class Standard_ReverseTest extends Standard_Abstract
             }
         }
 
-        //test INDEX
+        // test INDEX
         $index_name = 'sometestindex';
         $index_info = $this->db->reverse->getTableIndexDefinition($this->table, $index_name);
         if (MDB2::isError($index_info)) {
-            $this->fail('Error in getTableIndexDefinition(): '.$index_info->getUserInfo());
+            $this->fail('Error in getTableIndexDefinition(): ' . $index_info->getUserInfo());
         } else {
             $this->assertEquals(1, count($index_info['fields']), 'The INDEX is not on one field unlike it was expected');
             $expected_fields = array_keys($this->indices[$index_name]['fields']);
@@ -485,11 +506,11 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->assertEquals(1, $index_info['fields'][$expected_fields[0]]['position'], 'The field position in the INDEX is not correct');
         }
 
-        //test INDEX on MULTIPLE FIELDS
+        // test INDEX on MULTIPLE FIELDS
         $index_name = 'multipletestindex';
         $index_info = $this->db->reverse->getTableIndexDefinition($this->table, $index_name);
         if (MDB2::isError($index_info)) {
-            $this->fail('Error in getTableIndexDefinition(): '.$index_info->getUserInfo());
+            $this->fail('Error in getTableIndexDefinition(): ' . $index_info->getUserInfo());
         } else {
             $this->assertEquals(2, count($index_info['fields']), 'The INDEX is not on two fields unlike it was expected');
             $expected_fields = array_keys($this->indices[$index_name]['fields']);
@@ -502,22 +523,26 @@ class Standard_ReverseTest extends Standard_Abstract
         if (!$this->setUpConstraints()) {
             $this->markTestSkipped('Could not set up constraints.');
         }
-        //constraints should NOT be listed
+        // constraints should NOT be listed
         foreach (array_keys($this->constraints) as $constraint_name) {
             $this->db->expectError(MDB2_ERROR_NOT_FOUND);
             $result = $this->db->reverse->getTableIndexDefinition($this->table, $constraint_name);
             $this->assertTrue(MDB2::isError($result), 'Error listing index definition, this is a CONSTRAINT');
         }
 
-        //test index created WITHOUT using MDB2 (i.e. without the "_idx" suffix)
-        //NB: MDB2 > v.2.3.0 provides a fallback mechanism
+        // test index created WITHOUT using MDB2 (i.e. without the "_idx" suffix)
+        // NB: MDB2 > v.2.3.0 provides a fallback mechanism
     }
 
     /**
-     * Test testGetTableConstraintDefinition($table, $constraint_name)
+     * Test testGetTableConstraintDefinition($table, $constraint_name).
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testGetTableConstraintDefinition($ci) {
+    public function testGetTableConstraintDefinition($ci)
+    {
         $this->manualSetUp($ci);
 
         if (!$this->methodExists($this->db->reverse, 'getTableConstraintDefinition')) {
@@ -528,24 +553,22 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->markTestSkipped('Could not set up constraints.');
         }
 
-        $primary_namechange = array(
+        $primary_namechange = [
             'mysql',
             'mysqli',
             'sqlite',
-        );
+        ];
 
-
-        //test constraint names
+        // test constraint names
         foreach ($this->constraints as $constraint_name => $constraint) {
             if (!empty($constraint['primary'])
-                && in_array($this->db->phptype, $primary_namechange))
-            {
+                && in_array($this->db->phptype, $primary_namechange)) {
                 // Change "pkfield" to "primary".
                 $constraint_name = 'primary';
             }
             $result = $this->db->reverse->getTableConstraintDefinition($this->table, $constraint_name);
             if (MDB2::isError($result)) {
-                $this->fail('Error getting table constraint definition ('.$constraint_name.')');
+                $this->fail('Error getting table constraint definition (' . $constraint_name . ')');
             } else {
                 $constraint_names = array_keys($constraint['fields']);
                 $this->assertEquals($constraint_names, array_keys($result['fields']), 'Error listing constraint fields');
@@ -553,7 +576,7 @@ class Standard_ReverseTest extends Standard_Abstract
         }
 
         $this->setUpIndices();
-        //indices should NOT be listed
+        // indices should NOT be listed
         foreach (array_keys($this->indices) as $index_name) {
             $this->db->expectError(MDB2_ERROR_NOT_FOUND);
             $result = $this->db->reverse->getTableConstraintDefinition($this->table, $index_name);
@@ -561,7 +584,7 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->assertTrue(MDB2::isError($result), 'Error listing constraint definition, this is a normal INDEX');
         }
 
-        //test PK
+        // test PK
         if (in_array($this->db->phptype, $primary_namechange)) {
             $constraint_name = 'primary';
         } else {
@@ -569,16 +592,16 @@ class Standard_ReverseTest extends Standard_Abstract
         }
         $constraint_info = $this->db->reverse->getTableConstraintDefinition($this->table, $constraint_name);
         if (MDB2::isError($constraint_info)) {
-            $this->fail('Error in getTableConstraintDefinition(): '.$constraint_info->getUserInfo());
+            $this->fail('Error in getTableConstraintDefinition(): ' . $constraint_info->getUserInfo());
         } else {
             $this->assertTrue($constraint_info['primary'], 'The field is not a PK unlike it was expected');
         }
 
-        //test UNIQUE
+        // test UNIQUE
         $constraint_name = 'singleunique';
         $constraint_info = $this->db->reverse->getTableConstraintDefinition($this->table, $constraint_name);
         if (MDB2::isError($constraint_info)) {
-            $this->fail('Error in getTableConstraintDefinition(): '.$constraint_info->getUserInfo());
+            $this->fail('Error in getTableConstraintDefinition(): ' . $constraint_info->getUserInfo());
         } else {
             $this->assertTrue($constraint_info['unique'], 'The field is not a PK unlike it was expected');
             $this->assertTrue(empty($constraint_info['primary']), 'The field is a PK unlike it was expected');
@@ -589,11 +612,11 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->assertEquals(1, $constraint_info['fields'][$expected_fields[0]]['position'], 'The field position in the INDEX is not correct');
         }
 
-        //test UNIQUE on MULTIPLE FIELDS
+        // test UNIQUE on MULTIPLE FIELDS
         $constraint_name = 'multipleunique';
         $constraint_info = $this->db->reverse->getTableConstraintDefinition($this->table, $constraint_name);
         if (MDB2::isError($constraint_info)) {
-            $this->fail('Error in getTableConstraintDefinition(): '.$constraint_info->getUserInfo());
+            $this->fail('Error in getTableConstraintDefinition(): ' . $constraint_info->getUserInfo());
         } else {
             $this->assertTrue($constraint_info['unique'], 'The field is not a PK unlike it was expected');
             $this->assertTrue(empty($constraint_info['primary']), 'The field is a PK unlike it was expected');
@@ -605,11 +628,11 @@ class Standard_ReverseTest extends Standard_Abstract
             $this->assertEquals(2, $constraint_info['fields'][$expected_fields[1]]['position'], 'The field position in the INDEX is not correct');
         }
 
-        //test FOREIGN KEYs
+        // test FOREIGN KEYs
         foreach (array_keys($this->constraints2) as $constraint_name) {
             $constraint_info = $this->db->reverse->getTableConstraintDefinition($this->table2, $constraint_name);
             if (MDB2::isError($constraint_info)) {
-                $this->fail('Error in getTableConstraintDefinition():'. $constraint_info->getUserInfo());
+                $this->fail('Error in getTableConstraintDefinition():' . $constraint_info->getUserInfo());
             } else {
                 $this->_compareFKdefinitions($this->constraints2[$constraint_name], $constraint_info);
             }
@@ -623,33 +646,42 @@ class Standard_ReverseTest extends Standard_Abstract
      * one used to create the constraint, but not all the DBMS support all the
      * parameters, so check the common base and do some generic checks for the
      * other patameters.
+     *
      * @dataProvider provider
+     *
+     * @param mixed $expected
+     * @param mixed $actual
      */
-    public function _compareFKdefinitions($expected, $actual) {
-        //ideal case: all the parameters are supported by all the DBMS:
-        //$this->assertEquals($expected, $actual);
+    public function _compareFKdefinitions($expected, $actual)
+    {
+        // ideal case: all the parameters are supported by all the DBMS:
+        // $this->assertEquals($expected, $actual);
 
         $this->assertEquals($expected['primary'], $actual['primary']);
-        $this->assertEquals($expected['unique'],  $actual['unique']);
+        $this->assertEquals($expected['unique'], $actual['unique']);
         $this->assertEquals($expected['foreign'], $actual['foreign']);
-        $this->assertEquals($expected['check'],   $actual['check']);
+        $this->assertEquals($expected['check'], $actual['check']);
         $this->assertEquals(array_keys($expected['fields']), array_keys($actual['fields']));
-        $this->assertEquals($expected['references'],   $actual['references']);
-        $this->assertEquals($expected['deferrable'],   $actual['deferrable']);
-        $this->assertEquals($expected['initiallydeferred'],   $actual['initiallydeferred']);
+        $this->assertEquals($expected['references'], $actual['references']);
+        $this->assertEquals($expected['deferrable'], $actual['deferrable']);
+        $this->assertEquals($expected['initiallydeferred'], $actual['initiallydeferred']);
         $this->assertTrue(!empty($actual['match']));
         $this->assertTrue(!empty($actual['onupdate']));
         $this->assertTrue(!empty($actual['ondelete']));
     }
 
     /**
-     * Test getSequenceDefinition($sequence)
+     * Test getSequenceDefinition($sequence).
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testGetSequenceDefinition($ci) {
+    public function testGetSequenceDefinition($ci)
+    {
         $this->manualSetUp($ci);
 
-        //setup
+        // setup
         $this->db->loadModule('Manager', null, true);
         $sequence = 'test_sequence';
         $sequences = $this->db->manager->listSequences();
@@ -658,32 +690,35 @@ class Standard_ReverseTest extends Standard_Abstract
             $action = 'create sequence';
             if (MDB2::isError($result)) {
                 if ($result->getCode() == MDB2_ERROR_NO_PERMISSION
-                    || $result->getCode() == MDB2_ERROR_ACCESS_VIOLATION)
-                {
-                    $this->markTestSkipped("Test user lacks permission to $action");
+                    || $result->getCode() == MDB2_ERROR_ACCESS_VIOLATION) {
+                    $this->markTestSkipped("Test user lacks permission to {$action}");
                 }
-                $this->fail("Could not $action: " . $result->getUserInfo());
+                $this->fail("Could not {$action}: " . $result->getUserInfo());
             }
         }
 
-        //test
+        // test
         $start = $this->db->nextId($sequence);
         $def = $this->db->reverse->getSequenceDefinition($sequence);
-        $this->assertEquals($start+1, (isset($def['start']) ? $def['start'] : 1), 'Error getting sequence definition');
+        $this->assertEquals($start + 1, $def['start'] ?? 1, 'Error getting sequence definition');
 
-        //cleanup
+        // cleanup
         $result = $this->db->manager->dropSequence($sequence);
         $this->assertFalse(MDB2::isError($result), 'Error dropping a sequence');
     }
 
     /**
-     * Test getTriggerDefinition($trigger)
+     * Test getTriggerDefinition($trigger).
+     *
      * @dataProvider provider
+     *
+     * @param mixed $ci
      */
-    public function testGetTriggerDefinition($ci) {
+    public function testGetTriggerDefinition($ci)
+    {
         $this->manualSetUp($ci);
 
-        //setup
+        // setup
         $trigger_name = 'test_trigger';
 
         if (!$this->nonstd) {
@@ -694,25 +729,24 @@ class Standard_ReverseTest extends Standard_Abstract
         $result = $this->nonstd->createTrigger($trigger_name, $this->table);
         if (MDB2::isError($result)) {
             if ($result->getCode() == MDB2_ERROR_NO_PERMISSION
-                || $result->getCode() == MDB2_ERROR_ACCESS_VIOLATION)
-            {
-                $this->markTestSkipped("Test user lacks permission to $action");
+                || $result->getCode() == MDB2_ERROR_ACCESS_VIOLATION) {
+                $this->markTestSkipped("Test user lacks permission to {$action}");
             }
-            $this->fail("Could not $action: " . $result->getUserInfo());
+            $this->fail("Could not {$action}: " . $result->getUserInfo());
         }
 
-        //test
+        // test
         $def = $this->db->reverse->getTriggerDefinition($trigger_name);
         if (MDB2::isError($def)) {
-            $this->fail('getTriggerDefinition: '.$def->getUserInfo());
+            $this->fail('getTriggerDefinition: ' . $def->getUserInfo());
         } else {
             $this->nonstd->checkTrigger($trigger_name, $this->table, $def);
         }
 
-        //cleanup
+        // cleanup
         $result = $this->nonstd->dropTrigger($trigger_name, $this->table);
         if (MDB2::isError($result)) {
-            $this->fail('Error dropping the trigger: '.$result->getUserInfo());
+            $this->fail('Error dropping the trigger: ' . $result->getUserInfo());
         }
     }
 }

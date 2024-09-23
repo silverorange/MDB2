@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -43,31 +44,37 @@
 //
 // $Id$
 
-class Nonstandard_SqliteHelper extends Nonstandard_Base {
-
+class Nonstandard_SqliteHelper extends Nonstandard_Base
+{
     public $trigger_body = '';
 
-    public function createTrigger($trigger_name, $table_name) {
-        $this->trigger_body = 'CREATE TRIGGER '. $trigger_name .' AFTER UPDATE ON '. $table_name .'
+    public function createTrigger($trigger_name, $table_name)
+    {
+        $this->trigger_body = 'CREATE TRIGGER ' . $trigger_name . ' AFTER UPDATE ON ' . $table_name . '
 BEGIN
-    UPDATE '. $table_name .' SET somedescription = new.somename WHERE id = old.id;
+    UPDATE ' . $table_name . ' SET somedescription = new.somename WHERE id = old.id;
 END';
+
         return $this->db->standaloneQuery($this->trigger_body);
     }
 
-    public function checkTrigger($trigger_name, $table_name, $def) {
+    public function checkTrigger($trigger_name, $table_name, $def)
+    {
         parent::checkTrigger($trigger_name, $table_name, $def);
         $this->test->assertEquals($this->trigger_body, $def['trigger_body']);
     }
 
-    public function dropTrigger($trigger_name, $table_name) {
-        return $this->db->standaloneQuery('DROP TRIGGER '.$trigger_name);
+    public function dropTrigger($trigger_name, $table_name)
+    {
+        return $this->db->standaloneQuery('DROP TRIGGER ' . $trigger_name);
     }
-    
-    public function createView($view_name, $table_name) {
-        $query = 'CREATE VIEW '. $this->db->quoteIdentifier($view_name, true)
-                .' AS SELECT id FROM '
-                . $this->db->quoteIdentifier($table_name, true) .' WHERE id > 1';
+
+    public function createView($view_name, $table_name)
+    {
+        $query = 'CREATE VIEW ' . $this->db->quoteIdentifier($view_name, true)
+                . ' AS SELECT id FROM '
+                . $this->db->quoteIdentifier($table_name, true) . ' WHERE id > 1';
+
         return $this->db->exec($query);
     }
 }

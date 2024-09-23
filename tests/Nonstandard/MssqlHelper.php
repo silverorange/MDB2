@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -43,25 +44,27 @@
 //
 // $Id$
 
-class Nonstandard_MssqlHelper extends Nonstandard_Base {
-
+class Nonstandard_MssqlHelper extends Nonstandard_Base
+{
     public $trigger_body = '';
 
-    public function createTrigger($trigger_name, $table_name) {
-        $this->trigger_body = 'CREATE TRIGGER '. $trigger_name .' ON '. $table_name .'
+    public function createTrigger($trigger_name, $table_name)
+    {
+        $this->trigger_body = 'CREATE TRIGGER ' . $trigger_name . ' ON ' . $table_name . '
 FOR UPDATE AS
 DECLARE @oldName VARCHAR(100)
 DECLARE @newId INTEGER
 SELECT @oldName = (SELECT somename FROM Deleted)
 SELECT @newId = (SELECT id FROM Inserted)
 BEGIN
-  UPDATE '. $table_name .' SET somedescription = @oldName WHERE id = @newId;
+  UPDATE ' . $table_name . ' SET somedescription = @oldName WHERE id = @newId;
 END;';
 
         return $this->db->exec($this->trigger_body);
     }
 
-    public function checkTrigger($trigger_name, $table_name, $def) {
+    public function checkTrigger($trigger_name, $table_name, $def)
+    {
         parent::checkTrigger($trigger_name, $table_name, $def);
         $this->test->assertEquals($this->trigger_body, $def['trigger_body']);
         /*
@@ -71,18 +74,21 @@ END;';
         */
     }
 
-    public function dropTrigger($trigger_name, $table_name) {
-        return $this->db->exec('DROP TRIGGER '.$trigger_name);
+    public function dropTrigger($trigger_name, $table_name)
+    {
+        return $this->db->exec('DROP TRIGGER ' . $trigger_name);
     }
-    
-    public function createFunction($name) {
-        $query = 'CREATE FUNCTION '.$name.'(@Number1 Decimal(6,2), @Number2 Decimal(6,2))
+
+    public function createFunction($name)
+    {
+        $query = 'CREATE FUNCTION ' . $name . '(@Number1 Decimal(6,2), @Number2 Decimal(6,2))
 RETURNS Decimal(6,2)
 BEGIN
     DECLARE @Result Decimal(6,2)
     SET @Result = @Number1 + @Number2
     RETURN @Result
 END';
+
         return $this->db->exec($query);
     }
 }

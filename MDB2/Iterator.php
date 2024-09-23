@@ -42,21 +42,19 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  */
 
 /**
- * PHP5 Iterator
+ * PHP5 Iterator.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Iterator implements Iterator
 {
-    // {{{ Variables
-
     protected $fetchmode;
 
     /**
@@ -65,11 +63,10 @@ class MDB2_Iterator implements Iterator
     protected $result;
     protected $row;
 
-    // }}}
-    // {{{ constructor
-
     /**
-     * Constructor
+     * Constructor.
+     *
+     * @param mixed $fetchmode
      */
     public function __construct(MDB2_Result_Common $result, $fetchmode = MDB2_FETCHMODE_DEFAULT)
     {
@@ -77,15 +74,11 @@ class MDB2_Iterator implements Iterator
         $this->fetchmode = $fetchmode;
     }
 
-    // }}}
-    // {{{ seek()
-
     /**
-     * Seek forward to a specific row in a result set
+     * Seek forward to a specific row in a result set.
      *
      * @param int number of the row where the data can be found
-     *
-     * @return void
+     * @param mixed $rownum
      */
     public function seek($rownum)
     {
@@ -95,28 +88,18 @@ class MDB2_Iterator implements Iterator
         }
     }
 
-    // }}}
-    // {{{ next()
-
     /**
-     * Fetch next row of data
-     *
-     * @return void
+     * Fetch next row of data.
      */
-    public function next()
+    public function next(): void
     {
         $this->row = null;
     }
 
-    // }}}
-    // {{{ current()
-
     /**
-     * return a row of data
-     *
-     * @return void
+     * return a row of data.
      */
-    public function current()
+    public function current(): mixed
     {
         if (null === $this->row) {
             $row = $this->result->fetchRow($this->fetchmode);
@@ -125,24 +108,19 @@ class MDB2_Iterator implements Iterator
             }
             $this->row = $row;
         }
+
         return $this->row;
     }
 
-    // }}}
-    // {{{ valid()
-
     /**
-     * Check if the end of the result set has been reached
+     * Check if the end of the result set has been reached.
      *
      * @return bool true/false, false is also returned on failure
      */
-    public function valid()
+    public function valid(): bool
     {
-        return (bool)$this->current();
+        return (bool) $this->current();
     }
-
-    // }}}
-    // {{{ free()
 
     /**
      * Free the internal resources associated with result.
@@ -156,50 +134,34 @@ class MDB2_Iterator implements Iterator
         }
         $this->result = false;
         $this->row = null;
+
         return false;
     }
 
-    // }}}
-    // {{{ key()
-
     /**
-     * Returns the row number
+     * Returns the row number.
      *
-     * @return int|bool|MDB2_Error true on success, false|MDB2_Error if result is invalid
+     * @return bool|int|MDB2_Error true on success, false|MDB2_Error if result is invalid
      */
-    public function key()
+    public function key(): mixed
     {
         if ($this->result) {
             return $this->result->rowCount();
         }
+
         return false;
     }
 
-    // }}}
-    // {{{ rewind()
-
     /**
-     * Seek to the first row in a result set
-     *
-     * @return void
-     * @access public
+     * Seek to the first row in a result set.
      */
-    public function rewind()
-    {
-    }
-
-    // }}}
-    // {{{ destructor
+    public function rewind(): void {}
 
     /**
-     * Destructor
+     * Destructor.
      */
     public function __destruct()
     {
         $this->free();
     }
-
-    // }}}
 }
-
-?>

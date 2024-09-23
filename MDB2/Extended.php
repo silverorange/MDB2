@@ -42,16 +42,16 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 
 /**
- * Used by autoPrepare()
+ * Used by autoPrepare().
  */
 const MDB2_AUTOQUERY_INSERT = 1;
 const MDB2_AUTOQUERY_UPDATE = 2;
@@ -59,19 +59,17 @@ const MDB2_AUTOQUERY_DELETE = 3;
 const MDB2_AUTOQUERY_SELECT = 4;
 
 /**
- * MDB2_Extended: class which adds several high level methods to MDB2
+ * MDB2_Extended: class which adds several high level methods to MDB2.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Extended extends MDB2_Module_Common
 {
-    // {{{ autoPrepare()
-
     /**
-     * Generate an insert, update or delete query and call prepare() on it
+     * Generate an insert, update or delete query and call prepare() on it.
      *
      * @param string table
      * @param array the fields names
@@ -85,8 +83,15 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param mixed array that contains the types of the columns in
      *                        the result set or MDB2_PREPARE_RESULT, if set to
      *                        MDB2_PREPARE_MANIP the query is handled as a manipulation query
+     * @param mixed      $table
+     * @param mixed      $table_fields
+     * @param mixed      $mode
+     * @param mixed      $where
+     * @param mixed|null $types
+     * @param mixed      $result_types
      *
      * @return resource handle for the query
+     *
      * @see buildManipSQL
      */
     public function autoPrepare(
@@ -105,20 +110,18 @@ class MDB2_Extended extends MDB2_Module_Common
         if (MDB2::isError($db)) {
             return $db;
         }
-        $lobs = array();
-        foreach ((array)$types as $param => $type) {
+        $lobs = [];
+        foreach ((array) $types as $param => $type) {
             if (($type == 'clob') || ($type == 'blob')) {
                 $lobs[$param] = $table_fields[$param];
             }
         }
+
         return $db->prepare($query, $types, $result_types, $lobs);
     }
 
-    // }}}
-    // {{{ autoExecute()
-
     /**
-     * Generate an insert, update or delete query and call prepare() and execute() on it
+     * Generate an insert, update or delete query and call prepare() and execute() on it.
      *
      * @param string name of the table
      * @param array assoc ($key=>$value) where $key is a field name and $value its value
@@ -133,8 +136,16 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param mixed  array that contains the types of the columns in
      *                        the result set or MDB2_PREPARE_RESULT, if set to
      *                        MDB2_PREPARE_MANIP the query is handled as a manipulation query
+     * @param mixed      $table
+     * @param mixed      $fields_values
+     * @param mixed      $mode
+     * @param mixed      $where
+     * @param mixed|null $types
+     * @param mixed      $result_class
+     * @param mixed      $result_types
      *
      * @return bool|MDB2_Error true on success, a MDB2 error on failure
+     *
      * @see buildManipSQL
      * @see autoPrepare
      */
@@ -147,14 +158,14 @@ class MDB2_Extended extends MDB2_Module_Common
         $result_class = true,
         $result_types = MDB2_PREPARE_MANIP
     ) {
-        $fields_values = (array)$fields_values;
+        $fields_values = (array) $fields_values;
         if ($mode == MDB2_AUTOQUERY_SELECT) {
             if (is_array($result_types)) {
                 $keys = array_keys($result_types);
             } elseif (!empty($fields_values)) {
                 $keys = $fields_values;
             } else {
-                $keys = array();
+                $keys = [];
             }
         } else {
             $keys = array_keys($fields_values);
@@ -180,14 +191,12 @@ class MDB2_Extended extends MDB2_Module_Common
             $result = $stmt->execute($params, $result_class);
             $stmt->free();
         }
+
         return $result;
     }
 
-    // }}}
-    // {{{ buildManipSQL()
-
     /**
-     * Make automaticaly an sql query for prepare()
+     * Make automaticaly an sql query for prepare().
      *
      * Example : buildManipSQL('table_sql', array('field1', 'field2', 'field3'), MDB2_AUTOQUERY_INSERT)
      *           will return the string : INSERT INTO table_sql (field1,field2,field3) VALUES (?,?,?)
@@ -203,6 +212,10 @@ class MDB2_Extended extends MDB2_Module_Common
      *                          MDB2_AUTOQUERY_DELETE
      *                          MDB2_AUTOQUERY_SELECT
      * @param string (in case of update and delete queries, this string will be put after the sql WHERE statement)
+     * @param mixed $table
+     * @param mixed $table_fields
+     * @param mixed $mode
+     * @param mixed $where
      *
      * @return string sql query for prepare()
      */
@@ -227,48 +240,54 @@ class MDB2_Extended extends MDB2_Module_Common
             if (is_array($where)) {
                 $where = implode(' AND ', $where);
             }
-            $where = ' WHERE '.$where;
+            $where = ' WHERE ' . $where;
         }
 
         switch ($mode) {
-        case MDB2_AUTOQUERY_INSERT:
-            if (empty($table_fields)) {
-                return $db->raiseError(
-                    MDB2_ERROR_NEED_MORE_DATA,
-                    null,
-                    null,
-                    'Insert requires table fields',
-                    __FUNCTION__
-                );
-            }
-            $cols = implode(', ', $table_fields);
-            $values = '?'.str_repeat(', ?', (count($table_fields) - 1));
-            return 'INSERT INTO '.$table.' ('.$cols.') VALUES ('.$values.')';
-            break;
-        case MDB2_AUTOQUERY_UPDATE:
-            if (empty($table_fields)) {
-                return $db->raiseError(
-                    MDB2_ERROR_NEED_MORE_DATA,
-                    null,
-                    null,
-                    'Update requires table fields',
-                    __FUNCTION__
-                );
-            }
-            $set = implode(' = ?, ', $table_fields).' = ?';
-            $sql = 'UPDATE '.$table.' SET '.$set.$where;
-            return $sql;
-            break;
-        case MDB2_AUTOQUERY_DELETE:
-            $sql = 'DELETE FROM '.$table.$where;
-            return $sql;
-            break;
-        case MDB2_AUTOQUERY_SELECT:
-            $cols = !empty($table_fields) ? implode(', ', $table_fields) : '*';
-            $sql = 'SELECT '.$cols.' FROM '.$table.$where;
-            return $sql;
-            break;
+            case MDB2_AUTOQUERY_INSERT:
+                if (empty($table_fields)) {
+                    return $db->raiseError(
+                        MDB2_ERROR_NEED_MORE_DATA,
+                        null,
+                        null,
+                        'Insert requires table fields',
+                        __FUNCTION__
+                    );
+                }
+                $cols = implode(', ', $table_fields);
+                $values = '?' . str_repeat(', ?', count($table_fields) - 1);
+
+                return 'INSERT INTO ' . $table . ' (' . $cols . ') VALUES (' . $values . ')';
+                break;
+
+            case MDB2_AUTOQUERY_UPDATE:
+                if (empty($table_fields)) {
+                    return $db->raiseError(
+                        MDB2_ERROR_NEED_MORE_DATA,
+                        null,
+                        null,
+                        'Update requires table fields',
+                        __FUNCTION__
+                    );
+                }
+                $set = implode(' = ?, ', $table_fields) . ' = ?';
+
+                return 'UPDATE ' . $table . ' SET ' . $set . $where;
+                break;
+
+            case MDB2_AUTOQUERY_DELETE:
+                $sql = 'DELETE FROM ' . $table . $where;
+
+                return $sql;
+                break;
+
+            case MDB2_AUTOQUERY_SELECT:
+                $cols = !empty($table_fields) ? implode(', ', $table_fields) : '*';
+
+                return 'SELECT ' . $cols . ' FROM ' . $table . $where;
+                break;
         }
+
         return $db->raiseError(
             MDB2_ERROR_SYNTAX,
             null,
@@ -278,20 +297,23 @@ class MDB2_Extended extends MDB2_Module_Common
         );
     }
 
-    // }}}
-    // {{{ limitQuery()
-
     /**
-     * Generates a limited query
+     * Generates a limited query.
      *
      * @param string query
      * @param array that contains the types of the columns in the result set
-     * @param integer the numbers of rows to fetch
-     * @param integer the row to start to fetching
+     * @param int the numbers of rows to fetch
+     * @param int the row to start to fetching
      * @param string which specifies which result class to use
      * @param mixed   string which specifies which class to wrap results in
+     * @param mixed $query
+     * @param mixed $types
+     * @param mixed $limit
+     * @param mixed $offset
+     * @param mixed $result_class
+     * @param mixed $result_wrap_class
      *
-     * @return MDB2_Result|MDB2_Error result set on success, a MDB2 error on failure
+     * @return MDB2_Error|MDB2_Result result set on success, a MDB2 error on failure
      */
     public function limitQuery(
         $query,
@@ -310,11 +332,9 @@ class MDB2_Extended extends MDB2_Module_Common
         if (MDB2::isError($result)) {
             return $result;
         }
+
         return $db->query($query, $types, $result_class, $result_wrap_class);
     }
-
-    // }}}
-    // {{{ execParam()
 
     /**
      * Execute a parameterized DML statement.
@@ -323,10 +343,12 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param array if supplied, prepare/execute will be used
      *       with this array as execute parameters
      * @param array that contains the types of the values defined in $params
+     * @param mixed      $query
+     * @param mixed|null $param_types
      *
      * @return int|MDB2_Error affected rows on success, a MDB2 error on failure
      */
-    public function execParam($query, $params = array(), $param_types = null)
+    public function execParam($query, $params = [], $param_types = null)
     {
         $db = $this->getDBInstance();
         if (MDB2::isError($db)) {
@@ -349,11 +371,9 @@ class MDB2_Extended extends MDB2_Module_Common
         }
 
         $stmt->free();
+
         return $result;
     }
-
-    // }}}
-    // {{{ getOne()
 
     /**
      * Fetch the first column of the first row of data returned from a query.
@@ -365,13 +385,17 @@ class MDB2_Extended extends MDB2_Module_Common
      *       with this array as execute parameters
      * @param array that contains the types of the values defined in $params
      * @param int|string which column to return
+     * @param mixed      $query
+     * @param mixed|null $type
+     * @param mixed|null $param_types
+     * @param mixed      $colnum
      *
-     * @return scalar|MDB2_Error data on success, a MDB2 error on failure
+     * @return MDB2_Error|scalar data on success, a MDB2 error on failure
      */
     public function getOne(
         $query,
         $type = null,
-        $params = array(),
+        $params = [],
         $param_types = null,
         $colnum = 0
     ) {
@@ -399,11 +423,9 @@ class MDB2_Extended extends MDB2_Module_Common
         $one = $result->fetchOne($colnum);
         $stmt->free();
         $result->free();
+
         return $one;
     }
-
-    // }}}
-    // {{{ getRow()
 
     /**
      * Fetch the first row of data returned from a query.  Takes care
@@ -415,13 +437,17 @@ class MDB2_Extended extends MDB2_Module_Common
      *       with this array as execute parameters
      * @param array that contains the types of the values defined in $params
      * @param int the fetch mode to use
+     * @param mixed      $query
+     * @param mixed|null $types
+     * @param mixed|null $param_types
+     * @param mixed      $fetchmode
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
      */
     public function getRow(
         $query,
         $types = null,
-        $params = array(),
+        $params = [],
         $param_types = null,
         $fetchmode = MDB2_FETCHMODE_DEFAULT
     ) {
@@ -448,11 +474,9 @@ class MDB2_Extended extends MDB2_Module_Common
         $row = $result->fetchRow($fetchmode);
         $stmt->free();
         $result->free();
+
         return $row;
     }
-
-    // }}}
-    // {{{ getCol()
 
     /**
      * Fetch a single column from a result set and return it as an
@@ -464,13 +488,17 @@ class MDB2_Extended extends MDB2_Module_Common
      *       with this array as execute parameters
      * @param array that contains the types of the values defined in $params
      * @param int|string which column to return
+     * @param mixed      $query
+     * @param mixed|null $type
+     * @param mixed|null $param_types
+     * @param mixed      $colnum
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
      */
     public function getCol(
         $query,
         $type = null,
-        $params = array(),
+        $params = [],
         $param_types = null,
         $colnum = 0
     ) {
@@ -498,11 +526,9 @@ class MDB2_Extended extends MDB2_Module_Common
         $col = $result->fetchCol($colnum);
         $stmt->free();
         $result->free();
+
         return $col;
     }
-
-    // }}}
-    // {{{ getAll()
 
     /**
      * Fetch all the rows returned from a query.
@@ -515,20 +541,25 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param int the fetch mode to use
      * @param bool if set to true, the $all will have the first
      *       column as its first dimension
-     * @param bool $force_array used only when the query returns exactly
-     *       two columns. If true, the values of the returned array will be
-     *       one-element arrays instead of scalars.
-     * @param bool $group if true, the values of the returned array is
-     *       wrapped in another array.  If the same key value (in the first
-     *       column) repeats itself, the values will be appended to this array
-     *       instead of overwriting the existing values.
+     * @param bool       $force_array used only when the query returns exactly
+     *                                two columns. If true, the values of the returned array will be
+     *                                one-element arrays instead of scalars.
+     * @param bool       $group       if true, the values of the returned array is
+     *                                wrapped in another array.  If the same key value (in the first
+     *                                column) repeats itself, the values will be appended to this array
+     *                                instead of overwriting the existing values.
+     * @param mixed      $query
+     * @param mixed|null $types
+     * @param mixed|null $param_types
+     * @param mixed      $fetchmode
+     * @param mixed      $rekey
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
      */
     public function getAll(
         $query,
         $types = null,
-        $params = array(),
+        $params = [],
         $param_types = null,
         $fetchmode = MDB2_FETCHMODE_DEFAULT,
         $rekey = false,
@@ -558,11 +589,9 @@ class MDB2_Extended extends MDB2_Module_Common
         $all = $result->fetchAll($fetchmode, $rekey, $force_array, $group);
         $stmt->free();
         $result->free();
+
         return $all;
     }
-
-    // }}}
-    // {{{ getAssoc()
 
     /**
      * Fetch the entire result set of a query and return it as an
@@ -626,20 +655,24 @@ class MDB2_Extended extends MDB2_Module_Common
      * @param array if supplied, prepare/execute will be used
      *       with this array as execute parameters
      * @param array that contains the types of the values defined in $params
-     * @param bool $force_array used only when the query returns
-     * exactly two columns.  If TRUE, the values of the returned array
-     * will be one-element arrays instead of scalars.
-     * @param bool $group if TRUE, the values of the returned array
-     *       is wrapped in another array.  If the same key value (in the first
-     *       column) repeats itself, the values will be appended to this array
-     *       instead of overwriting the existing values.
+     * @param bool       $force_array used only when the query returns
+     *                                exactly two columns.  If TRUE, the values of the returned array
+     *                                will be one-element arrays instead of scalars.
+     * @param bool       $group       if TRUE, the values of the returned array
+     *                                is wrapped in another array.  If the same key value (in the first
+     *                                column) repeats itself, the values will be appended to this array
+     *                                instead of overwriting the existing values.
+     * @param mixed      $query
+     * @param mixed|null $types
+     * @param mixed|null $param_types
+     * @param mixed      $fetchmode
      *
      * @return array|MDB2_Error data on success, a MDB2 error on failure
      */
     public function getAssoc(
         $query,
         $types = null,
-        $params = array(),
+        $params = [],
         $param_types = null,
         $fetchmode = MDB2_FETCHMODE_DEFAULT,
         $force_array = false,
@@ -668,11 +701,9 @@ class MDB2_Extended extends MDB2_Module_Common
         $all = $result->fetchAll($fetchmode, true, $force_array, $group);
         $stmt->free();
         $result->free();
+
         return $all;
     }
-
-    // }}}
-    // {{{ executeMultiple()
 
     /**
      * This function does several execute() calls on the same statement handle.
@@ -684,8 +715,11 @@ class MDB2_Extended extends MDB2_Module_Common
      *
      * @param resource query handle from prepare()
      * @param array numeric array containing the data to insert into the query
+     * @param mixed      $stmt
+     * @param mixed|null $params
      *
      * @return bool|MDB2_Error true on success, a MDB2 error on failure
+     *
      * @see prepare(), execute()
      */
     public function executeMultiple($stmt, $params = null)
@@ -699,20 +733,22 @@ class MDB2_Extended extends MDB2_Module_Common
                 return $result;
             }
         }
+
         return MDB2_OK;
     }
 
-    // }}}
-    // {{{ getBeforeID()
-
     /**
      * Returns the next free id of a sequence if the RDBMS
-     * does not support auto increment
+     * does not support auto increment.
      *
      * @param string name of the table into which a new row was inserted
      * @param string name of the field into which a new row was inserted
      * @param bool when true the sequence is automatic created, if it not exists
      * @param bool if the returned value should be quoted
+     * @param mixed      $table
+     * @param mixed|null $field
+     * @param mixed      $ondemand
+     * @param mixed      $quote
      *
      * @return int|MDB2_Error id on success, a MDB2 error on failure
      */
@@ -724,27 +760,30 @@ class MDB2_Extended extends MDB2_Module_Common
         }
 
         if ($db->supports('auto_increment') !== true) {
-            $seq = $table.(empty($field) ? '' : '_'.$field);
+            $seq = $table . (empty($field) ? '' : '_' . $field);
             $id = $db->nextID($seq, $ondemand);
             if (!$quote || MDB2::isError($id)) {
                 return $id;
             }
+
             return $db->quote($id, 'integer');
-        } elseif (!$quote) {
+        }
+        if (!$quote) {
             return null;
         }
+
         return 'NULL';
     }
 
-    // }}}
-    // {{{ getAfterID()
-
     /**
-     * Returns the autoincrement ID if supported or $id
+     * Returns the autoincrement ID if supported or $id.
      *
      * @param mixed value as returned by getBeforeId()
      * @param string name of the table into which a new row was inserted
      * @param string name of the field into which a new row was inserted
+     * @param mixed      $id
+     * @param mixed      $table
+     * @param mixed|null $field
      *
      * @return int|MDB2_Error id on success, a MDB2 error on failure
      */
@@ -758,10 +797,7 @@ class MDB2_Extended extends MDB2_Module_Common
         if ($db->supports('auto_increment') !== true) {
             return $id;
         }
+
         return $db->lastInsertID($table, $field);
     }
-
-    // }}}
 }
-
-?>

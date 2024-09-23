@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
@@ -43,30 +44,35 @@
 //
 // $Id$
 
-class Nonstandard_IbaseHelper extends Nonstandard_Base {
-
+class Nonstandard_IbaseHelper extends Nonstandard_Base
+{
     public $trigger_body = 'AS
 BEGIN
   NEW.somedescription = OLD.somename;
 END';
 
-    public function createTrigger($trigger_name, $table_name) {
-        $query = 'CREATE OR ALTER TRIGGER '. $trigger_name .' FOR '. $table_name .'
-                  AFTER UPDATE '. $this->trigger_body .';';
+    public function createTrigger($trigger_name, $table_name)
+    {
+        $query = 'CREATE OR ALTER TRIGGER ' . $trigger_name . ' FOR ' . $table_name . '
+                  AFTER UPDATE ' . $this->trigger_body . ';';
+
         return $this->db->exec($query);
     }
 
-    public function checkTrigger($trigger_name, $table_name, $def) {
+    public function checkTrigger($trigger_name, $table_name, $def)
+    {
         parent::checkTrigger($trigger_name, $table_name, $def);
         $this->test->assertEquals($this->trigger_body, $def['trigger_body']);
     }
 
-    public function dropTrigger($trigger_name, $table_name) {
-        return $this->db->exec('DROP TRIGGER '.$trigger_name);
+    public function dropTrigger($trigger_name, $table_name)
+    {
+        return $this->db->exec('DROP TRIGGER ' . $trigger_name);
     }
 
-    public function createFunction($name) {
-        $query = 'CREATE OR ALTER PROCEDURE '.$name.'(N1 DECIMAL(6,2), N2 DECIMAL(6,2))
+    public function createFunction($name)
+    {
+        $query = 'CREATE OR ALTER PROCEDURE ' . $name . '(N1 DECIMAL(6,2), N2 DECIMAL(6,2))
 RETURNS (
   res DECIMAL(6,2)
 )
@@ -79,10 +85,12 @@ BEGIN
       SUSPEND;
     END
 END';
+
         return $this->db->exec($query);
     }
 
-    public function dropFunction($name) {
-        return $this->db->exec('DROP PROCEDURE '.$name);
+    public function dropFunction($name)
+    {
+        return $this->db->exec('DROP PROCEDURE ' . $name);
     }
 }

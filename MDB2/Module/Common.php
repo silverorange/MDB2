@@ -42,47 +42,41 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  */
 
 /**
- * The common modules class for MDB2 module objects
+ * The common modules class for MDB2 module objects.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Module_Common
 {
-    // {{{ Variables (Properties)
-
     /**
      * contains the key to the global MDB2 instance array of the associated
-     * MDB2 instance
+     * MDB2 instance.
      *
-     * @var     int
+     * @var int
      */
     protected $db_index;
 
-    // }}}
-    // {{{ constructor: function __construct($db_index)
-
     /**
-     * Constructor
+     * Constructor.
+     *
+     * @param mixed $db_index
      */
     public function __construct($db_index)
     {
         $this->db_index = $db_index;
     }
 
-    // }}}
-    // {{{ function getDBInstance()
-
     /**
-     * Get the instance of MDB2 associated with the module instance
+     * Get the instance of MDB2 associated with the module instance.
      *
-     * @return  object  MDB2 instance or a MDB2 error on failure
+     * @return object MDB2 instance or a MDB2 error on failure
      */
     public function getDBInstance()
     {
@@ -96,10 +90,7 @@ class MDB2_Module_Common
                 'could not find MDB2 instance'
             );
         }
+
         return $result;
     }
-
-    // }}}
 }
-
-?>

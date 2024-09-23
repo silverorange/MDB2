@@ -42,38 +42,36 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 
 /**
- * Base class for the function modules that is extended by each MDB2 driver
+ * Base class for the function modules that is extended by each MDB2 driver.
  *
  * To load this module in the MDB2 object:
  * $mdb->loadModule('Function');
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Driver_Function_Common extends MDB2_Module_Common
 {
-    // {{{ executeStoredProc()
-
     /**
-     * Execute a stored procedure and return any results
+     * Execute a stored procedure and return any results.
      *
-     * @param string $name string that identifies the function to execute
-     * @param mixed  $params  array that contains the paramaters to pass the stored proc
-     * @param mixed   $types  array that contains the types of the columns in
-     *                        the result set
-     * @param mixed $result_class string which specifies which result class to use
-     * @param mixed $result_wrap_class string which specifies which class to wrap results in
+     * @param string $name              string that identifies the function to execute
+     * @param mixed  $params            array that contains the paramaters to pass the stored proc
+     * @param mixed  $types             array that contains the types of the columns in
+     *                                  the result set
+     * @param mixed  $result_class      string which specifies which result class to use
+     * @param mixed  $result_wrap_class string which specifies which class to wrap results in
      *
      * @return mixed a result handle or MDB2_OK on success, a MDB2 error on failure
      */
@@ -84,22 +82,17 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
             return $db;
         }
 
-        $error = $db->raiseError(
+        return $db->raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
             'method not implemented',
             __FUNCTION__
         );
-
-        return $error;
     }
 
-    // }}}
-    // {{{ functionTable()
-
     /**
-     * return string for internal table used when calling only a function
+     * return string for internal table used when calling only a function.
      *
      * @return string for internal table used when calling only a function
      */
@@ -108,15 +101,12 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
         return '';
     }
 
-    // }}}
-    // {{{ now()
-
     /**
      * Return string to call a variable with the current timestamp inside an SQL statement
      * There are three special variables for current date and time:
      * - CURRENT_TIMESTAMP (date and time, TIMESTAMP type)
      * - CURRENT_DATE (date, DATE type)
-     * - CURRENT_TIME (time, TIME type)
+     * - CURRENT_TIME (time, TIME type).
      *
      * @param string $type 'timestamp' | 'time' | 'date'
      *
@@ -124,22 +114,15 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      */
     public function now($type = 'timestamp')
     {
-        switch ($type) {
-        case 'time':
-            return 'CURRENT_TIME';
-        case 'date':
-            return 'CURRENT_DATE';
-        case 'timestamp':
-        default:
-            return 'CURRENT_TIMESTAMP';
-        }
+        return match ($type) {
+            'time'  => 'CURRENT_TIME',
+            'date'  => 'CURRENT_DATE',
+            default => 'CURRENT_TIMESTAMP',
+        };
     }
 
-    // }}}
-    // {{{ unixtimestamp()
-
     /**
-     * return string to call a function to get the unix timestamp from a iso timestamp
+     * return string to call a function to get the unix timestamp from a iso timestamp.
      *
      * @param string $expression
      *
@@ -152,69 +135,64 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
             return $db;
         }
 
-        $error = $db->raiseError(
+        return $db->raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
             'method not implemented',
             __FUNCTION__
         );
-
-        return $error;
     }
 
-    // }}}
-    // {{{ substring()
-
     /**
-     * return string to call a function to get a substring inside an SQL statement
+     * return string to call a function to get a substring inside an SQL statement.
+     *
+     * @param mixed      $value
+     * @param mixed      $position
+     * @param mixed|null $length
      *
      * @return string to call a function to get a substring
      */
     public function substring($value, $position = 1, $length = null)
     {
         if (null !== $length) {
-            return "SUBSTRING($value FROM $position FOR $length)";
+            return "SUBSTRING({$value} FROM {$position} FOR {$length})";
         }
-        return "SUBSTRING($value FROM $position)";
-    }
 
-    // }}}
-    // {{{ replace()
+        return "SUBSTRING({$value} FROM {$position})";
+    }
 
     /**
      * return string to call a function to get replace inside an SQL statement.
+     *
+     * @param mixed $str
+     * @param mixed $from_str
+     * @param mixed $to_str
      *
      * @return string to call a function to get a replace
      */
     public function replace($str, $from_str, $to_str)
     {
-        return "REPLACE($str, $from_str , $to_str)";
+        return "REPLACE({$str}, {$from_str} , {$to_str})";
     }
 
-    // }}}
-    // {{{ concat()
-
     /**
-     * Returns string to concatenate two or more string parameters
+     * Returns string to concatenate two or more string parameters.
      *
      * @param string $value1
      * @param string $value2
-     * @param string $values...
      *
      * @return string to concatenate two strings
      */
     public function concat($value1, $value2)
     {
         $args = func_get_args();
-        return "(".implode(' || ', $args).")";
+
+        return '(' . implode(' || ', $args) . ')';
     }
 
-    // }}}
-    // {{{ random()
-
     /**
-     * return string to call a function to get random value inside an SQL statement
+     * return string to call a function to get random value inside an SQL statement.
      *
      * @return return string to generate float between 0 and 1
      */
@@ -223,11 +201,8 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
         return 'RAND()';
     }
 
-    // }}}
-    // {{{ lower()
-
     /**
-     * return string to call a function to lower the case of an expression
+     * return string to call a function to lower the case of an expression.
      *
      * @param string $expression
      *
@@ -235,14 +210,11 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      */
     public function lower($expression)
     {
-        return "LOWER($expression)";
+        return "LOWER({$expression})";
     }
 
-    // }}}
-    // {{{ upper()
-
     /**
-     * return string to call a function to upper the case of an expression
+     * return string to call a function to upper the case of an expression.
      *
      * @param string $expression
      *
@@ -250,14 +222,11 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      */
     public function upper($expression)
     {
-        return "UPPER($expression)";
+        return "UPPER({$expression})";
     }
 
-    // }}}
-    // {{{ length()
-
     /**
-     * return string to call a function to get the length of a string expression
+     * return string to call a function to get the length of a string expression.
      *
      * @param string $expression
      *
@@ -265,14 +234,11 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      */
     public function length($expression)
     {
-        return "LENGTH($expression)";
+        return "LENGTH({$expression})";
     }
 
-    // }}}
-    // {{{ guid()
-
     /**
-     * Returns global unique identifier
+     * Returns global unique identifier.
      *
      * @return string to get global unique identifier
      */
@@ -283,18 +249,12 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
             return $db;
         }
 
-        $error = $db->raiseError(
+        return $db->raiseError(
             MDB2_ERROR_UNSUPPORTED,
             null,
             null,
             'method not implemented',
             __FUNCTION__
         );
-
-        return $error;
     }
-
-    // }}}
 }
-
-?>

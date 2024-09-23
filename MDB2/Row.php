@@ -42,34 +42,29 @@
  * | POSSIBILITY OF SUCH DAMAGE.                                          |
  * +----------------------------------------------------------------------+
  * | Author: Lukas Smith <smith@pooteeweet.org>                           |
- * +----------------------------------------------------------------------+
+ * +----------------------------------------------------------------------+.
  */
 
 /**
- * The simple class that accepts row data as an array
+ * The simple class that accepts row data as an array.
  *
  * @category Database
- * @package  MDB2
+ *
  * @author   Lukas Smith <smith@pooteeweet.org>
  * @license  http://opensource.org/licenses/bsd-license.php BSD-2-Clause
  */
 class MDB2_Row
 {
-    // {{{ constructor: function __construct(&$row)
-
     /**
-     * constructor
+     * constructor.
      *
      * @param   resource    row data as array
+     * @param mixed $row
      */
     public function __construct(&$row)
     {
         foreach ($row as $key => $value) {
-            $this->$key = &$row[$key];
+            $this->{$key} = &$row[$key];
         }
     }
-
-    // }}}
 }
-
-?>
