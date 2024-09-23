@@ -528,7 +528,6 @@ class MDB2_Driver_Manager_Common extends MDB2_Module_Common
      *                                  ],
      *                                ],
      *                              ]
-     *
      * @param bool $check indicates whether the function should just check if the DBMS driver
      *                    can perform the requested table alterations if the value is true or
      *                    actually perform them otherwise
