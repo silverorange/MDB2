@@ -944,8 +944,10 @@ class MDB2_Driver_Common implements Stringable
 
             // load module in a specific version
             if ($version) {
-                if (method_exists($class_name, 'getClassName')) {
-                    $class_name_new = call_user_func([$class_name, 'getClassName'], $this->db_index);
+                $callback = [$class_name, 'getClassName'];
+                if (is_callable($callback)) {
+                    // type-safe first-class callable execution
+                    $class_name_new = ($callback)($this->db_index);
                     if ($class_name != $class_name_new) {
                         $class_name = $class_name_new;
                         $err = MDB2::loadClass($class_name, $this->getOption('debug'));
