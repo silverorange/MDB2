@@ -1,6 +1,7 @@
 {
   "name": "silverorange/mdb2",
   "description": "PEAR MDB2 is a merge of the PEAR DB and Metabase php database abstraction layers.",
+  "license": "BSD-2-Clause",
   "type": "library",
   "keywords": [
     "database",
@@ -8,14 +9,23 @@
     "dbal",
     "metabase"
   ],
-  "homepage": "https://github.com/silverorange/MDB2",
-  "license": "BSD-2-Clause",
   "authors": [
     {
       "name": "Michael Gauthier",
       "email": "mike@silverorange.com"
     }
   ],
+  "homepage": "https://github.com/silverorange/MDB2",
+  "require": {
+    "php": ">=8.2",
+    "ext-mbstring": "*",
+    "pear/pear-core-minimal": "^1.9.0"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.88",
+    "phpstan/phpstan": "^2.2",
+    "rector/rector": "^2.4"
+  },
   "autoload": {
     "psr-0": {
       "MDB2": ""
@@ -24,27 +34,17 @@
       "MDB2.php"
     ]
   },
-  "require": {
-    "php": ">=8.2",
-    "ext-mbstring": "*",
-    "pear/pear-core-minimal": "^1.9.0"
-  },
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "3.88.2",
-    "phpstan/phpstan": "^2.2",
-    "rector/rector": "^2.4"
+  "config": {
+    "sort-packages": true
   },
   "scripts": {
     "phpcs": "./vendor/bin/php-cs-fixer check -v",
     "phpcs:ci": "./vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php --no-interaction --show-progress=none --diff --using-cache=no -vvv",
     "phpcs:fix": "./vendor/bin/php-cs-fixer fix -v",
     "phpstan": "./vendor/bin/phpstan analyze",
-    "phpstan:ci": "./vendor/bin/phpstan analyze -vvv --no-progress --memory-limit 2G",
     "phpstan:baseline": "./vendor/bin/phpstan analyze --generate-baseline",
+    "phpstan:ci": "./vendor/bin/phpstan analyze -vvv --no-progress --memory-limit 2G",
     "rector": "./vendor/bin/rector --dry-run",
     "rector:fix": "./vendor/bin/rector"
-  },
-  "config": {
-    "sort-packages": true
   }
 }

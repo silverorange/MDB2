@@ -1,6 +1,3 @@
-includes:
-  - phpstan-baseline.neon
-
 parameters:
   phpVersion: 80200
   level: 1
@@ -10,6 +7,28 @@ parameters:
   fileExtensions:
     - php
     - inc
-  editorUrl: '%%file%%:%%line%%'
-  editorUrlTitle: '%%file%%:%%line%%'
+  editorUrl: '%%relFile%%:%%line%%'
+  editorUrlTitle: '%%relFile%%:%%line%%'
   errorFormat: table
+
+# Checks from higher levels that we want to include here
+# Level 2
+  checkClassCaseSensitivity: true
+  checkPhpDocMissingReturn: true
+#  checkThisOnly: false
+# Level 3
+  checkPhpDocMethodSignatures: true
+# Level 5
+  checkFunctionArgumentTypes: true
+
+  # @todo these errors should eventually be fixed
+  ignoreErrors:
+    -
+      message: "#^Variable \\$affected_rows might not be defined\\.$#"
+      count: 1
+      path: MDB2/Driver/Common.php
+
+    -
+      message: "#^Constructor of class MDB2_Error has an unused parameter \\$dummy\\.$#"
+      count: 1
+      path: MDB2/Error.php

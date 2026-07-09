@@ -13,6 +13,22 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      # Can maybe be replaced with pnpm/action-setup@v4 in the future
+      - name: Setup pnpm/corepack
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+      - run: npm i -g --force corepack && corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Setup PHP with tools
         uses: silverorange/actions-setup-php@v2
         with:
@@ -20,7 +36,7 @@ jobs:
 
       - name: Get composer cache directory
         id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache dependencies
         uses: actions/cache@v4
@@ -36,4 +52,5 @@ jobs:
         timeout-minutes: 5
         run: |
           composer run phpcs:ci
+          pnpm format
           composer run phpstan:ci
